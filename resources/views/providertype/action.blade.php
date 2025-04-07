@@ -2,12 +2,12 @@
 <?php
     $auth_user= authSession();
 ?>
-{{ Form::open(['route' => ['providertype.destroy', $providertype->id], 'method' => 'delete','data--submit'=>'providertype'.$providertype->id]) }}
-<div class="d-flex justify-content-end align-items-center">
+{{ html()->form('DELETE', route('providertype.destroy', $providertype->id))->attribute('data--submit', 'providertype' . $providertype->id)->open() }}
+<div class="d-flex justify-content-end align-items-center ms-2">
     @if(!$providertype->trashed())
 
     @if($auth_user->can('providertype delete'))
-        <a class="mr-3 text-danger" href="{{ route('providertype.destroy', $providertype->id) }}" data--submit="providertype{{$providertype->id}}" 
+        <a class="me-3 text-danger" href="{{ route('providertype.destroy', $providertype->id) }}" data--submit="providertype{{$providertype->id}}" 
             data--confirmation='true'
             data--ajax="true"
             data-datatable="reload"
@@ -20,7 +20,7 @@
 
     @endif
     @if(auth()->user()->hasAnyRole(['admin']) && $providertype->trashed())
-        <a class="mr-2" href="{{ route('providertype.action',['id' => $providertype->id, 'type' => 'restore']) }}"
+        <a class="me-2" href="{{ route('providertype.action',['id' => $providertype->id, 'type' => 'restore']) }}"
             title="{{ __('messages.restore_form_title',['form' => __('messages.providertype') ]) }}"
             data--submit="confirm_form"
             data--confirmation='true'
@@ -38,9 +38,9 @@
             data-title="{{ __('messages.forcedelete_form_title',['form'=>  __('messages.providertype') ]) }}"
             data-message='{{ __("messages.forcedelete_msg") }}'
             data-datatable="reload"
-            class="mr-2">
+            class="me-2">
             <i class="far fa-trash-alt text-danger"></i>
         </a>
     @endif
 </div>
-{{ Form::close() }}
+{{ html()->form()->close() }}

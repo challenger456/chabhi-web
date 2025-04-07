@@ -9,7 +9,7 @@
         <div class="d-flex align-items-center flex-wrap gap-3">
           <div class="input-group ml-auto">
             <input type="number" min="0" step="any" v-model="amount" class="form-control" placeholder="Amount..." aria-label="Amount" aria-describedby="addon-wrapping">
-<ul class="nav nav-tabs nav-fill tabslink gap-3 provider-slot">
+<ul class="nav nav-tabs pay-tabs nav-fill tabslink gap-3 provider-slot">
   <li class="nav-item m-0">
     <!-- Add a click event to set the amount -->
     <a href="javascript:void(0)" class="nav-link" :class="{ 'active': amount === 100 }" @click="setAmount(100)" data-bs-toggle="tab" rel="tooltip">100</a>

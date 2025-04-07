@@ -1,13 +1,14 @@
-{{ Form::model($payment_data, ['method' => 'POST','route' => ['paymentsettingsUpdates'],'enctype'=>'multipart/form-data','data-toggle'=>'validator']) }}
-
-{{ Form::hidden('id', null, array('placeholder' => 'id','class' => 'form-control')) }}
-{{ Form::hidden('type', $tabpage, array('placeholder' => 'id','class' => 'form-control')) }}
+{{ html()->form('POST', route('paymentsettingsUpdates'))->attribute('enctype', 'multipart/form-data')->attribute('data-toggle', 'validator')->open() }}
+{{ html()->hidden('id',$payment_data->id ?? null)->attribute('placeholder', 'id')->class('form-control') }}
+{{ html()->hidden('type', $tabpage)->attribute('placeholder', 'id')->class('form-control') }}
  <div class="row">
     <div class="form-group col-md-12" >
-        <label for="enable_phonepe">{{__('messages.payment_on',['gateway'=>__('messages.phonepe')])}}</label>
-        <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input" name="status" id="enable_phonepe" {{!empty($payment_data) && $payment_data->status == 1 ? 'checked' : ''}}>
-            <label class="custom-control-label" for="enable_phonepe"></label>
+        <div class="form-control d-flex align-items-center justify-content-between">
+            <label for="enable_phonepe" class="mb-0">{{__('messages.payment_on',['gateway'=>__('messages.phonepe')])}}</label>
+            <div class="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline">
+                <input type="checkbox" class="custom-control-input" name="status" id="enable_phonepe" {{!empty($payment_data) && $payment_data->status == 1 ? 'checked' : ''}}>
+                <label class="custom-control-label" for="enable_phonepe"></label>
+            </div>
         </div>
     </div>
  </div>
@@ -27,36 +28,57 @@
         <small class="help-block with-errors text-danger"></small>
     </div>
     <div class="form-group col-md-12">
-        {{ Form::label('title',trans('messages.gateway_name').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-        {{ Form::text('title',old('title'),['id'=>'title','placeholder' => trans('messages.title'),'class' =>'form-control']) }}
+        {{ html()->label(trans('messages.gateway_name').' <span class="text-danger">*</span>', 'title', ['class' => 'form-control-label']) }}
+        {{ html()->text('title',old('title'))
+            ->id('title')
+            ->placeholder(trans('messages.title'))
+            ->class('form-control')
+        }}
         <small class="help-block with-errors text-danger"></small>
     </div>
     <div class="form-group col-md-12">
-        {{ Form::label('app_id',trans('messages.app_id').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-        {{ Form::text('app_id',old('app_id'),['id'=>'app_id','placeholder' => trans('messages.app_id'),'class' =>'form-control']) }}
+        {{ html()->label(trans('messages.app_id').' <span class="text-danger">*</span>', 'app_id', ['class' => 'form-control-label']) }}
+        {{ html()->text('app_id', old('app_id') )
+            ->id('app_id')
+            ->placeholder(trans('messages.app_id'))
+            ->class('form-control')
+        }}
         <small class="help-block with-errors text-danger"></small>
     </div>
-
-     <div class="form-group col-md-12">
-        {{ Form::label('merchant_id',trans('messages.merchant_id').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-        {{ Form::text('merchant_id',old('merchant_id'),['id'=>'merchant_id','placeholder' => trans('messages.merchant_id'),'class' =>'form-control']) }}
+    
+    <div class="form-group col-md-12">
+        {{ html()->label(trans('messages.merchant_id').' <span class="text-danger">*</span>', 'merchant_id', ['class' => 'form-control-label']) }}
+        {{ html()->text('merchant_id',old('merchant_id') )
+            ->id('merchant_id')
+            ->placeholder(trans('messages.merchant_id'))
+            ->class('form-control')
+        }}
         <small class="help-block with-errors text-danger"></small>
     </div>
     <div class="form-group col-md-12">
-        {{ Form::label('salt_key',trans('messages.salt_key').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-        {{ Form::text('salt_key',old('salt_key'),['id'=>'salt_key','placeholder' => trans('messages.salt_key'),'class' =>'form-control']) }}
+        {{ html()->label(trans('messages.salt_key').' <span class="text-danger">*</span>', 'salt_key', ['class' => 'form-control-label']) }}
+        {{ html()->text('salt_key', old('salt_key'))
+            ->id('salt_key')
+            ->placeholder(trans('messages.salt_key'))
+            ->class('form-control')
+        }}
         <small class="help-block with-errors text-danger"></small>
     </div>
-
+    
     <div class="form-group col-md-12">
-        {{ Form::label('salt_index',trans('messages.salt_index').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-        {{ Form::number('salt_index',old('salt_index'),['id'=>'salt_index','placeholder' => trans('messages.salt_index'),'class' =>'form-control']) }}
+        {{ html()->label(trans('messages.salt_index').' <span class="text-danger">*</span>', 'salt_index', ['class' => 'form-control-label']) }}
+        {{ html()->number('salt_index', old('salt_index'))
+            ->id('salt_index')
+            ->placeholder(trans('messages.salt_index'))
+            ->class('form-control')
+        }}
         <small class="help-block with-errors text-danger"></small>
     </div>
+    
    
  </div>
-{{ Form::submit(__('messages.save'), ['class'=>"btn btn-md btn-primary float-md-right"]) }}
-{{ Form::close() }}
+ {{ html()->submit(__('messages.save'))->class("btn btn-md btn-primary float-md-end") }}
+ {{ html()->form()->close() }}
 <script>
 var enable_stripe = $("input[name='status']").prop('checked');
 checkPaymentTabOption(enable_stripe);
@@ -94,9 +116,10 @@ $('.is_test').change(function(){
 
 function getConfig(type){
     var _token   = $('meta[name="csrf-token"]').attr('content');
+    var baseUrl = $('meta[name="baseUrl"]').attr('content');
     var page =  "{{$tabpage}}";
     $.ajax({
-        url: "/get_payment_config",
+        url: baseUrl+"/get_payment_config",
         type:"POST",
         data:{
           type:type,

@@ -1,7 +1,8 @@
-{{ Form::model($site, ['method' => 'POST','route' => ['sitesetup'],'enctype'=>'multipart/form-data','data-toggle'=>'validator']) }}
+{{ html()->form('POST', route('sitesetup'))->attribute('enctype', 'multipart/form-data')->attribute('data-toggle', 'validator')->open() }}
 
-{{ Form::hidden('id', null, array('placeholder' => 'id','class' => 'form-control')) }}
-{{ Form::hidden('page', $page, array('placeholder' => 'id','class' => 'form-control')) }}
+{{ html()->hidden('id',$site->id ?? null)->attribute('placeholder', 'id')->class('form-control') }}
+{{ html()->hidden('page', $page)->attribute('placeholder', 'id')->class('form-control') }}
+
 <div class="row">
     <div class="col-lg-6">
         <div class="form-group">
@@ -56,7 +57,7 @@
 
 
 
-         @php
+        @php
             $languages = [];
             $languagesname = [];
             if ($site) {
@@ -64,7 +65,7 @@
                 $languages = isset($decodedData['language_option']) ? $decodedData['language_option'] : [];
             }
         @endphp
-       <div class="form-group">
+        <div class="form-group">
             <label for="language_option" class="col-sm-12 form-control-label">{{ __('messages.default_language') }}</label>
             <div class="col-sm-12">
                 <select class="form-control select2js language_option" name="language_option[]" id="language_option" multiple required>
@@ -83,25 +84,25 @@
         <div class="form-group">
             <label for="" class="col-sm-6 form-control-label">{{ __('messages.default_currency') }}</label>
             <div class="col-sm-12">
-                {{ Form::select('default_currency',[],  old('default_currency'), [
-                    'class' => 'select2js form-group country',
-                    'id' => 'default_currency',
-                    'data-placeholder' => __('messages.select_name',[ 'select' => __('messages.currency') ]),
-                ]) }}
+                {{ html()->select('default_currency',[],  old('default_currency'))
+                    ->class('select2js form-group country')
+                    ->id('default_currency')
+                    ->attribute('data-placeholder', __('messages.select_name', ['select' => __('messages.currency')]))
+                }}
             </div>
         </div>
 
         <div class = "form-group">
             <label for="" class="col-sm-6 form-control-label">{{ __('messages.currency_position') }}</label>
             <div class="col-sm-12">
-            {{ Form::select('currency_position',['left' => __('messages.left') , 'right' => __('messages.right') ], isset($site->currency_position) ? $site->currency_position : 'left',[ 'class' =>'form-control select2js']) }}
-            </div>
+                {{ html()->select('currency_position', ['left' => __('messages.left'), 'right' => __('messages.right')], isset($site->currency_position) ? $site->currency_position : 'left')->class('form-control select2js')}}            
+                </div>
         </div>
         @hasanyrole('admin')
         <div class="form-group">
-            {{ Form::label('google_map_keys',trans('messages.google_map_keys').' ',['class'=>'col-sm-6 form-control-label'], false ) }}
+            {{ html()->label(trans('messages.google_map_keys'),'google_map_keys')->class('col-sm-6 form-control-label') }}
             <div class="col-sm-12">
-            {{ Form::text('google_map_keys',old('google_map_keys'),['id'=>'google_map_keys','placeholder' => trans('messages.google_map_keys'),'class' =>'form-control']) }}
+                {{ html()->text('google_map_keys',$site->google_map_keys )->id('google_map_keys')->class('form-control')->placeholder(trans('messages.google_map_keys'))}}
             </div>
             <small class="help-block with-errors text-danger"></small>
         </div>
@@ -109,7 +110,7 @@
         <div class="form-group">
             <label for="" class="col-sm-6 form-control-label">{{ __('messages.latitude') }}</label>
             <div class="col-sm-12">
-            {{ Form::text('latitude',old('latitude'),['id'=>'latitude','placeholder' => trans('messages.latitude'),'class' =>'form-control']) }}
+                {{ html()->text('latitude',$site->latitude)->class('form-control')->placeholder(trans('messages.latitude'))->id('latitude')}}
             </div>
         </div>
 
@@ -119,38 +120,38 @@
         <div class="form-group">
             <label for="" class="col-sm-6 form-control-label">{{ __('messages.longitude') }}</label>
             <div class="col-sm-12">
-            {{ Form::text('longitude',old('longitude'),['id'=>'longitude','placeholder' => trans('messages.longitude'),'class' =>'form-control']) }}
+                {{ html()->text('longitude', $site->longitude)->class('form-control')->placeholder(trans('messages.longitude'))->id('longitude')}}
             </div>
         </div>
 
         <div class = "form-group">
             <label for="" class="col-sm-6 form-control-label">{{ __('messages.distance_type') }}</label>
             <div class="col-sm-12">
-            {{ Form::select('distance_type',['km' => __('messages.km') , 'mile' => __('messages.mile') ], isset($site->distance_type) ? $site->distance_type : 'km',[ 'class' =>'form-control select2js']) }}
+                {{ html()->select('distance_type', ['km' => __('messages.km'), 'mile' => __('messages.mile')],  isset($site->distance_type) ? $site->distance_type : 'km')->class('form-control select2js')}}
             </div>
         </div>
         <div class="form-group">
             <label for="" class="col-sm-6 form-control-label">{{ __('messages.radious') }}</label>
             <div class="col-sm-12">
-            {{ Form::number('radious',old('radious'),['id'=>'radious','placeholder' => '50','class' =>'form-control']) }}
+                {{ html()->number('radious',$site->radious)->class('form-control')->placeholder('50')->id('radious')}}
             </div>
         </div>
         <div class="form-group">
             <label for="" class="col-sm-6 form-control-label">{{ __('messages.digitafter_decimal_point') }}</label>
             <div class="col-sm-12">
-            {{ Form::number('digitafter_decimal_point',old('digitafter_decimal_point'),['id'=>'digitafter_decimal_point','placeholder' => '1','class' =>'form-control']) }}
+                {{ html()->number('digitafter_decimal_point', $site->digitafter_decimal_point)->class('form-control')->placeholder('1')->id('digitafter_decimal_point')}}
             </div>
         </div>
         <div class="form-group">
             <label for="" class="col-sm-6 form-control-label">{{ __('messages.copyright_text') }}</label>
             <div class="col-sm-12">
-                {{ Form::text('site_copyright', null, ['class'=>"form-control" , 'placeholder'=>__('messages.copyright_text')]) }}
+                {{ html()->text('site_copyright',  $site->site_copyright)->class('form-control')->placeholder(__('messages.copyright_text'))}}
             </div>
         </div>
 
         <div class="form-group col-md-12 d-flex justify-content-between">
             <label for="android_app_links" class="mb-0">{{ __('messages.android_app_links') }}</label>
-            <div class="custom-control custom-switch">
+            <div class="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline">
                 <input type="checkbox" class="custom-control-input" name="android_app_links" id="android_app_links" {{ !empty($site->android_app_links) ? 'checked' : '' }}>
                 <label class="custom-control-label" for="android_app_links"></label>
             </div>
@@ -160,13 +161,13 @@
         <div class="form-padding-box mb-3" id='android_app'>
             <div class="row">
                 <div class="form-group col-sm-6 mb-0">
-                    {{ Form::label('playstore_url',trans('messages.playstore_url').' ',['class'=>'form-control-label'], false ) }}
-                    {{ Form::text('playstore_url',old('playstore_url'),['id'=>'playstore_url','placeholder' => trans('messages.playstore_url'),'class' =>'form-control']) }}
+                    {{ html()->label(trans('messages.playstore_url'), 'playstore_url')->class('form-control-label') }}
+                    {{ html()->text('playstore_url',$site->playstore_url)->class('form-control')->placeholder(trans('messages.playstore_url'))->id('playstore_url')}}
                     <small class="help-block with-errors text-danger"></small>
                 </div>
                 <div class="form-group col-sm-6 mt-sm-0 mt-3 mb-0">
-                    {{ Form::label('provider_playstore_url',trans('messages.provider_playstore_url').' ',['class'=>'form-control-label'], false ) }}
-                    {{ Form::text('provider_playstore_url',old('provider_playstore_url'),['id'=>'provider_playstore_url','placeholder' => trans('messages.provider_playstore_url'),'class' =>'form-control']) }}
+                    {{ html()->label(trans('messages.provider_playstore_url'), 'provider_playstore_url')->class('form-control-label') }}
+                    {{ html()->text('provider_playstore_url', $site->provider_playstore_url)->class('form-control')->placeholder(trans('messages.provider_playstore_url'))->id('provider_playstore_url')}}
                     <small class="help-block with-errors text-danger"></small>
                 </div>
             </div>
@@ -174,7 +175,7 @@
 
         <div class="form-group col-md-12 d-flex justify-content-between">
             <label for="ios_app_links" class="mb-0">{{ __('messages.ios_app_links') }}</label>
-            <div class="custom-control custom-switch">
+            <div class="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline">
                 <input type="checkbox" class="custom-control-input" name="ios_app_links" id="ios_app_links" {{ !empty($site->ios_app_links) ? 'checked' : '' }}>
                 <label class="custom-control-label" for="ios_app_links"></label>
             </div>
@@ -184,13 +185,13 @@
         <div class="form-padding-box mb-3" id='ios_app'>
             <div class="row">
                 <div class="form-group col-sm-6 mb-0">
-                    {{ Form::label('appstore_url',trans('messages.appstore_url').' ',['class'=>'form-control-label'], false ) }}
-                    {{ Form::text('appstore_url',old('appstore_url'),['id'=>'appstore_url','placeholder' => trans('messages.appstore_url'),'class' =>'form-control']) }}
+                    {{ html()->label(trans('messages.appstore_url'), 'appstore_url')->class('form-control-label') }}
+                    {{ html()->text('appstore_url', $site->appstore_url)->class('form-control')->placeholder(trans('messages.appstore_url'))->id('appstore_url')}}
                     <small class="help-block with-errors text-danger"></small>
                 </div>
                 <div class="form-group col-sm-6 mt-sm-0 mt-3 mb-0">
-                    {{ Form::label('provider_appstore_url',trans('messages.provider_appstore_url').' ',['class'=>'form-control-label'], false ) }}
-                    {{ Form::text('provider_appstore_url',old('provider_appstore_url'),['id'=>'provider_appstore_url','placeholder' => trans('messages.provider_appstore_url'),'class' =>'form-control']) }}
+                    {{ html()->label(trans('messages.provider_appstore_url'), 'provider_appstore_url')->class('form-control-label') }}
+                    {{ html()->text('provider_appstore_url', $site->provider_appstore_url)->class('form-control')->placeholder(trans('messages.provider_appstore_url'))->id('provider_appstore_url')}}
                     <small class="help-block with-errors text-danger"></small>
                 </div>
             </div>
@@ -203,12 +204,12 @@
      <div class="col-lg-12">
         <div class="form-group">
             <div class="col-md-offset-3 col-sm-12 ">
-                {{ Form::submit(__('messages.save'), ['class'=>"btn btn-md btn-primary float-md-right"]) }}
+                {{ html()->submit(__('messages.save'))->class('btn btn-md btn-primary float-md-end submit_section1') }}
             </div>
         </div>
-     </div>
+    </div>
 </div>
-{{ Form::close() }}
+{{ html()->form()->close() }}
 <script>
 
     $(document).ready(function (){
@@ -292,4 +293,26 @@ function iosAppLinks(value){
     }
 }
 
+</script>
+<script>
+    // Initialize the select2 dropdown
+    $(document).ready(function() {
+        // Ensure English (en) cannot be removed
+        const englishLangId = 'en'; // Set the ID for the English language
+        const selectElement = $('#language_option');
+
+        // Make sure English is always selected
+        selectElement.on('change', function() {
+            let selectedOptions = $(this).val();
+
+            // Check if 'en' is removed from the selection, and add it back if so
+            if (!selectedOptions.includes(englishLangId)) {
+                selectedOptions.push(englishLangId);
+                $(this).val(selectedOptions).trigger('change'); // Update the select2 value
+            }
+        });
+
+        // Reinitialize select2 after modifying the options
+        selectElement.select2();
+    });
 </script>

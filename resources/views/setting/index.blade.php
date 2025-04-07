@@ -5,14 +5,14 @@
                 <div class="card card-block card-stretch">
                     <div class="card-body p-0">
                         <div class="d-flex justify-content-between align-items-center p-3">
-                            <h5 class="font-weight-bold">{{ $pageTitle ?? __('messages.list') }}</h5>
-                            <h5 class="font-weight-bold">v{{ config('app.version') }}</h5>
+                            <h5 class="fw-bold">{{ $pageTitle ?? __('messages.list') }}</h5>
+                            <h5 class="fw-bold">v{{ config('app.version') }}</h5>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <div class="row">
             <div class="col-lg-3">
                 <div class="card">
@@ -53,9 +53,7 @@
                                             <li class="nav-item">
                                                 <a href="javascript:void(0)" data-href="{{ route('layout_page') }}?page=notification-setting" data-target=".paste_here" class="nav-link {{$page=='notification-setting'?'active':''}}"  data-toggle="tabajax" rel="tooltip"> {{ __('messages.notification_configurations') }}</a>
                                             </li>
-                                            <li class="nav-item">
-                                                <a href="javascript:void(0)" data-href="{{ route('layout_page') }}?page=notification-templates" data-target=".paste_here" class="nav-link {{$page=='notification-templates'?'active':''}}"  data-toggle="tabajax" rel="tooltip"> {{ __('messages.notification_template_setup') }}</a>
-                                            </li>
+
                                             <li class="nav-item">
                                                 <a href="javascript:void(0)" data-href="{{ route('layout_page') }}?page=social-media" data-target=".paste_here" class="nav-link {{$page=='social-media'?'active':''}}"  data-toggle="tabajax" rel="tooltip"> {{ __('messages.social_media') }}</a>
                                             </li>
@@ -80,7 +78,7 @@
                                             <li class="nav-item">
                                                 <a href="javascript:void(0)" data-href="{{ route('layout_page') }}?page=mail-setting" data-target=".paste_here" class="nav-link {{$page=='mail-setting'?'active':''}}"  data-toggle="tabajax" rel="tooltip"> {{ __('messages.mail_settings') }}</a>
                                             </li>
-                                            
+
                                             <!-- <li class="nav-item">
                                                 <a href="javascript:void(0)" data-href="{{ route('layout_page') }}?page=push-notification-setting" data-target=".paste_here" class="nav-link {{$page=='push-notification-setting'?'active':''}}"  data-toggle="tabajax" rel="tooltip"> {{ __('messages.pushnotification_settings') }}</a>
                                             </li> -->
@@ -88,10 +86,6 @@
                                                 <a href="javascript:void(0)" data-href="{{ route('layout_page') }}?page=earning-setting" data-target=".paste_here" class="nav-link {{$page=='earning-setting'?'active':''}}"  data-toggle="tabajax" rel="tooltip"> {{ __('messages.earning_setting') }}</a>
                                             </li>
 
-                                            <li class="nav-item">
-                                                <a href="javascript:void(0)" data-href="{{ route('layout_page') }}?page=userdashboard-setting" data-target=".paste_here" class="nav-link {{$page=='userdashboard-setting'?'active':''}}"  data-toggle="tabajax" rel="tooltip"> {{ __('messages.userdashboard_setting') }}</a>
-                                            </li>
-                                         
                                         @endhasanyrole
                                     @endif
                                 </ul>
@@ -107,6 +101,11 @@
                             <div class="col-sm-12 col-lg-12">
                                 <div class="tab-content" id="pills-tabContent-1">
                                     <div class="tab-pane active p-1" >
+                                        @if(session('message'))
+                                        <div class="alert alert-success">
+                                                {{ session('message') }}
+                                        </div>
+                                        @endif
                                         <div class="paste_here"></div>
                                     </div>
                                 </div>

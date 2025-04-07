@@ -40,7 +40,7 @@
     </div>
 @endsection
 
-@push('after-scripts')
+{{-- @push('after-scripts')
     <script>
         tinymce.init({
             selector: '#mytextarea',
@@ -53,4 +53,4 @@
             tinyMCE.activeEditor.selection.setContent($(this).attr('data-value'));
         });
     </script>
-@endpush
+@endpush --}}

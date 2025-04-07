@@ -2,11 +2,11 @@
 <?php
 $auth_user= authSession();
 ?>
-{{ Form::open(['route' => ['booking.destroy', $booking->id], 'method' => 'delete','data--submit'=>'booking'.$booking->id]) }}
+{{ html()->form('DELETE', route('booking.destroy', $booking->id))->attribute('data--submit', 'booking' . $booking->id)->open()}}
 <div class="d-flex justify-content-end align-items-center">
 @if(!$booking->trashed())
     @if($auth_user->can('booking delete') && !$booking->trashed())
-    <a class="mr-3" href="{{ route('booking.destroy', $booking->id) }}" data--submit="booking{{$booking->id}}" 
+    <a class="me-3" href="{{ route('booking.destroy', $booking->id) }}" data--submit="booking{{$booking->id}}" 
         data--confirmation='true'
         data--ajax="true"
         data-datatable="reload"
@@ -18,7 +18,7 @@ $auth_user= authSession();
     @endif
 @endif
 @if(auth()->user()->hasAnyRole(['admin']) && $booking->trashed())
-    <a class="mr-2" href="{{ route('booking.action',['id' => $booking->id, 'type' => 'restore']) }}"
+    <a class="me-2" href="{{ route('booking.action',['id' => $booking->id, 'type' => 'restore']) }}"
         title="{{ __('messages.restore_form_title',['form' => __('messages.booking') ]) }}"
         data--submit="confirm_form"
         data--confirmation='true'
@@ -36,9 +36,9 @@ $auth_user= authSession();
         data-title="{{ __('messages.forcedelete_form_title',['form'=>  __('messages.booking') ]) }}"
         data-message='{{ __("messages.forcedelete_msg") }}'
         data-datatable="reload"
-        class="mr-2">
+        class="me-2">
         <i class="far fa-trash-alt text-danger"></i>
     </a>
 @endif
 </div>
-{{ Form::close() }}
+{{ html()->form()->close() }}

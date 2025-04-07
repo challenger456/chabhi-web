@@ -5,7 +5,7 @@
                 <div class="card card-block card-stretch">
                     <div class="card-body p-0">
                         <div class="d-flex justify-content-between align-items-center p-3">
-                            <h5 class="font-weight-bold">{{ $pageTitle ?? trans('messages.notification_list') }}</h5>
+                            <h5 class="fw-bold">{{ $pageTitle ?? trans('messages.notification_list') }}</h5>
                         </div>
                         <div class="col-lg-3 justify-content-end align-items-center">
                             <div class="input-group ">
@@ -31,7 +31,7 @@
                     serverSide: true,
                     autoWidth: false,
                     responsive: true,
-                    dom: '<"row align-items-center"><"table-responsive my-3" rt><"row align-items-center" <"col-md-6" l><"col-md-6" p>><"clear">',
+                    dom: '<"row align-items-center"><"table-responsive my-3" rt><"row align-items-center" <"col-md-6" l><"col-md-6" p><"col-md-6" i>><"clear">',
                     ajax: {
                     "type"   : "GET",
                     "url"    : '{{ route("notification.index_data") }}',
@@ -78,10 +78,14 @@
                             name: 'action',
                             orderable: false,
                             searchable: false,
-                            title: "{{ __('messages.action') }}"
+                            title: "{{ __('messages.action') }}",
+className: 'text-end'
                         }
                         
-                    ]
+                    ],
+                    language: {
+          processing: "{{ __('messages.processing') }}" // Set your custom processing text
+        }
                     
             });
       });

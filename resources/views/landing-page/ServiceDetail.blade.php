@@ -2,7 +2,7 @@
 
 @section('content')
 @php
-   
+
 @endphp
 
 <div class="section-padding service-detail">
@@ -14,8 +14,7 @@
                     <ul class="service-meta-list list-inline m-0 d-flex align-items-center flex-wrap">
                         <li>
                             <div class="d-flex align-items-center gap-2">
-                                @if($serviceData['service_detail']['total_rating'] > 0 && $serviceData['service_detail']['total_review'] > 0)
-                                <span class="ratting">
+                                <span class="ratting d-inherit lh-normal">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14"
                                         fill="none">
                                         <path
@@ -24,29 +23,29 @@
                                     </svg>
                                 </span>
                                 <h6>{{ round($serviceData['service_detail']['total_rating'],1) }}<span class="text-body"> <a href="{{route('rating.all', ['service_id' => $serviceData['service_detail']['id']])}}"> ({{ $serviceData['service_detail']['total_review'] }} {{__('messages.reviews')}})</span></a></h6>
-                                @endif
+                              
                             </div>
                         </li>
                         @if(!empty($serviceData['service_detail']['duration']))
-                            <li>
-                                <h6 class="text-body">
+                        <li>
+                            <h6 class="text-body">
                                 @php
-               
-                $durationParts = explode(':', $serviceData['service_detail']['duration']);
-                $hours = intval($durationParts[0]);
-                $minutes = intval($durationParts[1]);
-            @endphp
 
-            @if($hours > 0)
-                ({{ $hours }} hrs @if($minutes > 0) {{ $minutes }} min @endif)
-            @else
-                ({{ $minutes }} min)
-            @endif
-        
-                               
+                                $durationParts = explode(':', $serviceData['service_detail']['duration']);
+                                $hours = intval($durationParts[0]);
+                                $minutes = intval($durationParts[1]);
+                                @endphp
 
-                                </h6>
-                            </li>
+                                @if($hours > 0)
+                                ({{ $hours }} hrs @if($minutes > 0) {{ $minutes }} min @endif)
+                                @else
+                                ({{ $minutes }} min)
+                                @endif
+
+
+
+                            </h6>
+                        </li>
                         @endif
                     </ul>
                     <div>
@@ -55,21 +54,21 @@
                     </div>
                 </div>
                 @if(!empty($serviceData['service_detail']['attchments']))
-                    <div class="mt-5">
-                        <section-thumbnail-section :attachments="{{ json_encode($serviceData['service_detail']['attchments']) }}"></section-thumbnail-section>
-                    </div>
+                <div class="mt-5">
+                    <section-thumbnail-section :attachments="{{ json_encode($serviceData['service_detail']['attchments']) }}"></section-thumbnail-section>
+                </div>
                 @else
-                    <img src="{{ asset('images/default.png') }}" alt="" class="img-fluid object-cover rounded-3 mt-4 w-100"/>
+                <img src="{{ asset('images/default.png') }}" alt="" class="img-fluid object-cover rounded-3 mt-4 w-100" />
                 @endif
                 @if(!empty($serviceData['service_detail']['description']))
-                    <div class="mt-5 pt-lg-5 pt-3">
-                        <h5 class="mb-3">{{__('landingpage.about_service')}}</h5>
-                        <p class="m-0">
-                            {{ $serviceData['service_detail']['description'] }}
-                        </p>
-                    </div>
+                <div class="mt-5 pt-lg-5 pt-3">
+                    <h5 class="mb-3">{{__('landingpage.about_service')}}</h5>
+                    <p class="m-0">
+                        {{ $serviceData['service_detail']['description'] }}
+                    </p>
+                </div>
                 @endif
-                
+
                 <div class="mt-5 pt-lg-5 pt-3">
                     <h5 class="mb-3">{{__('landingpage.about_provider')}}</h5>
                     <div class="p-5 border rounded-3 about-provider-box">
@@ -80,7 +79,9 @@
                                     class="img-fluid w-100">
                             </div>
                             <div>
-                                <a href="{{ route('provider.detail', $serviceData['provider']['id']) }}"><h5 class="text-capitalize mb-1">{{ $serviceData['provider']['display_name'] }}</h5></a>
+                                <a href="{{ route('provider.detail', $serviceData['provider']['id']) }}">
+                                    <h5 class="text-capitalize mb-1">{{ $serviceData['provider']['display_name'] }}</h5>
+                                </a>
 
                                 <div class="d-flex align-items-center gap-2 flex-wrap">
                                     <div class="star-rating">
@@ -104,41 +105,41 @@
                                 <h6 class="mb-1">{{__('landingpage.complet_project')}}:</h6>
                                 <p class="m-0">{{ $completed_services }} {{__('landingpage.msg_complete_project')}}</p>
                             </div>
-                           
+
                             @if(!empty($knownLanguageArray))
-                                <div class="col-md-4 mt-md-0 mt-3">
-                                    <h6 class="mb-1">{{__('landingpage.languages')}}:</h6>
-                                    <p class="m-0">{{ implode(', ', $knownLanguageArray) }}</p>
-                                </div>
+                            <div class="col-md-4 mt-md-0 mt-3">
+                                <h6 class="mb-1">{{__('landingpage.languages')}}:</h6>
+                                <p class="m-0">{{ implode(', ', $knownLanguageArray) }}</p>
+                            </div>
                             @endif
                         </div>
                     </div>
                 </div>
 
                 @if($serviceData['serviceaddon'])
-                    <div class="mt-5 pt-lg-5 pt-3">
+                <div class="mt-5 pt-lg-5 pt-3">
                     <h5 class="mb-3">{{__('landingpage.Add-ons')}}</h5>
-                        @foreach($serviceData['serviceaddon'] as $serviceaddon)
-                            <div class="mb-4 pb-4 border-bottom d-flex align-items-sm-center aling-items-center justify-content-between flex-sm-row flex-column gap-2">
-                                <div class="d-flex align-items-sm-center flex-sm-row flex-column gap-3">
-                                    <div class="flex-shrink-0 provider-image-container">
-                                    @if(isset($serviceaddon['serviceaddon_image']) && $serviceaddon['serviceaddon_image'])
-                                        <img src="{{ $serviceaddon['serviceaddon_image'] }}" alt="service-image" class="img-fluid object-fit-cover" style="width: 100px; height:100px;">
-                                    @else
-                                        <img src="{{ asset('images/default.png') }}" alt="placeholder-image" class="img-fluid object-fit-cover" style="width: 100px; height:100px;">
-                                    @endif
-                                    </div>
-                                    <div>
-                                        <h5 class="text-capitalize mb-1">{{ $serviceaddon['name'] }}</h5>
-                                        <h6>{{ getPriceFormat($serviceaddon['price']) }}</h6>
-                                    </div>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input service-addon-checkbox" type="checkbox" value="" id="serviceaddon" data-addon-id="{{ $serviceaddon['id'] }}">
-                                </div>
+                    @foreach($serviceData['serviceaddon'] as $serviceaddon)
+                    <div class="mb-4 pb-4 border-bottom d-flex align-items-sm-center aling-items-center justify-content-between flex-sm-row flex-column gap-2">
+                        <div class="d-flex align-items-sm-center flex-sm-row flex-column gap-3">
+                            <div class="flex-shrink-0 provider-image-container">
+                                @if(isset($serviceaddon['serviceaddon_image']) && $serviceaddon['serviceaddon_image'])
+                                <img src="{{ $serviceaddon['serviceaddon_image'] }}" alt="service-image" class="img-fluid object-fit-cover" style="width: 100px; height:100px;">
+                                @else
+                                <img src="{{ asset('images/default.png') }}" alt="placeholder-image" class="img-fluid object-fit-cover" style="width: 100px; height:100px;">
+                                @endif
                             </div>
-                        @endforeach
+                            <div>
+                                <h5 class="text-capitalize mb-1">{{ $serviceaddon['name'] }}</h5>
+                                <h6>{{ getPriceFormat($serviceaddon['price']) }}</h6>
+                            </div>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input service-addon-checkbox" type="checkbox" value="" id="serviceaddon" data-addon-id="{{ $serviceaddon['id'] }}">
+                        </div>
                     </div>
+                    @endforeach
+                </div>
                 @endif
                 @if($serviceData['service_detail']['price'] > 0)
                 <div class="mt-5 pt-lg-5 pt-3">
@@ -147,14 +148,16 @@
                         <h6 class="mb-1">{{__('messages.service')}}</h6>
                         <p class="m-0 text-capitalize">{{ $serviceData['service_detail']['name'] }}
                         </p>
-                        
+
                         <div class="mt-5 border-top">
                             <div class="table-responsive">
                                 <table class="table mb-5">
                                     <tbody>
                                         <tr>
                                             <td class="ps-0 py-2">
-                                                <label class="text-capitalize"><h6>{{__('messages.price')}}</h6></label> 
+                                                <label class="text-capitalize">
+                                                    <h6>{{__('messages.price')}}</h6>
+                                                </label>
                                             </td>
                                             <td class="pe-0 py-2 text-end">
                                                 <h6 class="text-primary">+{{ getPriceFormat($serviceData['service_detail']['price']) }}</h6>
@@ -163,7 +166,9 @@
                                         @if(!empty($serviceData['service_detail']['discount']))
                                         <tr>
                                             <td class="ps-0 py-2">
-                                                <label class="text-capitalize"><h6>{{__('messages.discount')}} <span class="text-success">({{$serviceData['service_detail']['discount']}}% Off)</span></h6></label>
+                                                <label class="text-capitalize">
+                                                    <h6>{{__('messages.discount')}} <span class="text-success">({{$serviceData['service_detail']['discount']}}% Off)</span></h6>
+                                                </label>
                                             </td>
                                             <td class="pe-0 py-2 text-end">
                                                 <span class="text-success">-{{getPriceFormat($serviceData['service_detail']['price']*$serviceData['service_detail']['discount']/100)}}</span>
@@ -179,43 +184,45 @@
                                                 <h6 class="text-primary">{{ getPriceFormat($subtotal) }}</h6>
                                             </td>
                                         </tr>
-                                        @php 
-                                               
+                                        @php
+
                                         $total = $subtotal;
                                         @endphp
 
                                         @php
-                                          $totalTaxAmount = 0; 
+                                        $totalTaxAmount = 0;
                                         @endphp
 
                                         @if(!empty($serviceData['taxes']))
-                                            @php 
-                                               
-                                                foreach($serviceData['taxes'] as $tax){
-                                                    if($tax['type'] == 'percent'){
-                                                        $totalTaxAmount += ($subtotal * $tax['value']) / 100;
-                                                    }
-                                                    else {
-                                                        $totalTaxAmount += $tax['value'];
-                                                    }
-                                                }
-                                                $total = $subtotal + $totalTaxAmount;
-                                            @endphp
-                                          @endif
-                                             
-                                            <tr>
-                                                <td class="ps-0 py-2">
-                                                    <label class="text-capitalize"><h6>{{__('messages.tax')}}</h6></label>
-                                                </td>
-                                                <td class="pe-0 py-2 text-end">
+                                        @php
+
+                                        foreach($serviceData['taxes'] as $tax){
+                                        if($tax['type'] == 'percent'){
+                                        $totalTaxAmount += ($subtotal * $tax['value']) / 100;
+                                        }
+                                        else {
+                                        $totalTaxAmount += $tax['value'];
+                                        }
+                                        }
+                                        $total = $subtotal + $totalTaxAmount;
+                                        @endphp
+                                        @endif
+
+                                        <tr>
+                                            <td class="ps-0 py-2">
+                                                <label class="text-capitalize">
+                                                    <h6>{{__('messages.tax')}}</h6>
+                                                </label>
+                                            </td>
+                                            <td class="pe-0 py-2 text-end">
                                                 @if($totalTaxAmount>0)
-                                                  <span class="text-danger"><i type="button" class="fa fa-info-circle text-body" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#taxModal"></i> +{{getPriceFormat($totalTaxAmount)}}</span>
+                                                <span class="text-danger"><i type="button" class="fa fa-info-circle text-body" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#taxModal"></i> +{{getPriceFormat($totalTaxAmount)}}</span>
                                                 @else
-                                                  <span class="text-danger"> +{{getPriceFormat(0)}}</span>
+                                                <span class="text-danger"> +{{getPriceFormat(0)}}</span>
                                                 @endif
-                                                </td>
-                                            </tr>
-                                      
+                                            </td>
+                                        </tr>
+
 
                                         <div class="modal fade" id="taxModal" aria-labelledby="taxModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
@@ -233,16 +240,17 @@
                                                         </span>
                                                     </div>
                                                     <div class="modal-body">
-                                                     @if(!empty($serviceData['taxes']))
+                                                        @if(!empty($serviceData['taxes']))
                                                         @foreach($serviceData['taxes'] as $tax)
-                                                            <div class="d-flex justify-content-between">
-                                                                <p>{{ $tax['title'] }}</p>
-                                                                @if($tax['type'] == 'percent')
-                                                                    <p>{{ getPriceFormat($tax['value']*$subtotal/100) }}</p>
-                                                                @else
-                                                                    <p>{{ getPriceFormat($tax['value']) }}</p>
-                                                                @endif
-                                                            </div>
+                                                        <div class="d-flex justify-content-between">
+                                                            @if($tax['type'] == 'percent')
+                                                            <p>{{ $tax['title'] }} ({{$tax['value']}}%)</p>
+                                                            <p>{{ getPriceFormat($tax['value']*$subtotal/100) }}</p>
+                                                            @else
+                                                            <p>{{ $tax['title'] }}</p>
+                                                            <p>{{ getPriceFormat($tax['value']) }}</p>
+                                                            @endif
+                                                        </div>
                                                         @endforeach
                                                         @endif
                                                     </div>
@@ -254,141 +262,154 @@
                                 </table>
                             </div>
                             <div class="text-end">
-                            @if(auth()->check() && auth()->user()->user_type == 'user')
-                                <a href="{{ route('book.service', ['id' => $serviceData['service_detail']['id']]) }}" class="btn btn-lg btn-primary continue-button">{{__('messages.continue')}}({{ getPriceFormat($total) }})</a>
-                            @else
-                                <a href="{{ route('user.login', ['service_id' =>$serviceData['service_detail']['id']]) }}" class="btn btn-lg btn-primary">{{__('messages.continue')}}({{ getPriceFormat($total) }})</a>
-                            @endif
+                                @if(auth()->check() && auth()->user()->user_type == 'user')
+                                <a href="{{ route('book.service', ['id' => $serviceData['service_detail']['id']]) }}" class="btn btn-lg btn-primary continue-button">{{__('messages.continue')}} ({{ getPriceFormat($total) }})</a>
+                                @else
+                                <a href="{{ route('user.login', ['service_id' =>$serviceData['service_detail']['id']]) }}" class="btn btn-lg btn-primary">{{__('messages.continue')}} ({{ getPriceFormat($total) }})</a>
+                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
                 @endif
                 @if(!empty($serviceData['service_detail']['servicePackage']))
-                    <div class="mt-5 pt-lg-5 pt-3">
-                        <div class="row align-item-center">
-                            <div class="col-sm-6">
-                                <h5 class="text-capitalize">{{__('landingpage.select_service_package')}}</h5>
-                            </div>
-                            @if(count($serviceData['service_detail']['servicePackage']) > 3)
-                                <div class="col-sm-6 mt-sm-0 mt-3 text-sm-end">
-                                    <a href="{{route('service.package',['id' => $serviceData['service_detail']['id']] )}}">{{__('messages.view_all')}}</a>
-                                </div>
-                            @endif
+                <div class="mt-5 pt-lg-5 pt-3">
+                    <div class="row align-item-center">
+                        <div class="col-sm-6">
+                            <h5 class="text-capitalize">{{__('landingpage.select_service_package')}}</h5>
                         </div>
-                        <div class="mt-5">
-                            <div class="position-relative overflow-hidden swiper swiper-general our-service" >
+                        @if(count($serviceData['service_detail']['servicePackage']) > 3)
+                        <div class="col-sm-6 mt-sm-0 mt-3 text-sm-end">
+                            <a href="{{route('service.package',['id' => $serviceData['service_detail']['id']] )}}">{{__('messages.view_all')}}</a>
+                        </div>
+                        @endif
+                    </div>
+                    <div class="mt-5">
+                        <div class="position-relative overflow-hidden swiper swiper-general our-service">
                             @auth
-                                <service-package-section
-                                    :servicepackage="{{ json_encode($serviceData['service_detail']['servicePackage']) }}"
-                                    :service_id="{{ $serviceData['service_detail']['id'] }}"
-                                    :auth_user_id="{{ auth()->id() }}"
-                                ></service-package-section>
+                            <service-package-section
+                                :servicepackage="{{ json_encode($serviceData['service_detail']['servicePackage']) }}"
+                                :service_id="{{ $serviceData['service_detail']['id'] }}"
+                                :auth_user_id="{{ auth()->id() }}"></service-package-section>
                             @else
-                                <service-package-section
-                                    :servicepackage="{{ json_encode($serviceData['service_detail']['servicePackage']) }}"
-                                    :service_id="{{ $serviceData['service_detail']['id'] }}"
-                                    :auth_user_id="null"
-                                ></service-package-section>
+                            <service-package-section
+                                :servicepackage="{{ json_encode($serviceData['service_detail']['servicePackage']) }}"
+                                :service_id="{{ $serviceData['service_detail']['id'] }}"
+                                :auth_user_id="null"></service-package-section>
                             @endauth
-                            </div>
                         </div>
                     </div>
+                </div>
                 @endif
 
                 @if(!empty($serviceData['service_faq']))
-                    <div class="mt-5 pt-lg-5 pt-3">
-                        <div class="row">
-                            <div class="col-12">
-                                <h5 class="text-capitalize">{{__('landingpage.any_question')}}</h5>
-                            </div>
-                            <div class="col-12 mt-2">
-                                <div class="service-accordian accordion" id="service-accordion">
-                                    @foreach($serviceData['service_faq'] as $service_faq)
-                                        <div class="accordion-item">
-                                            <div class="accrodion-title collapsed" data-bs-toggle="collapse" data-bs-target="#q-{{$service_faq['id']}}" aria-expanded="false" aria-controls="q-{{$service_faq['id']}}">
-                                                <div class="d-flex gap-2">
-                                                    <h6 class="question text-primary flex-shrink-0">Q:</h6>
-                                                    <h6 class="title m-0">{{ $service_faq['title'] }}</h6>
-                                                </div>
-                                                <span class="icon-accrodion icon-inactive">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" height="14" width="14" viewBox="0 0 448 512"><path d="M416 208H272V64c0-17.7-14.3-32-32-32h-32c-17.7 0-32 14.3-32 32v144H32c-17.7 0-32 14.3-32 32v32c0 17.7 14.3 32 32 32h144v144c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V304h144c17.7 0 32-14.3 32-32v-32c0-17.7-14.3-32-32-32z" fill="currentColor"/></svg>
-                                                </span>
-                                                <span class="icon-accrodion icon-active">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" height="14" width="14" viewBox="0 0 448 512"><path d="M416 208H32c-17.7 0-32 14.3-32 32v32c0 17.7 14.3 32 32 32h384c17.7 0 32-14.3 32-32v-32c0-17.7-14.3-32-32-32z" fill="currentColor"/></svg>
-                                                </span>
-                                            </div>
-                                            <div id="q-{{$service_faq['id']}}" class="accordion-collapse collapse" data-bs-parent="#service-accordion">
-                                                <div class="accordion-body">{{ $service_faq['description'] }}</div>
-                                            </div>
+                <div class="mt-5 pt-lg-5 pt-3">
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 class="text-capitalize">{{__('landingpage.any_question')}}</h5>
+                        </div>
+                        <div class="col-12 mt-2">
+                            <div class="service-accordian accordion" id="service-accordion">
+                                @foreach($serviceData['service_faq'] as $service_faq)
+                                <div class="accordion-item">
+                                    <div class="accrodion-title collapsed" data-bs-toggle="collapse" data-bs-target="#q-{{$service_faq['id']}}" aria-expanded="false" aria-controls="q-{{$service_faq['id']}}">
+                                        <div class="d-flex gap-2">
+                                            <h6 class="question text-primary flex-shrink-0">Q:</h6>
+                                            <h6 class="title m-0">{{ $service_faq['title'] }}</h6>
                                         </div>
-                                    @endforeach
-
-                                  
+                                        <span class="icon-accrodion icon-inactive">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="14" width="14" viewBox="0 0 448 512">
+                                                <path d="M416 208H272V64c0-17.7-14.3-32-32-32h-32c-17.7 0-32 14.3-32 32v144H32c-17.7 0-32 14.3-32 32v32c0 17.7 14.3 32 32 32h144v144c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V304h144c17.7 0 32-14.3 32-32v-32c0-17.7-14.3-32-32-32z" fill="currentColor" />
+                                            </svg>
+                                        </span>
+                                        <span class="icon-accrodion icon-active">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="14" width="14" viewBox="0 0 448 512">
+                                                <path d="M416 208H32c-17.7 0-32 14.3-32 32v32c0 17.7 14.3 32 32 32h384c17.7 0 32-14.3 32-32v-32c0-17.7-14.3-32-32-32z" fill="currentColor" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div id="q-{{$service_faq['id']}}" class="accordion-collapse collapse" data-bs-parent="#service-accordion">
+                                        <div class="accordion-body">{{ $service_faq['description'] }}</div>
+                                    </div>
                                 </div>
+                                @endforeach
+
+
                             </div>
                         </div>
                     </div>
+                </div>
                 @endif
 
                 @if($total_ratings->isNotEmpty())
-                    <div class="section-padding px-0 pb-0">
-                        <div class="row align-items-center mb-5">
-                            <div class="col-sm-9">
-                                <h5 class="mb-0">{{ count($total_ratings) }} {{__('landingpage.reviews_for')}} {{$serviceData['service_detail']['name']}}</h5>
-                            </div>
-                            @if(count($total_ratings)!== 0)          
-                                <div class="col-sm-3 mt-sm-0 mt-3 text-sm-end">
-                                    <a href="{{route('rating.all', ['service_id' => $serviceData['service_detail']['id']])}}">{{__('messages.view_all')}}</a>
-                                </div>
-                            @endif
+                <div class="section-padding px-0 pb-0">
+                    <div class="row align-items-center mb-5">
+                        <div class="col-sm-9">
+                            <h5 class="mb-0">{{ count($total_ratings) }} {{__('landingpage.reviews_for')}} {{$serviceData['service_detail']['name']}}</h5>
                         </div>
+                        @if(count($total_ratings)!== 0)
+                        <div class="col-sm-3 mt-sm-0 mt-3 text-sm-end">
+                            <a href="{{route('rating.all', ['service_id' => $serviceData['service_detail']['id']])}}">{{__('messages.view_all')}}</a>
+                        </div>
+                        @endif
+                    </div>
 
-                        <ul class="comment-list list-inline m-0">
-                            @foreach($serviceData['rating_data'] as $ratingData)
-                                <li class="comment mb-5 pb-5 border-bottom">
-                                    <div class="comment-box">
-                                        <div
-                                            class="d-flex align-items-sm-center align-items-start flex-sm-row flex-column justify-content-between gap-3">
-                                            <div
-                                                class="d-inline-flex align-items-sm-center align-items-start flex-sm-row flex-column gap-3">
-                                                <div class="user-image flex-shrink-0">
-                                                    <img src="{{ $ratingData['profile_image'] }}"
-                                                        class="avatar-70 object-cover rounded-circle" alt="comment-user" />
-                                                </div>
-                                                <div class="comment-user-info">
-                                                    <h6 class="font-size-18 text-capitalize mb-2">{{ $ratingData['customer_name'] }}</h6>
-                                                    <span class="text-primary">
-                                                        <rating-component :readonly = true :showrating ="false" :ratingvalue="{{ $ratingData['rating'] }}" />
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="date text-capitalize">{{ date("$date_time->date_format", strtotime($ratingData['created_at'])) }}</div>
+                    <ul class="comment-list list-inline m-0">
+                        @foreach($serviceData['rating_data'] as $ratingData)
+                        <li class="comment mb-5 pb-5 border-bottom">
+                            <div class="comment-box">
+                                <div
+                                    class="d-flex align-items-sm-center align-items-start flex-sm-row flex-column justify-content-between gap-3">
+                                    <div
+                                        class="d-inline-flex align-items-sm-center align-items-start flex-sm-row flex-column gap-3">
+                                        <div class="user-image flex-shrink-0">
+                                            <img src="{{ $ratingData['profile_image'] }}"
+                                                class="avatar-70 object-cover rounded-circle" alt="comment-user" />
                                         </div>
-                                        <div class="mt-4">
-                                            <p class="commnet-content m-0">
-                                                {{ $ratingData['review'] }}
-                                            </p>
+                                        <div class="comment-user-info">
+                                            <h6 class="font-size-18 text-capitalize mb-2">{{ $ratingData['customer_name'] }}</h6>
+                                            <span class="text-primary">
+                                                <rating-component :readonly=true :showrating="false" :ratingvalue="{{ $ratingData['rating'] }}" />
+                                            </span>
                                         </div>
                                     </div>
-                                </li>
-                            @endforeach
+                                    <div class="date text-capitalize">{{ date("$date_time->date_format", strtotime($ratingData['created_at'])) }}</div>
+                                </div>
+                                <div class="mt-4">
+                                    <p class="commnet-content m-0">
+                                        {{ $ratingData['review'] }}
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                        @endforeach
 
-                        </ul>
-                    </div>
+                    </ul>
+                </div>
                 @endif
 
                 <div class="mt-5 pt-lg-5 pt-3">
                     <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap">
                         <h5 class="text-capitalize">{{__('landingpage.related_services')}}</h5>
                         <a href="{{route('service.list', ['category_id' => $serviceData['service_detail']['category_id']])}}">{{__('messages.view_all')}}</a>
-                     
+
                     </div>
                     <div class="position-relative overflow-hidden swiper swiper-general our-service" data-slide="2"
                         data-laptop="2" data-tab="2" data-mobile="1" data-mobile-sm="1" data-autoplay="true"
                         data-loop="true" data-navigation="false" data-pagination="false">
-                        
-                        <landing-servicedetailsection-section :service="{{ json_encode($serviceData['related_service']) }}" :user_id="{{$userId}}" :favourite="{{json_encode($favouriteServiceData)}}"></landing-servicedetailsection-section>
+
+                        @php
+                            $currentServiceId = $serviceData['service_detail']['id'];
+                            $filteredRelatedServices = array_filter($serviceData['related_service'], function($service) use ($currentServiceId) {
+                                return $service['id'] !== $currentServiceId;
+                            });
+                        @endphp
+
+                        <landing-servicedetailsection-section 
+                            :service="{{ json_encode(array_values($filteredRelatedServices)) }}" 
+                            :user_id="{{$userId}}" 
+                            :favourite="{{ json_encode($favouriteServiceData) }}">
+                        </landing-servicedetailsection-section>
                     </div>
                 </div>
             </div>
@@ -396,102 +417,117 @@
                 <div class="bg-light p-5 rounded-3">
                     <div class="d-flex align-items-center justify-content-between gap-3 mb-3">
                         <div class="div">
-                            {{-- <h5 class="font-size-14 m-0">{{$serviceData['service_detail']['name']}}</h5> --}}
+                            <h5 class="mb-2">{{__('messages.price')}}</h5>
                             @if($serviceData['service_detail']['price']==0)
                             <h4 class="mt-2 text-primary">Free</h4>
                             @else
-                             <h4 class="mt-2 text-primary">{{ getPriceFormat($serviceData['service_detail']['price']) }}</h4>
+                            <h4 class="mt-2 text-primary">{{ getPriceFormat($serviceData['service_detail']['price']) }}</h4>
 
                             @endif
                         </div>
                         <div class="flex-shrink-0">
                             @if(auth()->check() && auth()->user()->hasRole('user'))
-                                @if(empty($favouriteService))
-                                    <form method="POST" id="favoriteForm">
-                                    @csrf
+                            @if(empty($favouriteService))
+                            <form method="POST" id="favoriteForm">
+                                @csrf
 
-                                    <input type="hidden" name="service_id" class="service_id" value="{{ $serviceData['service_detail']['id'] }}" data-service-id="{{ $serviceData['service_detail']['id'] }}">
-                                    @if(!empty(auth()->user()))
-                                        <input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}">
-                                    @endif
-                                    
-                                    <button type="button" class="btn btn-light bg-white rounded-circle serv-whishlist text-primary p-0 avatar-30 save_fav">
-                                        <svg width="16" height="16" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M1.43593 6.29916C0.899433 4.62416 1.52643 2.70966 3.28493 2.14316C4.20993 1.84466 5.23093 2.02066 5.99993 2.59916C6.72743 2.03666 7.78593 1.84666 8.70993 2.14316C10.4684 2.70966 11.0994 4.62416 10.5634 6.29916C9.72843 8.95416 5.99993 10.9992 5.99993 10.9992C5.99993 10.9992 2.29893 8.98516 1.43593 6.29916Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            <path d="M8 3.84998C8.535 4.02298 8.913 4.50048 8.9585 5.06098" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
-                                    </button>
-                                    </form>
-                                @else
-                                    <form method="POST" id="favoriteForm">
-                                    @csrf
-
-                                    <input type="hidden" name="service_id" class="service_id" value="{{ $serviceData['service_detail']['id'] }}" data-service-id="{{ $serviceData['service_detail']['id'] }}">
-                                    @if(!empty(auth()->user()))
-                                        <input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}">
-                                    @endif
-                                    <button type="button" class="btn btn-light bg-white rounded-circle serv-whishlist text-primary p-0 avatar-30 delete_fav">
-                                        <svg width="16" height="16" viewBox="0 0 12 13" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M1.43593 6.29916C0.899433 4.62416 1.52643 2.70966 3.28493 2.14316C4.20993 1.84466 5.23093 2.02066 5.99993 2.59916C6.72743 2.03666 7.78593 1.84666 8.70993 2.14316C10.4684 2.70966 11.0994 4.62416 10.5634 6.29916C9.72843 8.95416 5.99993 10.9992 5.99993 10.9992C5.99993 10.9992 2.29893 8.98516 1.43593 6.29916Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                            <path d="M8 3.84998C8.535 4.02298 8.913 4.50048 8.9585 5.06098" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                        </svg>
-                                    </button>
-                                    </form>
+                                <input type="hidden" name="service_id" class="service_id" value="{{ $serviceData['service_detail']['id'] }}" data-service-id="{{ $serviceData['service_detail']['id'] }}">
+                                @if(!empty(auth()->user()))
+                                <input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}">
                                 @endif
-                            @else
-                                <form method="GET" id="favoriteForm" action="{{ route('user.login') }}">
-                                    @csrf
-                                    <button type="submit" class="btn btn-light bg-white rounded-circle serv-whishlist text-primary p-0 avatar-30">
+
+                                <button type="button" class="btn btn-light bg-white rounded-circle serv-whishlist text-primary p-0 avatar-30 lh-normal save_fav">
                                     <svg width="16" height="16" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" clip-rule="evenodd" d="M1.43593 6.29916C0.899433 4.62416 1.52643 2.70966 3.28493 2.14316C4.20993 1.84466 5.23093 2.02066 5.99993 2.59916C6.72743 2.03666 7.78593 1.84666 8.70993 2.14316C10.4684 2.70966 11.0994 4.62416 10.5634 6.29916C9.72843 8.95416 5.99993 10.9992 5.99993 10.9992C5.99993 10.9992 2.29893 8.98516 1.43593 6.29916Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                         <path d="M8 3.84998C8.535 4.02298 8.913 4.50048 8.9585 5.06098" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
-                                    </button>
-                                </form>
+                                </button>
+                            </form>
+                            @else
+                            <form method="POST" id="favoriteForm">
+                                @csrf
+
+                                <input type="hidden" name="service_id" class="service_id" value="{{ $serviceData['service_detail']['id'] }}" data-service-id="{{ $serviceData['service_detail']['id'] }}">
+                                @if(!empty(auth()->user()))
+                                <input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}">
+                                @endif
+                                <button type="button" class="btn btn-light bg-white rounded-circle serv-whishlist text-primary p-0 avatar-30 delete_fav lh-normal">
+                                    <svg width="16" height="16" viewBox="0 0 12 13" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M1.43593 6.29916C0.899433 4.62416 1.52643 2.70966 3.28493 2.14316C4.20993 1.84466 5.23093 2.02066 5.99993 2.59916C6.72743 2.03666 7.78593 1.84666 8.70993 2.14316C10.4684 2.70966 11.0994 4.62416 10.5634 6.29916C9.72843 8.95416 5.99993 10.9992 5.99993 10.9992C5.99993 10.9992 2.29893 8.98516 1.43593 6.29916Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        <path d="M8 3.84998C8.535 4.02298 8.913 4.50048 8.9585 5.06098" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                </button>
+                            </form>
+                            @endif
+                            @else
+                            <form method="GET" id="favoriteForm" action="{{ route('user.login') }}">
+                                @csrf
+                                <button type="submit" class="btn btn-light bg-white rounded-circle serv-whishlist text-primary p-0 avatar-30 btn btn-light bg-white rounded-circle serv-whishlist text-primary p-0 avatar-30 delete_fav lh-normal">
+                                    <svg width="16" height="16" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M1.43593 6.29916C0.899433 4.62416 1.52643 2.70966 3.28493 2.14316C4.20993 1.84466 5.23093 2.02066 5.99993 2.59916C6.72743 2.03666 7.78593 1.84666 8.70993 2.14316C10.4684 2.70966 11.0994 4.62416 10.5634 6.29916C9.72843 8.95416 5.99993 10.9992 5.99993 10.9992C5.99993 10.9992 2.29893 8.98516 1.43593 6.29916Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M8 3.84998C8.535 4.02298 8.913 4.50048 8.9585 5.06098" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </button>
+                            </form>
                             @endif
 
 
                         </div>
                     </div>
-                    @if(!empty($serviceData['service_detail']['description']))
+                    <!-- @if(!empty($serviceData['service_detail']['description']))
                         <p class="m-0 readmore-text">
                             {{$serviceData['service_detail']['description']}}
                         </p>
                         <a href="javascript:void(0);" class="readmore-btn">{{__('landingpage.read_more')}}</a>
-                    @endif
+                    @endif -->
 
-                    <div class="mt-4 pt-4 border-top">
+                    <div class="mt-4 pt-4 ">
                         @if(auth()->check() && auth()->user()->user_type == 'user')
-                            <a href="{{ route('book.service', ['id' => $serviceData['service_detail']['id']]) }}" class="btn btn-primary w-100 continue-button">{{__('messages.continue')}}</a>
+                        <a href="{{ route('book.service', ['id' => $serviceData['service_detail']['id']]) }}" class="btn btn-primary w-100 continue-button">{{__('messages.continue')}}</a>
                         @else
-                            <a href="{{ route('user.login',['service_id' =>$serviceData['service_detail']['id']]) }}" class="btn btn-primary w-100">{{__('messages.continue')}}</a>
+                        <a href="{{ route('user.login',['service_id' =>$serviceData['service_detail']['id']]) }}" class="btn btn-primary w-100">{{__('messages.continue')}}</a>
                         @endif
                     </div>
 
                 </div>
-                 
+
                 @if($serviceData['service_detail']['is_slot'] == 1)
-                    <div class="bg-light p-5 rounded-3 mt-5">
-                        <h5 class="mb-2">{{__('landingpage.available_days')}}</h5>
-                        <ul class="list-inline m-0 p-0 d-flex align-items-center gap-2 flex-wrap">
-                            @foreach($serviceData['service_detail']['slots'] as $slots)
-                            <li>
-                                <span class="btn btn-sm btn-outline-primary text-capitalize cursor-default">{{ $slots['day'] }}</span>
-                            </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
                 <div class="bg-light p-5 rounded-3 mt-5">
-                    <h5 class="mb-2">{{__('landingpage.available_location')}}</h5>
+                    <h5 class="mb-2">{{__('landingpage.available_days')}}</h5>
                     <ul class="list-inline m-0 p-0 d-flex align-items-center gap-2 flex-wrap">
-                        @foreach($serviceData['service_detail']['service_address_mapping'] as $service_address)
-                            <li>
-                                <span class="btn btn-sm btn-outline-primary text-capitalize cursor-default">{{ $service_address['provider_address_mapping']['address'] }}</span>
-                            </li>
+                        @foreach($serviceData['service_detail']['slots'] as $slots)
+                        <li>
+                            <span class="btn btn-sm btn-outline-primary text-capitalize cursor-default">{{ $slots['day'] }}</span>
+                        </li>
                         @endforeach
                     </ul>
                 </div>
+                @endif
+                @if(!empty($serviceData['service_detail']['service_address_mapping']))
+                <div class="bg-light p-5 rounded-3 mt-5">
+                    <h5 class="mb-2">{{__('landingpage.available_location')}}</h5>
+                    <ul class="list-inline m-0 p-0 d-flex align-items-center gap-2 flex-wrap">
+                        @php
+                        $hasLocation = false;
+                        @endphp
+
+                        @foreach($serviceData['service_detail']['service_address_mapping'] as $service_address)
+                        @if(!empty($service_address['provider_address_mapping']['address']))
+                        @php
+                        $hasLocation = true;
+                        @endphp
+                        <li>
+                            <span class="btn btn-sm btn-outline-primary text-capitalize cursor-default">{{ $service_address['provider_address_mapping']['address'] }}</span>
+                        </li>
+                        @endif
+                        @endforeach
+
+                        @if(!$hasLocation)
+                        <li>{{ __('messages.no_location') }}</li>
+                        @endif
+                    </ul>
+                </div>
+                @endif
             </div>
         </div>
     </div>
@@ -584,84 +620,82 @@
             $('.continue-button').attr('href', updatedHref);
         }
         const baseUrl = document.querySelector('meta[name="baseUrl"]').getAttribute('content');
-    $('.save_fav').off('click').on('click', function () {
+        $('.save_fav').off('click').on('click', function() {
 
-       const form = $(this).closest('form');
+            const form = $(this).closest('form');
 
-       const serviceId = form.find('.service_id').data('service-id');
-       const userId = $('#user_id').val();
+            const serviceId = form.find('.service_id').data('service-id');
+            const userId = $('#user_id').val();
 
-       $.ajax({
-            url: baseUrl + '/api/save-favourite',
-            type: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}',
-                service_id: serviceId,
-                user_id: userId,
-            },
-            success: function (response) {
-               Swal.fire({
-               title: 'Done',
-               text: response.message,
-               icon: 'success',
-               iconColor: '#5F60B9'
-               }).then((result) => {
-                  if (result.isConfirmed) {
-                     window.location.reload();
-                  }
-               })
-            },
-            error: function (error) {
-                console.error('Error:', error);
-            }
+            $.ajax({
+                url: baseUrl + '/api/save-favourite',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    service_id: serviceId,
+                    user_id: userId,
+                },
+                success: function(response) {
+                    Swal.fire({
+                        title: 'Done',
+                        text: response.message,
+                        icon: 'success',
+                        iconColor: '#5F60B9'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload();
+                        }
+                    })
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+
+        $('.delete_fav').off('click').on('click', function() {
+            const form = $(this).closest('form');
+
+            const serviceId = form.find('.service_id').data('service-id');
+            const userId = $('#user_id').val();
+
+            $.ajax({
+                url: baseUrl + '/api/delete-favourite',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    service_id: serviceId,
+                    user_id: userId,
+                },
+                success: function(response) {
+                    Swal.fire({
+                        title: 'Done',
+                        text: response.message,
+                        icon: 'success',
+                        iconColor: '#5F60B9'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload();
+                        }
+                    })
+                },
+                error: function(error) {
+                    console.error('Error', error);
+                }
+            });
         });
     });
 
-    $('.delete_fav').off('click').on('click', function () {
-       const form = $(this).closest('form');
+    // document.addEventListener("DOMContentLoaded", function() {
+    //     var description = document.querySelector('.readmore-text');
+    //     var readmoreBtn = document.querySelector('.readmore-btn');
 
-       const serviceId = form.find('.service_id').data('service-id');
-       const userId = $('#user_id').val();
-
-       $.ajax({
-            url: baseUrl + '/api/delete-favourite',
-            type: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}',
-                service_id: serviceId,
-                user_id: userId,
-            },
-            success: function (response) {
-               Swal.fire({
-               title: 'Done',
-               text: response.message,
-               icon: 'success',
-               iconColor: '#5F60B9'
-               }).then((result) => {
-                  if (result.isConfirmed) {
-                     window.location.reload();
-                  }
-               })
-            },
-            error: function (error) {
-                console.error('Error', error);
-            }
-        });
-    });
-    });
-
-    document.addEventListener("DOMContentLoaded", function() {
-        var description = document.querySelector('.readmore-text');
-        var readmoreBtn = document.querySelector('.readmore-btn');
-
-        if (description.offsetHeight < description.scrollHeight) {
-            readmoreBtn.style.display = 'block';
-        } else {
-            readmoreBtn.style.display = 'none';
-        }
-    });
-
-   
+    //     if (description.offsetHeight < description.scrollHeight) {
+    //         readmoreBtn.style.display = 'block';
+    //     } else {
+    //         readmoreBtn.style.display = 'none';
+    //     }
+    // });
 </script>
 
 @endsection

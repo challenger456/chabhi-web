@@ -5,7 +5,7 @@
                 <div class="card card-block card-stretch">
                     <div class="card-body p-0">
                         <div class="d-flex justify-content-between align-items-center p-3">
-                            <h5 class="font-weight-bold">{{ $pageTitle ?? trans('messages.list') }}</h5>
+                            <h5 class="fw-bold">{{ $pageTitle ?? trans('messages.list') }}</h5>
                         </div>
 
                     </div>
@@ -56,7 +56,7 @@
                         <option value="1" {{$filter['status'] == '1' ? "selected" : ''}}>{{__('messages.active')}}</option>
                       </select>
                     </div>
-                    <div class="input-group ml-2">
+                    <div class="input-group input-group-search ms-2">
                       <span class="input-group-text" id="addon-wrapping"><i class="fas fa-search"></i></span>
                       <input type="text" class="form-control dt-search" placeholder="Search..." aria-label="Search" aria-describedby="addon-wrapping" aria-controls="dataTableBuilder">
                     </div>
@@ -80,7 +80,7 @@
                 serverSide: true,
                 autoWidth: false,
                 responsive: true,
-                dom: '<"row align-items-center"><"table-responsive my-3" rt><"row align-items-center" <"col-md-6" l><"col-md-6" p>><"clear">',
+                dom: '<"row align-items-center"><"table-responsive my-3" rt><"row align-items-center" <"col-md-6" l><"col-md-6" p><"col-md-6" i>><"clear">',
                 ajax: {
                   "type"   : "GET",
                   "url"    : '{{ route("notificationtemplates.index_data")}}',

@@ -236,10 +236,12 @@
                             let data = $('[data--submit="'+form+'"]').serializeArray();
                             $.post(url, data).then(response => {
                                 if(response.status) {
-
+                                    
                                     if(response.image != null){
+                                        checkImage();
                                         $(_this).remove();
                                         $('#'+response.preview).attr('src',response.image)
+
                                         if (jQuery.inArray(response.preview, ["service_attachment_preview"]) !== -1) {
                                             $('#'+response.preview+"_"+response.id).remove()
                                             let total_file = $('.remove-file').length;
@@ -247,6 +249,46 @@
                                                 $('.service_attachment_div').remove();
                                             }
                                         }
+                                        if (jQuery.inArray(response.preview, ["helpdesk_attachment_preview"]) !== -1) {
+                                            $('#'+response.preview+"_"+response.id).remove()
+                                            let total_file = $('.remove-file').length;
+                                            if(total_file == 0){
+                                                $('.helpdesk_attachment_div').remove();
+                                            }
+                                        }
+                                        if (jQuery.inArray(response.preview, ["helpdesk_activity_attachment_preview"]) !== -1) {
+                                            $('#'+response.preview+"_"+response.id).remove()
+                                            let total_file = $('.remove-file').length;
+                                            if(total_file == 0){
+                                                $('.helpdesk_activity_attachment_div').remove();
+                                            }
+                                        }
+                                        if (jQuery.inArray(response.preview, ["subcategory_image_preview"]) !== -1) {
+                                            $('#'+response.preview+"_"+response.id).remove()
+                                            let total_file = $('.remove-file').length;
+                                            if(total_file == 0){
+                                                $('.subcategory_attachment_div').remove();
+                                            }
+                                        }
+                                        if (jQuery.inArray(response.preview, ["serviceaddon_image_preview"]) !== -1) {
+                                            $('#'+response.preview+"_"+response.id).remove()
+                                            let total_file = $('.remove-file').length;
+                                            if(total_file == 0){
+                                                $('.serviceaddon_image_preview').remove();
+                                            }
+                                        }
+                                  
+
+
+                                        if (jQuery.inArray(response.preview, ["package_attachment_preview"]) !== -1) {
+                                            $('#'+response.preview+"_"+response.id).remove()
+                                            let total_file = $('.remove-file').length;
+                                            if(total_file == 0){
+                                                $('.service_attachment_div').remove();
+                                            }
+                                        }
+
+
                                         if(response.preview == 'site_logo_preview'){
                                             $('.'+response.preview).attr('src',response.image);
                                         }
@@ -319,7 +361,6 @@
                 url: url,
                 success: function(res){
 
-                        console.log(res);
                     if(res.counts > 0){
                        
                         $('.notify_count').removeClass('d-none');
@@ -398,6 +439,12 @@
                     if ($('.selected_file').length > 0) {
                         $('.selected_file').text(input.files[0].name);
                     }
+                }
+                else if(jQuery.inArray(field_name, ["json_file"]) !== -1){
+                    var res = isJson(input.files[0].name);
+                    if ($('.selected_file').length > 0) {
+                        $('.selected_file').text(input.files[0].name);
+                    }
                 }  else {
                     var res = isImage(input.files[0].name);
                     if ($('.selected_file').length > 0) {
@@ -452,7 +499,15 @@
             }
             return false;
         }
+        function isJson(filename){
+            var ext = getExtension(filename);
+            var validExtensions = ["json"];
 
+            if (jQuery.inArray(ext.toLowerCase(), validExtensions) !== -1) {
+                return true;
+            }
+            return false;
+        }
         function isAttachments(filename) {
             var ext = getExtension(filename);
             var validExtensions = ["jpg", "pdf", "jpeg", "gif", "png", "mp4", "avi"];

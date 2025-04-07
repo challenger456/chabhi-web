@@ -5,8 +5,8 @@
                 <div class="card card-block card-stretch">
                     <div class="card-body p-0">
                         <div class="d-flex justify-content-between align-items-center p-3 flex-wrap gap-3">
-                            <h5 class="font-weight-bold">{{$pageTitle}}</h5>
-                            <a href="{{ route('handyman.index') }}   " class="float-right btn btn-sm btn-primary"><i class="fa fa-angle-double-left"></i> {{ __('messages.back') }}</a>
+                            <h5 class="fw-bold">{{$pageTitle}}</h5>
+                            <a href="{{ route('handyman.index') }}   " class=" float-end btn btn-sm btn-primary"><i class="fa fa-angle-double-left"></i> {{ __('messages.back') }}</a>
                         </div>
                     </div>
                 </div>
@@ -16,7 +16,8 @@
                     <div class="card-body">
                         {{ Form::model($handymandata, ['method' => 'POST','route'=>'handyman.changepassword','data-toggle' => 'validator','id' => 'handyman']) }}
                             <div class="row">
-                                <div class="col-md-6 offset-md-3">
+                                <div class="col-md-3 d-md-block d-none"></div>
+                                <div class="col-md-6">
                                     {{ Form::hidden('id', null, array('placeholder' => 'id','class' => 'form-control')) }}
                                     <div class="form-group has-feedback">
                                         {{ Form::label('old_password',__('messages.old_password').' <span class="text-danger">*</span>',['class'=>'form-control-label col-md-12'], false ) }}
@@ -43,6 +44,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-md-3 d-md-block d-none"></div>
                             </div>
                         {{ Form::close() }}
                     </div>

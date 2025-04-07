@@ -61,9 +61,28 @@
                 <div class="col-lg-9 col-md-8 mt-md-0 mt-3">
                   <div class="content flex-grow-1">
                   <div class="d-sm-flex align-items-center gap-3 justify-content-between">
-                    <h4 class="mb-0">{{ service.name }}</h4>
+                    <!-- <h4 class="mb-0">{{ service.name }}</h4>
+                    <p>{{service.description}}</p> -->
+                    
+                      <div class="d-inline-flex align-items-sm-center align-items-start flex-sm-row flex-column gap-3">
+                        <div class="comment-user-info">
+                            <h4 class="mb-0">{{ service.name }}</h4>
+                            <span class="">
+                              {{service.description}}
+                            </span>
+                            <div class="mt-4 " v-if="service.end_at !== null">
+                              <div class="d-inline-flex">
+                                <span>{{$t('messages.Package_Expire')}}: </span>&nbsp;
+                                <p class="text-primary commnet-content m-0">
+                                  {{ formatDate(service.end_at) }} 
+                                </p>
+                              </div>
+                            </div>
+                        </div>
+                      </div>
+                   
                     <div class="flex-shrink-0 d-inline-flex align-items-center gap-2 mt-sm-0 mt-2">
-                      <span class="text-primary fw-500 d-inline-block position-relative font-size-18">{{ formatCurrencyVue(service.price) }}</span>
+                      <span class="text-primary fw-500 d-inline-block position-relative font-size-18">{{ formatCurrencyVue(service.price) }} (<del>{{ formatCurrencyVue(service.total_price) }}</del>)</span>
                     </div>
                   </div>
                 </div>
@@ -79,7 +98,7 @@
                 <template v-if="!isChildComponentVisible">
   
                   <div class="row">
-                    <div :class="service.price == 0 ? 'col-lg-12' : 'col-lg-8'">
+                    <div :class="service.price == 0 ? 'col-lg-12' : 'col-lg-7'">
                       <div  class="booking-list-content-active">
                           <h5 class="text-capitalize">{{ $t('messages.schedule_ervice') }}</h5>
           
@@ -103,7 +122,7 @@
           
                           <div class="mt-5 card bg-light rounded-3">
                             <div class="card-body booking-service-form">
-                              <div class="row">
+                              <div class="row g-3">
       
                                   <div v-if="service.is_slot == 1" class="col-12">
       
@@ -176,7 +195,7 @@
       
                                   </div>
                                   
-                                  <div v-else class="col-12">
+                                  <div v-else class="col-sm-6">
                                       <label class="form-label">{{ $t('landingpage.date_time') }}</label>
                                       <div class="input-group icon-left custom-form-field flex-nowrap">
                                           <span class="input-group-text flex-shrink-0" id="dateandtime">
@@ -210,26 +229,16 @@
                                   </div>
                                 
       
-                                  <div v-if="service.type=='fixed'" class="col-12 mt-5">
+                                  <div v-if="service.type=='fixed'" class="col-sm-4" :class="{'mt-4': service.is_slot == 1}">
                                       <label class="form-label">{{ $t('landingpage.quantity') }}</label>
                                       <div class="custom-form-field">
-                                          <div class="btn-group iq-qty-btn w-100" data-qty="btn" role="group">
+                                          <div class="btn-group iq-qty-btn" data-qty="btn" role="group">
                                               <button type="button" class="iq-quantity-plus" @click="decrement()">
-                                                  <svg xmlns="http://www.w3.org/2000/svg" width="12"
-                                                      height="12" viewBox="0 0 12 12" fill="none">
-                                                      <path d="M9.5 4.25L6 7.75L2.5 4.25"
-                                                          stroke="currentColor" stroke-width="1.5"
-                                                          stroke-linecap="square" />
-                                                  </svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 256 256"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128Z"/></svg>                                                
                                               </button>
-                                              <input type="text" class="input-display w-100" id="quntity" v-model="quantity" name="quantity" disabled />
+                                              <input type="text" class="input-display" id="quntity" v-model="quantity" name="quantity" disabled />
                                               <button type="button" class="iq-quantity-minus"  @click="increment()">
-                                                  <svg xmlns="http://www.w3.org/2000/svg" width="12"
-                                                      height="12" viewBox="0 0 12 12" fill="none">
-                                                      <path d="M9.5 7.75L6 4.25L2.5 7.75"
-                                                          stroke="currentColor" stroke-width="1.5"
-                                                          stroke-linecap="square" />
-                                                  </svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 256 256"><path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/></svg>
                                               </button>
                                           </div>
                                       </div>
@@ -275,7 +284,7 @@
                           </div>
                       </div>
                     </div>
-                    <div class="col-lg-4" v-if="service.price>0">
+                    <div class="col-lg-5" v-if="service.price>0">
                       <div class="booking-list-content">
                           <div class="d-flex justify-content-between">
                               <h5 class="m-0 text-capitalize">{{ $t('landingpage.price_detail') }}</h5>
@@ -311,7 +320,7 @@
                                         <tr v-if="coupons !=''&& SeletedCouponId>0 && selectedCoupon !=null && props.service.package_type == null">
           
                                           <td class="ps-0">
-                                            <span class="text-capitalize" @click="OpenCouponCardMethod()">{{ $t('landingpage.coupon') }} ({{selectedCoupon.code}})</span>
+                                            <span class="text-capitalize cursor-pointer" @click="OpenCouponCardMethod()">{{ $t('landingpage.coupon') }} ({{selectedCoupon.code}})</span>
                                           </td>
                                           <td class="pe-0">
           
@@ -324,11 +333,11 @@
           
           
                                         <tr v-if="OpenCouponCard==1">
-                                          <div>
+                                          <td>
           
                                               <couponcard @getSelectedCoupon="handleCouponResponse" :coupons= coupons :service_price= service.price :SeletedCouponId=SeletedCouponId ></couponcard>
           
-                                          </div>
+                                          </td>
                                         </tr>
           
                                       <tr v-if="serviceaddon">
@@ -378,7 +387,9 @@
                             </div>
                           <div class="mt-5 pt-md-5 pt-3 text-md-end">
                               <div class="d-inline-flex align-items-center flex-wrap gap-3">
-                                <a :href="`${baseUrl}/service-detail/${service.id}`" class="btn btn-outline-primary">{{ $t('landingpage.cancel') }}</a>
+                                {{console.log(service.service_id)}}
+                                <a v-if="!service.package_type" :href="`${baseUrl}/service-detail/${service.id}`" class="btn btn-outline-primary">{{ $t('landingpage.cancel') }}</a>
+                                <a v-if="service.package_type" :href="`${baseUrl}/service-detail/${service.service_id}`" class="btn btn-outline-primary">{{ $t('landingpage.cancel') }}</a>
                                   
                                   <button  type="submit"  v-if="service.is_enable_advance_payment == 1"  class="btn btn-primary"> <span v-if="IsLoading==1" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span v-else>{{ $t('landingpage.pay_advance') }}</span></button>
                                   <button type="submit"  v-else class="btn btn-primary"> <span v-if="IsLoading==1" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span v-else>{{ $t('messages.book_now') }}</span></button>
@@ -434,14 +445,25 @@ import 'v-calendar/style.css';
 import moment from 'moment'
 const baseUrl = document.querySelector('meta[name="baseUrl"]').getAttribute('content');
 const props = defineProps(['service','coupons','taxes','user_id','availableserviceslot','serviceaddon','googlemapkey','wallet_amount']);
+console.log(props.service.service_id);
 const googlemapkey = props.googlemapkey;
-
-const config = ref({
-      enableTime: true,
-      dateFormat: 'Y-m-d H:i',
-      static: true,
-      minDate: 'today',
+const maxDate = computed(() => {
+    return props.service.end_at ? new Date(props.service.end_at) : null;
 });
+
+// Flatpickr configuration
+const config = {
+    enableTime: true, // if you want to allow time selection
+    dateFormat: 'Y-m-d H:i', // your preferred date format
+    minDate: 'today', // optional, to disable past dates
+    maxDate: maxDate.value, // this limits the selection to service.end_at
+};
+// const config = ref({
+//       enableTime: true,
+//       dateFormat: 'Y-m-d H:i',
+//       static: true,
+//       minDate: 'today',
+// });
 
 const todos = ref([
   {
@@ -467,7 +489,43 @@ onMounted(() => {
       calculateAddonAmount()
     }
 })
+const padZero = (num) => num.toString().padStart(2, '0');
 
+const formatDate = (dateString) => {
+  const datefrm = window.dateformate || 'Y-m-d';
+  const date = new Date(dateString);
+
+  const year = date.getFullYear();
+  const month = padZero(date.getMonth() + 1);
+  const day = padZero(date.getDate());
+
+  const ordinalSuffix = (day) => ['th', 'st', 'nd', 'rd'][(day % 10 > 3 || [11, 12, 13].includes(day)) ? 0 : day % 10];
+
+  const formatMap = {
+    'Y-m-d': `${year}-${month}-${day}`,
+    'm-d-Y': `${month}-${day}-${year}`,
+    'd-m-Y': `${day}-${month}-${year}`,
+    'd/m/Y': `${day}/${month}/${year}`,
+    'm/d/Y': `${month}/${day}/${year}`,
+    'Y/m/d': `${year}/${month}/${day}`,
+    'Y.m.d': `${year}.${month}.${day}`,
+    'd.m.Y': `${day}.${month}.${year}`,
+    'm.d.Y': `${month}.${day}.${year}`,
+    'jS M Y': `${date.getDate()}${ordinalSuffix(date.getDate())} ${date.toLocaleString('default', { month: 'short' })} ${year}`,
+    'M jS Y': `${date.toLocaleString('default', { month: 'short' })} ${date.getDate()}${ordinalSuffix(date.getDate())} ${year}`,
+    'D, M d, Y': `${date.toLocaleString('default', { weekday: 'short' })}, ${date.toLocaleString('default', { month: 'short' })} ${day}, ${year}`,
+    'D, d M, Y': `${date.toLocaleString('default', { weekday: 'short' })}, ${day} ${date.toLocaleString('default', { month: 'short' })}, ${year}`,
+    'D, M jS Y': `${date.toLocaleString('default', { weekday: 'short' })}, ${date.toLocaleString('default', { month: 'short' })} ${date.getDate()}${ordinalSuffix(date.getDate())} ${year}`,
+    'D, jS M Y': `${date.toLocaleString('default', { weekday: 'short' })}, ${date.getDate()}${ordinalSuffix(date.getDate())} ${date.toLocaleString('default', { month: 'short' })} ${year}`,
+    'F j, Y': `${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${year}`,
+    'd F, Y': `${date.getDate()} ${date.toLocaleString('default', { month: 'long' })}, ${year}`,
+    'jS F, Y': `${date.getDate()}${ordinalSuffix(date.getDate())} ${date.toLocaleString('default', { month: 'long' })}, ${year}`,
+    'l jS F Y': `${date.toLocaleString('default', { weekday: 'long' })} ${date.getDate()}${ordinalSuffix(date.getDate())} ${date.toLocaleString('default', { month: 'long' })} ${year}`,
+    'l, F j, Y': `${date.toLocaleString('default', { weekday: 'long' })}, ${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${year}`
+  };
+
+  return formatMap[datefrm] || `${year}-${month}-${day}`;
+};
 const formattedDuration = (value) => {
   if (!value)
     return '';
@@ -702,13 +760,25 @@ const validationSchema = yup.object({
     address: yup.string().required('Address is Required'),
 
     date: yup.string().test('date', "Date and Time is Required", function(value) {
-       
-    if(props.service.is_slot != 1 && !value  ) {
-        
-       return false ;
-      }
-      return true;
-   }),
+        const { service } = props;
+
+        // If service is not using slots and the date is empty, throw validation error
+        if (service.is_slot != 1 && !value) {
+            return false;
+        }
+
+        // If end_at exists, ensure the selected date is before or equal to end_at
+        if (service.end_at) {
+            const selectedDate = new Date(value); // Parse the value into a JavaScript Date object
+            const endDate = new Date(service.end_at);
+
+            if (selectedDate > endDate) {
+                return this.createError({ message: 'Selected date exceeds the allowed package end date' });
+            }
+        }
+
+        return true;
+    }),
 
    start_time: yup.string().test('start_time', "Please Select Time Slot", function(value) {
        
@@ -755,7 +825,13 @@ const getCurrentLocation = async () => {
     isLoading.value = false; 
   });
 };
+const cancellation = window.cancellationCharge;
+let cancellationCharge = 0;
 
+// Calculate cancellation charge if applicable
+if (cancellation['cancellation_charge'] == 1) {
+    cancellationCharge = (props.service.price * cancellation['cancellation_charge_amount']) / 100;
+}
 
 const errorMessages = ref({})
 const formSubmit = handleSubmit(async(values) => {
@@ -766,10 +842,18 @@ const formSubmit = handleSubmit(async(values) => {
 
     const subtitle='Do you want to Confirm this booking ?'
 
-    confirmcancleSwal({ title: title, subtitle:subtitle }).then(async(result) => {
+    let note = '';
+
+    // Add note about cancellation charge if applicable
+    if (cancellationCharge > 0) {
+        note = `A ${formatCurrencyVue(cancellationCharge)} fee applies for cancellation within ${cancellation['cancellation_charge_hours']} hours of the scheduled service.`;
+    }
+    
+
+    confirmcancleSwal({ title: title, subtitle:subtitle, text: note }).then(async(result) => {
       IsLoading.value=0
     if (!result.isConfirmed) return
-
+    IsLoading.value=1
     const csrfToken = document.head.querySelector("[name~=csrf-token][content]").content;
 
     if(props.service.is_slot==1){
@@ -795,18 +879,23 @@ const formSubmit = handleSubmit(async(values) => {
     values.status = 'pending';
 
     if (props.service.package_type) {
-      values.booking_package = {
-        id: props.service.id,
-        name: props.service.name,
-        is_featured: props.service.is_featured,
-        package_type: props.service.package_type,
-        price: props.service.price,
-        start_at: props.service.start_at,
-        end_at: props.service.end_at,
-        subcategory_id: props.service.subcategory_id,
-        category_id: props.service.category_id,
-      };
-    }
+    const uniqueServiceIds = [
+      ...new Set(props.service.package_services.map((service) => service.service_id))
+    ];
+
+    values.booking_package = {
+      id: props.service.id,
+      name: props.service.name,
+      is_featured: props.service.is_featured,
+      package_type: props.service.package_type,
+      price: props.service.price,
+      start_at: props.service.start_at,
+      end_at: props.service.end_at,
+      subcategory_id: props.service.subcategory_id,
+      category_id: props.service.category_id,
+      service_id: uniqueServiceIds.join(','),
+    };
+  }
     if(props.serviceaddon){
       values.service_addon_id = props.serviceaddon.map(addon => addon.id);
     }

@@ -5,8 +5,8 @@
                 <div class="card card-block card-stretch">
                     <div class="card-body p-0">
                         <div class="d-flex justify-content-between align-items-center p-3 flex-wrap gap-3">
-                            <h5 class="font-weight-bold">{{ $pageTitle ?? __('messages.list') }}</h5>
-                                <a href="{{ route('booking.index') }}" class="float-right btn btn-sm btn-primary"><i class="fa fa-angle-double-left"></i> {{ __('messages.back') }}</a>
+                            <h5 class="fw-bold">{{ $pageTitle ?? __('messages.list') }}</h5>
+                                <a href="{{ route('booking.index') }}" class=" float-end btn btn-sm btn-primary"><i class="fa fa-angle-double-left"></i> {{ __('messages.back') }}</a>
                             @if($auth_user->can('booking list'))
                             @endif
                         </div>
@@ -75,7 +75,7 @@
                                 </div>
                             </div>
                             
-                            {{ Form::submit( __('messages.save'), ['class'=>'btn btn-md btn-primary float-right']) }}
+                            {{ Form::submit( __('messages.save'), ['class'=>'btn btn-md btn-primary float-end']) }}
                         {{ Form::close() }}
                     </div>
                 </div>

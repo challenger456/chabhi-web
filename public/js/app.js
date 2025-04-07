@@ -26,17 +26,36 @@ Index Of Script
 Index Of Script
 ----------------------------------------------*/
 (function(jQuery) {
-
     "use strict";
 
     $(document).on('change', '.datatable-filter [data-filter="select"]', function() {
       window.renderedDataTable.ajax.reload(null, false)
     })
-  
+
     $(document).on('input', '.dt-search', function() {
       window.renderedDataTable.ajax.reload(null, false)
     })
+    $(document).ready(function () {
+        // Get the saved theme from local storage
+        const savedTheme = localStorage.getItem('data-bs-theme');
 
+        // Set the initial theme based on saved preference or default to light
+        if (savedTheme === 'dark') {
+            $('html').attr('data-bs-theme', 'dark');
+            $('#dark-mode').prop('checked', true);
+        } else {
+            $('html').attr('data-bs-theme', 'light');
+            $('#dark-mode').prop('checked', false);
+        }
+
+        $('#dark-mode').on('change', function () {
+            const newMode = $(this).is(':checked') ? 'dark' : 'light';
+
+            // Update the HTML attribute and local storage
+            $('html').attr('data-bs-theme', newMode);
+            localStorage.setItem('data-bs-theme', newMode);
+        });
+    });
     // confirm message box
     const confirmSwal = async (message) => {
         return await Swal.fire({
@@ -48,9 +67,9 @@ Index Of Script
           return result
         })
       }
-    
+
       window.confirmSwal = confirmSwal
-    
+
       $('#quick-action-form').on('submit', function(e) {
         e.preventDefault()
         const form = $(this)
@@ -60,13 +79,13 @@ Index Of Script
         const rowdIds = $("#datatable_wrapper .select-table-row:checked").map(function() {
             return $(this).val();
         }).get();
-        
-    
+
+
         confirmSwal(message).then((result) => {
             if(!result.isConfirmed) return
             callActionAjax({url: `${url}?rowIds=${rowdIds}`,body: form.serialize()})
           })
-      
+
       })
 
   $(document).on('change', '#datatable_wrapper .switch-status-change', function() {
@@ -155,7 +174,7 @@ Index Of Script
   //select row in datatable
   const dataTableRowCheck = (id, source = null) => {
     var dataType = source ? source.getAttribute('data-type') : null;
-     
+
     checkRow();
     if ($(".select-table-row:checked").length > 0) {
         $("#quick-action-form").removeClass('form-disabled');
@@ -175,19 +194,19 @@ Index Of Script
         $("#row-" + id).removeClass("table-active");
     }
 
-    
+
     const rowdIds = $("#datatable_wrapper .select-table-row:checked").map(function() {
         return $(this).val();
     }).get();
 
     const actionDropdown = document.getElementById('quick-action-type');
-    if(dataType === 'category' || dataType === 'subcategory' || dataType === 'document' || dataType === 'notificationtemplate'){
-      actionDropdown.options[4].disabled = true;  
+    if(dataType === 'category' || dataType === 'subcategory' || dataType === 'document' || dataType === 'notificationtemplate' ){
+      actionDropdown.options[4].disabled = true;
       actionDropdown.options[5].disabled = true;
       actionDropdown.options[3].disabled = false;
     }
     else if(dataType === 'booking'){
-      actionDropdown.options[2].disabled = true;  
+      actionDropdown.options[2].disabled = true;
       actionDropdown.options[3].disabled = true;
       actionDropdown.options[1].disabled = false;
     }
@@ -203,17 +222,17 @@ Index Of Script
 
     $.ajax({
       type: 'POST',
-      url: baseUrl + "/check-in-trash",  
+      url: baseUrl + "/check-in-trash",
       data: { ids: rowdIds, datatype: dataType },
       success: function(response) {
           if(response.all_in_trash == true){
             if(dataType === 'category' || dataType === 'subcategory' || dataType === 'document'){
-              actionDropdown.options[4].disabled = false;  
+              actionDropdown.options[4].disabled = false;
               actionDropdown.options[5].disabled = false;
               actionDropdown.options[3].disabled = true;
             }
             else if(dataType === 'booking'){
-              actionDropdown.options[2].disabled = false;  
+              actionDropdown.options[2].disabled = false;
               actionDropdown.options[3].disabled = false;
               actionDropdown.options[1].disabled = true;
             }
@@ -269,7 +288,7 @@ Index Of Script
     const checkboxes = document.getElementsByName("datatable_ids[]");
     const actionDropdown = document.getElementById('quick-action-type');
     const selectedIds = [];
-    
+
     for (var i = 0, n = checkboxes.length; i < n; i++) {
       if (!$("#" + checkboxes[i].id).prop('disabled')) {
         checkboxes[i].checked = source.checked;
@@ -279,13 +298,13 @@ Index Of Script
       }
     }
 
-    if(dataType === 'category' || dataType === 'subcategory' || dataType === 'document'){
-      actionDropdown.options[4].disabled = true;  
+    if(dataType === 'category' || dataType === 'subcategory' || dataType === 'document'  ){
+      actionDropdown.options[4].disabled = true;
       actionDropdown.options[5].disabled = true;
       actionDropdown.options[3].disabled = false;
     }
     else if(dataType === 'booking'){
-      actionDropdown.options[2].disabled = true;  
+      actionDropdown.options[2].disabled = true;
       actionDropdown.options[3].disabled = true;
       actionDropdown.options[1].disabled = false;
     }
@@ -299,23 +318,23 @@ Index Of Script
 
     const baseUrl = document.querySelector('meta[name="baseUrl"]').getAttribute('content');
     const csrfToken = $('meta[name="csrf-token"]').attr('content');
-  
+
     $.ajax({
       type: 'POST',
       headers: {
         'X-CSRF-Token': csrfToken,
     },
-      url: baseUrl + "/check-in-trash",  
+      url: baseUrl + "/check-in-trash",
       data: { ids: selectedIds, datatype: dataType },
       success: function(response) {
           if(response.all_in_trash == true){
-            if(dataType === 'category' || dataType === 'subcategory' || dataType === 'document'){
-              actionDropdown.options[4].disabled = false;  
+            if(dataType === 'category' || dataType === 'subcategory' || dataType === 'document'  ){
+              actionDropdown.options[4].disabled = false;
               actionDropdown.options[5].disabled = false;
               actionDropdown.options[3].disabled = true;
             }
             else if(dataType === 'booking'){
-              actionDropdown.options[2].disabled = false;  
+              actionDropdown.options[2].disabled = false;
               actionDropdown.options[3].disabled = false;
               actionDropdown.options[1].disabled = true;
             }
@@ -334,7 +353,7 @@ Index Of Script
     $("#quick-actions").find("input, textarea, button, select").removeAttr("disabled");
     if ($("#quick-action-type").val() == "") {
       $("#quick-action-apply").attr("disabled", true);
-    } 
+    }
 
     checkboxes.forEach((checkbox) => {
       const tableRow = $("#" + checkbox.id).closest("tr");
@@ -353,7 +372,7 @@ Index Of Script
 
     checkRow()
   };
-  
+
 
   window.selectAllTable = selectAllTable
 
@@ -375,7 +394,7 @@ Index Of Script
     $("#quick-action-form select, #quick-action-form button").prop('disabled', true);
   });
   window.checkRow = checkRow
-  
+
 
 
   //reset table action form elements
@@ -390,7 +409,7 @@ Index Of Script
           .attr("disabled", "disabled");
         $('.quick-action-field').addClass('d-none');
         $('.quick-action-featured').addClass('d-none');
-       
+
         $("#quick-action-form").find("select").val(null).trigger("change");
         $("#quick-action-form").find('.quick-action-field').find("select").val("1");
         $("#quick-action-form").find('.quick-action-featured').find("select").val("1")
@@ -569,6 +588,6 @@ Index Of Script
         event.stopPropagation();
     });
 
-    
+
 
 })(jQuery);

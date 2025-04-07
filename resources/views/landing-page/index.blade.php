@@ -29,7 +29,7 @@
                             </span>
                         </h2>
                         <p class="iq-title-desc line-count-3 text-body mt-3 mb-0">
-                            {{ $sectionData['section_1']['description']}}
+                            {{ $sectionData['section_1']['description'] ?? null }}
                         </p>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
 
              </div>
           </div>
-
+        @if($sectionData['section_1']['enable_popular_provider'] == "on")
           <div class="col-xl-6 px-xl-0 mt-xl-0 mt-5">
             <div class="position-relative swiper iq-team-slider overflow-hidden mySwiper">
                <div class="swiper-wrapper">
@@ -77,6 +77,7 @@
                </div>
             </div>
           </div>
+        @endif
        </div>
     </div>
 </div>
@@ -110,6 +111,7 @@
 
 
 <!-- Service -->
+@if ((isset($sectionData['section_3']) && $sectionData['section_3']['section_3'] == 1) || (isset($sectionData['section_4']) && $sectionData['section_4']['section_4'] == 1))
  <div class="section-padding bg-light our-service">
     <div class="container">
         @if ($sectionData && isset($sectionData['section_3']) && $sectionData['section_3']['section_3'] == 1)
@@ -160,25 +162,25 @@
         @endif
     </div>
 </div>
-
+@endif
 @if($auth_user_id)
 <!-- Recently Viewed Service -->
-    @if ($sectionData && isset($sectionData['section_8']) && $sectionData['section_8']['section_8'] == 1)
-    @php
-        $recentlyViewed = session()->get('recently_viewed:' . $auth_user_id, []);
-        session(['recently_viewed:' . $auth_user_id => $recentlyViewed]);
-    @endphp
-        @if (!empty($recentlyViewed))
-            <div class="section-padding">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-2 col-md-none"></div>
-                        <div class="col-lg-8 col-md-12">
-                            <div class="iq-title-box text-center center">
-                                <h3 class="text-capitalize line-count-1">{{ $sectionData['title'] }}
-                                <span class="highlighted-text">
-                                    <span class="highlighted-text-swipe"></span>
-                                    <span class="highlighted-image">
+@if ($sectionData && isset($sectionData['section_8']) && $sectionData['section_8']['section_8'] == 1)
+@php
+$recentlyViewed = session()->get('recently_viewed:' . $auth_user_id, []);
+session(['recently_viewed:' . $auth_user_id => $recentlyViewed]);
+@endphp
+@if (!empty($recentlyViewed))
+<div class="section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2 col-md-none"></div>
+            <div class="col-lg-8 col-md-12">
+                <div class="iq-title-box text-center center">
+                    <h3 class="text-capitalize line-count-1">{{ $sectionData['section_8']['title'] }}
+                        <span class="highlighted-text">
+                            <span class="highlighted-text-swipe"></span>
+                            <span class="highlighted-image">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="130" height="11" viewBox="0 0 130 11"
                                             fill="none">
                                             <path d="M2 9C2.5625 8.76081 66.125 -2.95948 128 4.4554" stroke="currentColor"
@@ -187,7 +189,7 @@
                                     </span>
                                 </span>
                                 </h3>
-                                <p class="iq-title-desc line-count-3 text-body mt-3 mb-0">{{ $sectionData['section_8']['description'] }}</p>
+                                <p class="iq-title-desc line-count-3 text-body mt-3 mb-0">{{ $sectionData['section_8']['description'] ?? null }}</p>
 
                             </div>
                         </div>
@@ -231,7 +233,7 @@
                 <div class="col-lg-8 col-md-12">
                     <div class="iq-title-box mb-5 text-center px-3">
                             <h2 class="text-capitalize line-count-2">{{ $sectionData['section_5']['title'] }}</h2>
-                            <p class="iq-title-desc line-count-3 text-body mt-3 mb-0">{{ $sectionData['section_5']['description'] }}</p>
+                            <p class="iq-title-desc line-count-3 text-body mt-3 mb-0">{{ $sectionData['section_5']['description'] ?? null}}</p>
                     </div>
                     <div class="text-center d-flex justify-content-center align-items-center pt-3 flex-column flex-md-row px-3">
                             <a class="bg-primary py-3 px-5 fw-bolder text-white rounded-3 letter-spacing-64"
@@ -298,7 +300,7 @@
                         <h6>{{__('landingpage.overall_rating')}}</h6>
                         @endif
                     </div>
-                    <h6 class="mt-4"> {{ $sectionData['section_9']['description'] }}</h6>
+                    <h6 class="mt-4"> {{ $sectionData['section_9']['description'] ?? null }}</h6>
                 </div>
             </div>
             <div class="col-12">
@@ -324,7 +326,7 @@
                          <div class="col-lg-6 position-relative my-5">
                             <div class="iq-title-box">
                                <h2 class="text-capitalize text-white line-count-2">{{ $sectionData['section_6']['title'] }}</h2>
-                               <p class="mt-3 mb-0 text-white line-count-3">{{ $sectionData['section_6']['description'] }}
+                               <p class="mt-3 mb-0 text-white line-count-3">{{ $sectionData['section_6']['description'] ?? null }}
                                </p>
                             </div>
                             <div class="d-flex align-items-center gap-3 flex-wrap">
@@ -393,7 +395,7 @@
                 </div>
             </div>
             <div class="col-lg-7 mt-lg-0 mt-3">
-                <p class="m-0 line-count-3">{{ $sectionData['section_7']['description'] }}</p>
+                <p class="m-0 line-count-3">{{ $sectionData['section_7']['description'] ?? null }}</p>
             </div>
         </div>
         @php

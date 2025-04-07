@@ -1,5 +1,5 @@
 @if(isset($payment->customer))
-<a href="{{ route('user.show', ['user' => optional($payment->customer)->id]) }}">
+<a href="{{ route('booking.index', ['customer_id' => optional($payment->customer)->id]) }}">
   <div class="d-flex gap-3 align-items-center">
     <img src="{{ getSingleMedia(optional($payment->customer),'profile_image', null) }}" alt="avatar" class="avatar avatar-40 rounded-pill">
     <div class="text-start">

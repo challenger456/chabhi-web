@@ -1,44 +1,41 @@
 
-{{ Form::model($landing_page, ['method' => 'POST','route' => ['landing_page_settings_updates'],'enctype'=>'multipart/form-data','data-toggle'=>'validator']) }}
+{{ html()->form('POST', route('landing_page_settings_updates'))->attribute('enctype', 'multipart/form-data')->attribute('data-toggle', 'validator')->open() }}
 
-{{ Form::hidden('id', null, array('placeholder' => 'id','class' => 'form-control')) }}
-{{ Form::hidden('type', $tabpage, array('placeholder' => 'id','class' => 'form-control')) }}
-        <div class="row">
-            <div class="form-group col-md-12 d-flex justify-content-between">
-                <label for="enable_section_2">{{__('messages.enable_section_2')}}</label>
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input section_2" name="status" id="section_2" data-type="section_2"  {{!empty($landing_page) && $landing_page->status == 1 ? 'checked' : ''}}>
-                    <label class="custom-control-label" for="section_2"></label>
-                </div>
-            </div>
+{{ html()->hidden('id',$landing_page->id)->placeholder('id')->class('form-control') }}
+{{ html()->hidden('type', $tabpage)->placeholder('id')->class('form-control') }}
+
+<div class="form-group">
+    <div class="form-control d-flex align-items-center justify-content-between">
+                    <label for="enable_section_2" class="mb-0">{{__('messages.enable_section_2')}}</label>
+        <div class="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline">
+            <input type="checkbox" class="custom-control-input section_2" name="status" id="section_2" data-type="section_2"  {{!empty($landing_page) && $landing_page->status == 1 ? 'checked' : ''}}>
+            <label class="custom-control-label" for="section_2"></label>
         </div>
-        <div class="row" id='enable_section_2'>
-            <div class="form-group col-md-12">
-                {{ Form::label('title',trans('messages.title').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-                {{ Form::text('title',old('title'),['id'=>'title','placeholder' => trans('messages.title'),'class' =>'form-control']) }}
-                <small class="help-block with-errors text-danger"></small>
-            </div>
-            
-            <div class="form-group col-md-12" id='enable_select_category'>
-                {{ Form::label('name', __('messages.select_name', ['select' => __('messages.category')]) . ' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
-                <br />
-                {{ Form::select(
-                    'category_id[]',
-                    [], 
-                    old('category_id'), 
-                    [
-                        'class' => 'select2js form-control category_id', 
-                        'id' => 'category_id',
-                        'data-placeholder' => __('messages.select_name', ['select' => __('messages.category')]),
-                        'data-ajax--url' => route('ajax-list', ['type' => 'category', 'is_featured' => 1]),
-                        'multiple' => true,
-                    ]
-                ) }}
-            </div>
-           
-        </div>
-    {{ Form::submit(__('messages.save'), ['class'=>"btn btn-md btn-primary float-md-right submit_section1"]) }}
-    {{ Form::close() }}
+    </div>
+</div>
+        <div  id='enable_section_2'>
+    <div class="form-group">
+        {{ html()->label(trans('messages.title') . ' <span class="text-danger">*</span>', 'title')->class('form-control-label') }}
+        {{ html()->text('title', old('title'))->id('title')->placeholder(trans('messages.title'))->class('form-control') }}
+        <small class="help-block with-errors text-danger"></small>
+    </div>
+
+    <div class="form-group" id='enable_select_category'>
+        {{ html()->label(__('messages.select_name', ['select' => __('messages.category')]) . ' <span class="text-danger">*</span>', 'name')->class('form-control-label') }}
+        <br />
+        {{ html()->select('category_id[]', [],old('category_id'))
+            ->class('select2js form-control category_id')
+            ->id('category_id')
+            ->attribute('data-placeholder', __('messages.select_name', ['select' => __('messages.category')]))
+            ->attribute('data-ajax--url', route('ajax-list', ['type' => 'category', 'is_featured' => 1]))
+            ->multiple()
+        }}
+    </div>
+
+</div>
+{{ html()->submit(__('messages.save'))->class('btn btn-md btn-primary float-md-end submit_section1') }}
+{{ html()->form()->close() }}
+
 
 <script>
     var enable_section_2 = $("input[name='status']").prop('checked');

@@ -2,8 +2,8 @@
   <div class="booking-service-box p-5 bg-light rounded-3">
     <div class="service-image">
       <img :src="serviceimage" class="service-image object-cover rounded-2" alt="service-image" />
-      <div class="rating-box px-3 py-1 d-inline-block bg-body rounded-3">
-        <h6 class="m-0 service-price lh-1">${{ serviceprice }}</h6>
+      <div class="rating-box px-3 py-1 d-inline-block bg-body rounded-3 d-flex">
+          <h6 class="m-0 service-price lh-1">{{ formatCurrencyVue(serviceprice) }} (<del>{{ formatCurrencyVue(service_total_price) }}</del>)</h6>
       </div>
     </div>
     <div class="service-info mt-4">
@@ -34,6 +34,14 @@ defineProps({
   serviceid: { type: Number, default: 0 },
   packageid: { type: Number, default: 0 },
   auth_user_id: { type: Number, default: 0 },
+  service_total_price: { type: Number, default: 0 },
 })
 const baseUrl = document.querySelector('meta[name="baseUrl"]').getAttribute('content');
+const formatCurrencyVue = (value) => {
+
+if(window.currencyFormat !== undefined) {
+  return window.currencyFormat(value)
+}
+return value
+}
 </script>

@@ -1,8 +1,8 @@
 <template>
-    <a v-if="handymanrating==''" href="javascript:void(0);" class="d-inline-block text-capitalize fw-bold mt-2"
+    <a v-if="!handymanrating || handymanrating === ''"  href="javascript:void(0);" class="d-inline-block text-capitalize fw-bold mt-2"
         data-bs-toggle="modal" data-bs-target="#ratingModal">{{$t('landingpage.rate_handyman')}}</a>
 
-    <a v-if="handymanrating!==''" href="javascript:void(0);" class="d-inline-block text-capitalize fw-bold mt-2"
+    <a v-if="handymanrating && handymanrating.id"  href="javascript:void(0);" class="d-inline-block text-capitalize fw-bold mt-2"
         @click="editRating" data-bs-target="#ratingModal">{{$t('landingpage.edit_your_review')}}</a>
 
     <!-- ===================
@@ -62,7 +62,7 @@ import * as yup from 'yup';
 import Swal from 'sweetalert2';
 
 const props = defineProps(['booking_id','service_id','customer_id','handyman_id','handymanrating']);
-
+console.log(props.handymanrating);
 
 const ratingval = ref(0)
 const componentKey = ref(0)

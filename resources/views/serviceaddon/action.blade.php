@@ -2,10 +2,10 @@
 <?php
     $auth_user= authSession();
 ?>
-{{ Form::open(['route' => ['serviceaddon.destroy', $serviceaddon->id], 'method' => 'delete','data--submit'=>'serviceaddon'.$serviceaddon->id]) }}
-@if(auth()->user()->hasAnyRole(['admin','provider','demo_admin']))
-<div class="d-flex justify-content-end align-items-center">
-        <a class="mr-2" href="{{ route('serviceaddon.destroy', $serviceaddon->id) }}" data--submit="serviceaddon{{$serviceaddon->id}}"
+{{ html()->form('DELETE', route('serviceaddon.destroy', $serviceaddon->id))->attribute('data--submit', 'serviceaddon'.$serviceaddon->id)->open() }}
+@if($auth_user->can('service add on delete'))
+<div class="d-flex justify-content-end align-items-center ms-2">
+        <a class="me-2" href="{{ route('serviceaddon.destroy', $serviceaddon->id) }}" data--submit="serviceaddon{{$serviceaddon->id}}"
             data--confirmation='true'
             data--ajax="true"
             data-datatable="reload"
@@ -16,4 +16,4 @@
         </a>
     </div>
 @endif
-{{ Form::close() }}
+{{ html()->form()->close()}}

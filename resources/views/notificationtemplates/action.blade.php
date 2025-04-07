@@ -1,14 +1,13 @@
 <?php
 $auth_user= authSession();
 ?>
-
-{{ Form::open(['route' => ['notification-templates.destroy',$data->id], 'method' => 'delete','data--submit'=>'notificationtemplates'.$data->id]) }}
+{{ html()->form('DELETE', route('notification-templates.destroy', $data->id))->attribute('data--submit', 'notificationtemplates'.$data->id)->open() }}
 <div class="d-flex justify-content-end align-items-center">
     
-<a class="mr-2" href="{{ route('notification-templates.edit', ['notification_template' => $data->id]) }}" title="{{ __('messages.update_form_title',['form' => __('messages.notification_templates') ]) }}"><i class="fas fa-pen text-secondary"></i></a>
+<a class="me-2" href="{{ route('notification-templates.edit', ['notification_template' => $data->id]) }}" title="{{ __('messages.update_form_title',['form' => __('messages.notification_templates') ]) }}"><i class="fas fa-pen text-secondary"></i></a>
 
 @if(auth()->user()->hasAnyRole(['admin']))
-    <a class="mr-3" href="{{ route('notification-templates.destroy', $data->id) }}" data--submit="notificationtemplates{{$data->id}}" 
+    <a class="me-3" href="{{ route('notification-templates.destroy', $data->id) }}" data--submit="notificationtemplates{{$data->id}}" 
         data--confirmation='true' 
         data--ajax="true"
         data-datatable="reload"
@@ -19,4 +18,4 @@ $auth_user= authSession();
     </a>
 @endif
 </div>
-{{ Form::close() }}
+{{ html()->form()->close() }}

@@ -1,13 +1,14 @@
-{{ Form::model($payment_data, ['method' => 'POST','route' => ['paymentsettingsUpdates'],'enctype'=>'multipart/form-data','data-toggle'=>'validator']) }}
-
-{{ Form::hidden('id', null, array('placeholder' => 'id','class' => 'form-control')) }}
-{{ Form::hidden('type', $tabpage, array('placeholder' => 'id','class' => 'form-control')) }}
+{{ html()->form('POST', route('paymentsettingsUpdates'))->attribute('enctype', 'multipart/form-data')->attribute('data-toggle', 'validator')->open() }}
+{{ html()->hidden('id',$payment_data->id ?? null)->attribute('placeholder', 'id')->class('form-control') }}
+{{ html()->hidden('type', $tabpage)->attribute('placeholder', 'id')->class('form-control') }}
 <div class="row">
     <div class="form-group col-md-12">
-        <label for="enable_flutterwave">{{__('messages.payment_on',['gateway'=>__('messages.flutterwave')])}}</label>
-        <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input" name="status" id="enable_flutterwave" {{!empty($payment_data) && $payment_data->status == 1 ? 'checked' : ''}}>
-            <label class="custom-control-label" for="enable_flutterwave"></label>
+        <div class="form-control d-flex align-items-center justify-content-between">
+            <label for="enable_flutterwave" class="mb-0">{{__('messages.payment_on',['gateway'=>__('messages.flutterwave')])}}</label>
+            <div class="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline">
+                <input type="checkbox" class="custom-control-input" name="status" id="enable_flutterwave" {{!empty($payment_data) && $payment_data->status == 1 ? 'checked' : ''}}>
+                <label class="custom-control-label" for="enable_flutterwave"></label>
+            </div>
         </div>
     </div>
 </div>
@@ -27,28 +28,28 @@
         <small class="help-block with-errors text-danger"></small>
     </div>
     <div class="form-group col-md-12">
-        {{ Form::label('title',trans('messages.gateway_name').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-        {{ Form::text('title',old('title'),['id'=>'title','placeholder' => trans('messages.title'),'class' =>'form-control']) }}
-        <small class="help-block with-errors text-danger"></small>
-    </div>
-    <div class="form-group col-md-12">
-        {{ Form::label('flutterwave_public',trans('messages.flutterwave_public').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-        {{ Form::text('flutterwave_public',old('flutterwave_public'),['id'=>'flutterwave_public','placeholder' => trans('messages.flutterwave_public'),'class' =>'form-control']) }}
-        <small class="help-block with-errors text-danger"></small>
-    </div>
-    <div class="form-group col-md-12">
-        {{ Form::label('flutterwave_secret',trans('messages.flutterwave_secret').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-        {{ Form::text('flutterwave_secret',old('flutterwave_secret'),['id'=>'flutterwave_secret','placeholder' => trans('messages.flutterwave_secret'),'class' =>'form-control']) }}
-        <small class="help-block with-errors text-danger"></small>
-    </div>
-    <div class="form-group col-md-12">
-        {{ Form::label('flutterwave_encryption',trans('messages.flutterwave_encryption').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-        {{ Form::text('flutterwave_encryption',old('flutterwave_encryption'),['id'=>'flutterwave_encryption','placeholder' => trans('messages.flutterwave_encryption'),'class' =>'form-control']) }}
-        <small class="help-block with-errors text-danger"></small>
+    {{ html()->label(trans('messages.gateway_name') . ' <span class="text-danger">*</span>', 'title', ['class' => 'form-control-label'], false) }}
+    {{ html()->text('title', old('title'))->id('title')->placeholder(trans('messages.title'))->class('form-control')}}
+    <small class="help-block with-errors text-danger"></small>
+</div>
+<div class="form-group col-md-12">
+    {{ html()->label(trans('messages.flutterwave_public') . ' <span class="text-danger">*</span>', 'flutterwave_public', ['class' => 'form-control-label'], false) }}
+    {{ html()->text('flutterwave_public', old('flutterwave_public'))->id('flutterwave_public')->placeholder(trans('messages.flutterwave_public'))->class('form-control')}}
+    <small class="help-block with-errors text-danger"></small>
+</div>
+<div class="form-group col-md-12">
+    {{ html()->label(trans('messages.flutterwave_secret') . ' <span class="text-danger">*</span>', 'flutterwave_secret', ['class' => 'form-control-label'], false) }}
+    {{ html()->text('flutterwave_secret',old('flutterwave_secret'))->id('flutterwave_secret')->placeholder(trans('messages.flutterwave_secret'))->class('form-control')}}
+    <small class="help-block with-errors text-danger"></small>
+</div>
+<div class="form-group col-md-12">
+    {{ html()->label(trans('messages.flutterwave_encryption') . ' <span class="text-danger">*</span>', 'flutterwave_encryption', ['class' => 'form-control-label'], false) }}
+    {{ html()->text('flutterwave_encryption',old('flutterwave_encryption'))->id('flutterwave_encryption')->placeholder(trans('messages.flutterwave_encryption'))->class('form-control')}}
+    <small class="help-block with-errors text-danger"></small>
     </div>
 </div>
-{{ Form::submit(__('messages.save'), ['class'=>"btn btn-md btn-primary float-md-right"]) }}
-{{ Form::close() }}
+{{ html()->submit(__('messages.save'))->class('btn btn-md btn-primary float-md-end') }}
+{{ html()->form()->close() }}
 <script>
 var enable_flutterwave = $("input[name='status']").prop('checked');
 checkPaymentTabOption(enable_flutterwave);
@@ -83,9 +84,10 @@ $('.is_test').change(function(){
 
 function getConfig(type){
     var _token   = $('meta[name="csrf-token"]').attr('content');
+    var baseUrl = $('meta[name="baseUrl"]').attr('content');
     var page =  "{{$tabpage}}";
     $.ajax({
-        url: "/get_payment_config",
+        url: baseUrl+"/get_payment_config",
         type:"POST",
         data:{
           type:type,

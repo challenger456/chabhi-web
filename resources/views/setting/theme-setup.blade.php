@@ -1,9 +1,9 @@
-{{ Form::model($themesetup, ['method' => 'POST','route' => ['themesetup'],'enctype'=>'multipart/form-data','data-toggle'=>'validator']) }}
+{{ html()->form('POST', route('themesetup'))->attribute('enctype', 'multipart/form-data')->attribute('data-toggle', 'validator')->open()}}
 
-{{ Form::hidden('id', null, array('placeholder' => 'id','class' => 'form-control')) }}
-{{ Form::hidden('page', $page, array('placeholder' => 'id','class' => 'form-control')) }}
+{{ html()->hidden('id', $themesetup->id ?? null )->attribute('placeholder', 'id')->class('form-control') }}
+{{ html()->hidden('page', $page)->attribute('placeholder', 'id')->class('form-control') }}
 <div class="row">
-    <div class="col-lg-6"> 
+    <div class="col-lg-6">
         <div class="form-group">
             <label for="avatar" class="col-sm-3 form-control-label">{{ __('messages.logo') }}</label>
             <div class="col-sm-12">
@@ -25,8 +25,13 @@
                     </div>
                     <div class="col-sm-8 mt-sm-0 mt-2">
                         <div class="custom-file col-md-12">
-                        {{ Form::file('logo', ['class'=>"custom-file-input custom-file-input-sm detail" , 'id'=>"logo" , 'lang'=>"en" , 'accept'=>"image/*", 'onchange'=>"preview()"]) }}
-                                @if($themesetup && getMediaFileExit($themesetup, 'logo'))
+                            {{ html()->file('logo')
+                            ->class('custom-file-input custom-file-input-sm detail')
+                            ->id('logo')
+                            ->attribute('lang', 'en')
+                            ->attribute('accept', 'image/*')
+                            ->attribute('onchange', 'preview()')
+                        }}                                @if($themesetup && getMediaFileExit($themesetup, 'logo'))
                                     <label class="custom-file-label upload-label">{{ $themesetup->getFirstMedia('logo')->file_name }}</label>
                                 @else
                                     <label class="custom-file-label upload-label">{{ ('logo.png') }}</label>
@@ -57,8 +62,14 @@
                     </div>
                     <div class="col-sm-8 mt-sm-0 mt-2">
                         <div class="custom-file col-md-12">
-                            {{ Form::file('favicon', ['class'=>"custom-file-input custom-file-input-sm detail" , 'id'=>"favicon" , 'lang'=>"en" , 'accept'=>"image/*",'onchange'=>"preview()"]) }}
-                            @if($themesetup && getMediaFileExit($themesetup, 'favicon'))
+                            {{ html()->file('favicon')
+                            ->class('custom-file-input custom-file-input-sm detail')
+                            ->id('favicon')
+                            ->attribute('lang', 'en')
+                            ->attribute('accept', 'image/*')
+                            ->attribute('onchange', 'preview()')
+                        }}
+                        @if($themesetup && getMediaFileExit($themesetup, 'favicon'))
                                 <label class="custom-file-label upload-label">{{ $themesetup->getFirstMedia('favicon')->file_name }}</label>
                             @else
                                 <label class="custom-file-label upload-label">{{ ('favicon.png') }}</label>
@@ -70,9 +81,9 @@
             </div>
         </div>
 
-        
+
     </div>
-    <div class="col-lg-6"> 
+    <div class="col-lg-6">
         <div class="form-group">
             <label for="avatar" class="col-sm-3 form-control-label">{{ __('messages.footer_logo') }}</label>
             <div class="col-sm-12">
@@ -94,8 +105,14 @@
                     </div>
                     <div class="col-sm-8 mt-sm-0 mt-2">
                         <div class="custom-file col-md-12">
-                            {{ Form::file('footer_logo', ['class'=>"custom-file-input custom-file-input-sm detail" , 'id'=>"footer_logo" , 'lang'=>"en" , 'accept'=>"image/*",'onchange'=>"preview()"]) }}
-                            @if($themesetup && getMediaFileExit($themesetup, 'footer_logo'))
+                            {{ html()->file('footer_logo')
+                            ->class('custom-file-input custom-file-input-sm detail')
+                            ->id('footer_logo')
+                            ->attribute('lang', 'en')
+                            ->attribute('accept', 'image/*')
+                            ->attribute('onchange', 'preview()')
+                        }}
+                        @if($themesetup && getMediaFileExit($themesetup, 'footer_logo'))
                                 <label class="custom-file-label upload-label">{{ $themesetup->getFirstMedia('footer_logo')->file_name }}</label>
                             @else
                                 <label class="custom-file-label upload-label">{{ ('logo.png') }}</label>
@@ -126,8 +143,14 @@
                     </div>
                     <div class="col-sm-8 mt-sm-0 mt-2">
                         <div class="custom-file col-md-12">
-                            {{ Form::file('loader', ['class'=>"custom-file-input custom-file-input-sm detail" , 'id'=>"loader" , 'lang'=>"en" , 'accept'=>"image/*",'onchange'=>"preview()"]) }}
-                            @if($themesetup && getMediaFileExit($themesetup, 'loader'))
+                            {{ html()->file('loader')
+                            ->class('custom-file-input custom-file-input-sm detail')
+                            ->id('loader')
+                            ->attribute('lang', 'en')
+                            ->attribute('accept', 'image/*')
+                            ->attribute('onchange', 'preview()')
+                        }}
+                        @if($themesetup && getMediaFileExit($themesetup, 'loader'))
                                 <label class="custom-file-label upload-label">{{ $themesetup->getFirstMedia('loader')->file_name }}</label>
                             @else
                                 <label class="custom-file-label upload-label">{{ ('loader.gif') }}</label>
@@ -139,18 +162,36 @@
             </div>
         </div>
 
-        
+
     </div>
 
-     <div class="col-lg-12"> 
+    <!-- color setting section -->
+    <div class="col-lg-12 mt-4">
+        <h4>{{ __('messages.color_settings') }}</h4>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label class="form-control-label">{{ __('messages.primary_color') }}</label>
+                    <div class="d-flex align-items-center">
+                        <input type="color" name="primary_color" class="form-control"
+                            value="{{ isset($themesetup) ? json_decode($themesetup->value)->primary_color ?? '#000000' : '#000000' }}" style="padding:0.3rem">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-12">
         <div class="form-group">
             <div class="col-md-offset-3 col-sm-12 ">
-                {{ Form::submit(__('messages.save'), ['class'=>"btn btn-md btn-primary float-md-right"]) }}
+                {{ html()->submit(__('messages.save'))
+                    ->class('btn btn-md btn-primary float-md-end submit_section1')
+                    ->attribute('onclick', 'saveThemeColors(event)') }}
             </div>
         </div>
      </div>
 </div>
-{{ Form::close() }}
+{{ html()->form()->close() }}
 <script>
       function getExtension(filename) {
             var parts = filename.split('.');
@@ -200,6 +241,16 @@
         $(document).on('change','#loader',function(){
             readURL(this,'loader');
         });
+
+        // Apply saved colors from localStorage
+        applySavedColors();
+
+        // If there's a primary color value in the form, update localStorage
+        const primaryColorInput = document.querySelector('input[name="primary_color"]');
+        if (primaryColorInput && primaryColorInput.value) {
+            localStorage.setItem('primaryColor', primaryColorInput.value);
+            updateThemeColors();
+        }
     })
     function preview() {
     var input = event.target;
@@ -218,4 +269,111 @@
     var label = $(input).closest('.custom-file').find('.custom-file-label');
     label.text(fileName);
 }
-</script>
+
+function updateThemeColors() {
+    const root = document.documentElement;
+
+    // Get primary color value - first try from input, then fallback to localStorage
+    const primaryColorInput = document.querySelector('input[name="primary_color"]');
+    const primaryColor = primaryColorInput ? primaryColorInput.value : localStorage.getItem('primaryColor');
+
+    if (!primaryColor) return; // Exit if no color is found
+
+    // Convert HEX to RGB
+    const rgbPrimaryColor = hexToRgb(primaryColor);
+
+    // Update CSS variables
+    root.style.setProperty('--bs-primary', primaryColor);
+    root.style.setProperty('--bs-primary-rgb', rgbPrimaryColor);
+
+    const primaryBgSubtle = hexToRgbaWithAlpha(primaryColor, 0.09); // Adding 0.09 opacity
+    root.style.setProperty('--bs-primary-bg-subtle', primaryBgSubtle);
+
+    // Set border subtle color to be the same as background subtle
+    root.style.setProperty('--bs-primary-border-subtle', 'var(--bs-primary-bg-subtle)');
+
+    // Optionally set hover and active colors
+    const primaryHover = hexToRgbaWithAlpha(primaryColor, 0.75);
+    root.style.setProperty('--bs-primary-hover-bg', primaryHover);
+    root.style.setProperty('--bs-primary-hover-border', primaryHover);
+
+    const primaryActive = hexToRgbaWithAlpha(primaryColor, 0.75);
+    root.style.setProperty('--bs-primary-active-bg', primaryActive);
+    root.style.setProperty('--bs-primary-active-border', primaryActive);
+
+    // Update Bootstrap elements with new hover/active states
+    updateColorClasses(primaryColor, rgbPrimaryColor, primaryBgSubtle, primaryHover, primaryActive);
+}
+
+function applySavedColors() {
+    const root = document.documentElement;
+    const savedPrimaryColor = localStorage.getItem('primaryColor');
+
+    if (savedPrimaryColor) {
+        const rgbPrimaryColor = hexToRgb(savedPrimaryColor);
+
+        root.style.setProperty('--bs-primary', savedPrimaryColor);
+        root.style.setProperty('--bs-primary-rgb', rgbPrimaryColor);
+
+        const primaryBgSubtle = hexToRgbaWithAlpha(savedPrimaryColor, 0.09);
+        root.style.setProperty('--bs-primary-bg-subtle', primaryBgSubtle);
+        root.style.setProperty('--bs-primary-border-subtle', 'var(--bs-primary-bg-subtle)');
+
+        const primaryHover = hexToRgbaWithAlpha(savedPrimaryColor, 0.75);
+        root.style.setProperty('--bs-primary-hover-bg', primaryHover);
+        root.style.setProperty('--bs-primary-hover-border', primaryHover);
+
+        const primaryActive = hexToRgbaWithAlpha(savedPrimaryColor, 0.75);
+        root.style.setProperty('--bs-primary-active-bg', primaryActive);
+        root.style.setProperty('--bs-primary-active-border', primaryActive);
+    }
+}
+
+// Convert HEX color to RGB
+function hexToRgb(hex) {
+    hex = hex.replace(/^#/, '');
+    const bigint = parseInt(hex, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `${r}, ${g}, ${b}`;
+}
+
+// Convert HEX color to RGBA (with alpha)
+function hexToRgbaWithAlpha(hex, alpha) {
+    const color = hex.replace(/^#/, '');
+    const r = parseInt(color.substring(0, 2), 16);
+    const g = parseInt(color.substring(2, 4), 16);
+    const b = parseInt(color.substring(4, 6), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+// Add event listeners for color changes
+document.querySelectorAll('input[type="color"]').forEach(input => {
+    input.addEventListener('input', updateThemeColors);
+    input.addEventListener('change', updateThemeColors);
+});
+
+// Initialize colors on page load
+document.addEventListener('DOMContentLoaded', () => {
+    applySavedColors(); // Apply saved colors from localStorage
+    updateThemeColors(); // Update Bootstrap classes
+});
+
+function saveThemeColors(event) {
+    // Get the primary color value
+    const primaryColor = document.querySelector('input[name="primary_color"]').value;
+
+    // Store in localStorage
+    localStorage.setItem('primaryColor', primaryColor);
+
+    // Apply the colors immediately
+    updateThemeColors();
+}
+
+function updateColorClasses(primaryColor, rgbPrimaryColor, primaryBgSubtle, primaryHover, primaryActive) {
+    // Implementation depends on what you need to update with these colors
+    // This is just a placeholder function to prevent errors
+    // console.log('Updating color classes with new colors');
+}
+

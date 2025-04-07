@@ -2,10 +2,10 @@
 
 
 @section('content')
-<div class="my-5">
-   <h4 class="text-center text-capitalize font-weight-bold my-5">{{__('messages.privacy_policy')}}</h4>
+<div class="my-5 privacy-policy">
+   <h4 class="text-center text-capitalize fw-bold my-5">{{__('messages.privacy_policy')}}</h4>
    <div class="container">
-      {!! $privacy_policy->value ?? null !!}
+      {!! $privacy_content !!}
    </div>
  </div>
 

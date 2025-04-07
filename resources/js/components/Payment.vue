@@ -22,6 +22,13 @@
                               <label class="form-check-label h6 fw-normal text-capitalize"
                                 for="wallet">{{$t('messages.wallet')}}</label>
                             </div>
+                            <div class="form-check" v-if="is_enable_advance_payment == 0 && isCashEnabled">
+                              <input class="form-check-input" type="radio" name="payment_method" v-model="payment_method" id='cash' value='cash' :checked="payment_method == 'cash'"/>
+
+                              <label class="form-check-label h6 fw-normal text-capitalize"
+                                for="cash">{{$t('messages.cash')}}</label>
+                            </div>
+                          
                         </div>
                         <p>{{ $t('messages.wallet_balance') }}: {{formatCurrencyVue(wallet_amount)}}</p>
                         <div class="mt-3">
@@ -45,8 +52,8 @@ import { GET_PAYMENT_METHOD, GET_STRIPE_PAYMENT_URL,WALLET_PAYMENT_API,PAYMENT_G
 import Swal from 'sweetalert2';
 import { confirmcancleSwal, confirmcancleWallet} from '../data/utilities'; 
 import Wallet from '../components/Wallet.vue';
-const props = defineProps(['booking_id','customer_id','discount','total_amount','advance_payment_amount','wallet_amount']);
-
+const props = defineProps(['is_enable_advance_payment','booking_id','customer_id','discount','total_amount','advance_payment_amount','wallet_amount']);
+console.log(props.is_enable_advance_payment)
 const paymentGatewayList = ref([]); 
 const fetchPaymentGatewayList = async () => {
   try {
@@ -70,6 +77,11 @@ onMounted(async () => {
 const isStripeEnabled = computed(() => {
   return Array.isArray(paymentGatewayList.value) && paymentGatewayList.value.some(gateway => gateway.type === 'stripe' && gateway.status === 1);
 });
+
+const isCashEnabled = computed(() => {
+  return Array.isArray(paymentGatewayList.value) && paymentGatewayList.value.some(gateway => gateway.type === 'cash' && gateway.status === 1);
+});
+console.log(isCashEnabled);
    
  
 
@@ -126,9 +138,13 @@ const formSubmit = handleSubmit(async(values) => {
     IsLoading.value=1
     const title='Confirm Payment'
     const subtitle='Do you want to pay with Wallet ?'
+    values.txn_id = `#${props.booking_id}`
     if(values.type == 'advance_payment'){
+      values.total_amount=props.advance_payment_amount;
+      values.advance_payment_amount=props.advance_payment_amount;
       values.payment_status = 'advanced_paid'; 
     }else{
+      values.total_amount=props.total_amount;
       values.payment_status = 'paid';
     }
     confirmcancleSwal({ title: title, subtitle:subtitle }).then(async(result) => {
@@ -184,7 +200,47 @@ const formSubmit = handleSubmit(async(values) => {
       });
     }
     
-  }else{
+  } else if (values.payment_type === 'cash') {
+    IsLoading.value = 1;
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+    const response = await fetch(WALLET_PAYMENT_API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': csrfToken,
+      },
+      body: JSON.stringify({
+        ...values,
+        payment_status: 'pending',
+        txn_id: `#${props.booking_id}_cash`,
+      }),
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      IsLoading.value = 0;
+
+      Swal.fire({
+        title: 'Success',
+        text: 'Payment recorded successfully!',
+        icon: 'success',
+        iconColor: '#5F60B9',
+      }).then(() => {
+        const baseUrl = document.querySelector('meta[name="baseUrl"]').getAttribute('content');
+        window.location.href = baseUrl + '/booking-list';
+      });
+    } else {
+      IsLoading.value = 0;
+
+      Swal.fire({
+        title: 'Error',
+        text: 'Failed to record cash payment!',
+        icon: 'error',
+        iconColor: '#5F60B9',
+      });
+    }
+  } else{
      
 
       IsLoading.value=1;

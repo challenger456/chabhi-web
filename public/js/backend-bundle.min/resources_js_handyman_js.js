@@ -62,20 +62,22 @@ window.$ = window.jQuery = (jquery__WEBPACK_IMPORTED_MODULE_0___default());
       document.body.classList.add('offcanvas-active');
     }
   }
-  document.querySelectorAll('[data-trigger]').forEach(function (everyelement) {
-    var offcanvas_id = everyelement.getAttribute('data-trigger');
-    everyelement.addEventListener('click', function (e) {
-      e.preventDefault();
-      show_offcanvas(offcanvas_id);
-    });
-  });
-  if (document.querySelectorAll('.btn-close')) {
-    document.querySelectorAll('.btn-close').forEach(function (everybutton) {
-      everybutton.addEventListener('click', function () {
-        close_offcanvas();
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('[data-trigger]').forEach(function (everyelement) {
+      var offcanvas_id = everyelement.getAttribute('data-trigger');
+      everyelement.addEventListener('click', function (e) {
+        e.preventDefault();
+        show_offcanvas(offcanvas_id);
       });
     });
-  }
+    if (document.querySelectorAll('.btn-close')) {
+      document.querySelectorAll('.btn-close').forEach(function (everybutton) {
+        everybutton.addEventListener('click', function () {
+          close_offcanvas();
+        });
+      });
+    }
+  });
   if (document.querySelector('.screen-darken')) {
     document.querySelector('.screen-darken').addEventListener('click', function () {
       close_offcanvas();
@@ -86,23 +88,7 @@ window.$ = window.jQuery = (jquery__WEBPACK_IMPORTED_MODULE_0___default());
       document.querySelector('.offcanvas-collapse').classList.toggle('open');
     });
   }
-  function readMoreBtn() {
-    var readMoreBtns = document.querySelectorAll(".readmore-btn");
-    var readMoreTexts = document.querySelectorAll(".readmore-text");
-    readMoreBtns.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var container = btn.previousElementSibling; // Assuming the <p> is the previous sibling
-        if (container.classList.contains('active')) {
-          container.classList.remove('active');
-          btn.innerHTML = "Read More";
-        } else {
-          container.classList.add("active");
-          btn.innerHTML = "Read less";
-        }
-      });
-    });
-  }
-  readMoreBtn();
+  
 
   /*----------Sticky-Header-----------*/
   jquery__WEBPACK_IMPORTED_MODULE_0___default()(window).scroll(function () {

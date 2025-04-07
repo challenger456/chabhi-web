@@ -3,8 +3,8 @@
 </div>
 
 
-<div class="mb-3 ms-2">
-    <ul class="nav nav--tabs nav--tabs__style2 provider-detail-tab">
+<div class="mb-3">
+    <ul class="nav nav-tabs pay-tabs nav--tabs__style2 provider-detail-tab">
         <li class="nav-item {{request()->routeIs('handyman.detail') ? 'active' : ''}}">
             <a class="nav-link" href="{{ route('handyman.detail',$handymandata->id) }}"> {{__('messages.overview')}}</a>
         </li>

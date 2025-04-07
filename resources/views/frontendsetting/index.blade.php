@@ -5,7 +5,7 @@
                 <div class="card card-block card-stretch">
                     <div class="card-body p-0">
                         <div class="d-flex justify-content-between align-items-center p-3">
-                            <h5 class="font-weight-bold">{{ $pageTitle ?? __('messages.list') }}</h5>
+                            <h5 class="fw-bold">{{ $pageTitle ?? __('messages.list') }}</h5>
                         </div>
                     </div>
                 </div>
@@ -32,9 +32,7 @@
                                             <li class="nav-item">
                                                 <a href="javascript:void(0)" data-href="{{ route('layout_frontend_page') }}?page=login-register-setting" data-target=".paste_here" class="nav-link {{$page=='login-register-setting'?'active':''}}"  data-toggle="tabajax" rel="tooltip"> {{ __('messages.login_register_settings') }}</a>
                                             </li>
-                                            <!-- <li class="nav-item">
-                                                <a href="javascript:void(0)" data-href="{{ route('layout_frontend_page') }}?page=other-setting" data-target=".paste_here" class="nav-link {{$page=='other-setting'?'active':''}}"  data-toggle="tabajax" rel="tooltip"> {{ __('messages.other_settings') }}</a>
-                                            </li> -->
+                                           
                               
                                         @endhasanyrole
                                 

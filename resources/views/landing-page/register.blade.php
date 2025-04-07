@@ -1,7 +1,9 @@
+
 @extends('landing-page.layouts.headerremove')
 
 
 @section('content')
+
 <div>
     <div class="container-fluid px-lg-0 py-lg-0 pb-5">
         <div class="row min-vh-100 g-lg-0">
@@ -92,28 +94,32 @@
                                         <div class="form-group icon-right mb-5 custom-form-field">
                                             <label>{{__('auth.confirm_password')}}<span class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" placeholder="{{__('placeholder.login_password')}}" aria-label="Password" aria-describedby="toggleConfirmPasswordIcon" data-match="#password" data-match-error="Password not match" required>
+                                                <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" placeholder="{{__('placeholder.login_password')}}" aria-label="Password" aria-describedby="toggleConfirmPasswordIcon" required>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" onclick="togglePassword('password_confirmation', 'toggleConfirmPasswordIcon')">
                                                         <i class="fa fa-eye-slash" id="toggleConfirmPasswordIcon" aria-hidden="true"></i>
                                                     </span>
                                                 </div>
                                             </div>
-                                            <small class="help-block with-errors text-danger"></small>
+                                            <small class="help-block text-danger d-none"></small>
                                         </div>
 
                                         <div class="form-group icon-right mb-5 custom-form-field">
-                                            <label>{{__('auth.contact_number')}} <span class="text-danger">*</span></label>
-                                            <input type="text" id="phone_number" name="phone_number" class="form-control" placeholder="{{__('placeholder.contact_number')}}" aria-label="cnumber"
-                                            aria-describedby="basic-addon6" required>
+                                            <label>{{__('auth.contact_number')}} </label>
+                                            <input type="text" id="contact_number" name="contact_number" class="form-control" placeholder="{{__('placeholder.contact_number')}}" aria-label="cnumber"
+                                            aria-describedby="basic-addon6">
                                             <small class="help-block with-errors text-danger"></small>
                                         </div>
 
 
                                         <input type="hidden" name="register" value="user_register">
 
-                                        <div class="login-submit">
-                                            <button class="btn btn-primary w-100 text-capitalize" type="submit">{{__('messages.register')}}</button>
+                                        <div class="login-submit position-relative">
+                                            <button id="submitButton" class="btn btn-primary w-100 text-capitalize" type="submit">{{__('messages.register')}}</button>
+                                            <button type="submit" id="loader"  class="btn btn-primary d-none w-100 text-capitalize">
+                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> {{__('messages.loading')}}
+                                            </button>
+                                            </div>
                                         </div>
                                     </form>
 
@@ -135,15 +141,56 @@
 @endsection
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
 <script>
 
      $(document).ready(function() {
         const baseUrl = document.querySelector('meta[name="baseUrl"]').getAttribute('content');
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        
+        $('#username').on('blur', function() {
+            var username = $(this).val();
+            $.ajax({
+                method: 'POST',
+                url: baseUrl+'/api/check-username',
+                data: {
+                    _token: csrfToken,
+                    username: username
+                },
+                success: function(response) {
+                    if (response.status === 'error') {
+                        $('#error').text(response.message).removeClass('d-none');
+                    } else {
+                        $('#error').addClass('d-none');
+                    }
+                },
+                error: function(xhr) {
+                    $('#error').text(xhr.responseJSON.message).removeClass('d-none');
+                }
+            });
+        });
+
+        
         $('#registerForm').submit(function(e) {
 
             e.preventDefault();
+            var password = $('#password').val();
+            var confirmPassword = $('#password_confirmation').val();
 
+
+        // Reset error messages
+        $('#error').addClass('d-none').text('');
+
+        if (password !== confirmPassword) {
+            // Display error if passwords do not match
+            $('#error').text('Password & Confirm Password Do not Match.').removeClass('d-none'); // Show the error message
+            return; // Stop further execution
+        }
+         // Disable the submit button and show the loader
+        $('#submitButton').addClass('d-none');
+        $('#loader').removeClass('d-none');
             var formData = $(this).serialize();
 
             $.ajax({
@@ -178,6 +225,8 @@
                                  $('#error').removeClass('d-none')
 
                                  $('#error').text(xhr.responseJSON.message)
+                                $('#loader').addClass('d-none');
+                                $('#submitButton').removeClass('d-none');
 
                             }
                         });
@@ -189,10 +238,43 @@
                      $('#error').removeClass('d-none')
 
                      $('#error').text(error.responseJSON.message)
+                    $('#loader').addClass('d-none');
+                    $('#submitButton').removeClass('d-none');
 
-                }
+                },
+            complete: function() {
+                // Make sure the loader is hidden and button is shown after request completes
+                $('#loader').addClass('d-none');
+                $('#submitButton').removeClass('d-none');
+            }
             });
         });
+
+         // Initialize intl-tel-input for the contact number
+ var input = document.querySelector("#contact_number");
+        var iti = window.intlTelInput(input, {
+        initialCountry: "in", // Set the default country code
+        separateDialCode: true, // Show the dial code separately
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js" // To handle number formatting
+    });
+
+    // Update the contact number input on change
+    $(input).on('change', function() {
+        var number = iti.getNumber(); // Get the full number with country code
+        console.log("Entered number: ", number); // Log the number
+        $('#contact_number').val(number); // Update the input value
+    });
+
+    // Handle form submission
+    $('#user-form').on('submit', function(e) {
+        if (!iti.isValidNumber()) {
+            e.preventDefault(); // Prevent form submission if the number is invalid
+            $('#contact_number-error').text('Please enter a valid mobile number.').show(); // Show error message
+        } else {
+            $('#contact_number-error').hide(); // Hide error message if valid
+        }
+    });
+
     });
 
     function togglePassword(passwordInputId, iconId) {
@@ -201,7 +283,8 @@
     const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
     passwordInput.setAttribute('type', type);
     icon.className = type === 'password' ? 'fa fa-eye-slash' : 'fa fa-eye';
-}
 
+    }
+      
 
 </script>

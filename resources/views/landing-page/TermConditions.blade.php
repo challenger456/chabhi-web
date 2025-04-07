@@ -2,10 +2,10 @@
 
 
 @section('content')
-<div class="my-5">
-    <h4 class="text-center text-capitalize font-weight-bold my-5">{{__('messages.terms_condition')}}</h4>
+<div class="my-5 privacy-policy">
+    <h4 class="text-center text-capitalize fw-bold my-5">{{__('messages.terms_condition')}}</h4>
     <div class="container">
-        {!! $term_condition->value ?? null !!}
+        {!! $terms_content !!} 
     </div>
 </div>
 

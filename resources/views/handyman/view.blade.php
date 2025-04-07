@@ -1,5 +1,5 @@
 <x-master-layout>
-    {{ Form::open(['route' => ['provider.destroy', $providerdata->id], 'method' => 'delete','data--submit'=>'provider'.$providerdata->id]) }}
+    {{ html()->form('DELETE', route('provider.destroy', $providerdata->id))->attribute('data--submit', 'provider' . $providerdata->id)->open()}}
     <main class="main-area">
         <div class="main-content">
             <div class="container-fluid">
@@ -15,9 +15,9 @@
                                         $extention = imageExtention(getSingleMedia($handyman,'profile_image'));
                                         @endphp
                                         <img id="profile_image_preview" src="{{getSingleMedia($handyman,'profile_image')}}" alt="#" class="attachment-image mt-1" style="background-color:{{ $extention == 'svg' ? $providerdata->color : '' }}">
-                                        <a class="text-danger remove-file" href="{{ route('remove.file', ['id' => $handyman->id, 'type' => 'profile_image']) }}" data--submit="confirm_form" data--confirmation='true' data--ajax="true" title='{{ __("messages.remove_file_title" , ["name" =>  __("messages.image") ]) }}' data-title='{{ __("messages.remove_file_title" , ["name" =>  __("messages.image") ]) }}' data-message='{{ __("messages.remove_file_msg") }}'>
+                                        {{-- <a class="text-danger remove-file" href="{{ route('remove.file', ['id' => $handyman->id, 'type' => 'profile_image']) }}" data--submit="confirm_form" data--confirmation='true' data--ajax="true" title='{{ __("messages.remove_file_title" , ["name" =>  __("messages.image") ]) }}' data-title='{{ __("messages.remove_file_title" , ["name" =>  __("messages.image") ]) }}' data-message='{{ __("messages.remove_file_msg") }}'>
                                             <i class="ri-close-circle-line"></i>
-                                        </a>
+                                        </a> --}}
                                     </div>
                                     <h4 class="service-man-name">{{$handyman->display_name ?? '-' }}</h4>
                                     <a class="service-man-phone" href="tel: {{$handyman->contact_number}}">{{$handyman->contact_number ?? '-' }}</a>
@@ -34,7 +34,7 @@
             </div>
         </div>
     </main>
-    {{ Form::close() }}
+    {{ html()->form()->close() }}
     @section('bottom_script')
     @endsection
 </x-master-layout>

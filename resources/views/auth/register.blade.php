@@ -10,13 +10,13 @@
                            <img src="{{ getSingleMedia(imageSession('get'),'logo',null) }}" class="img-fluid rounded-normal" alt="logo">
                         </a>
                      </div>
-                     <h3 class="mb-3 font-weight-bold text-center">{{__('auth.get_start')}}</h3>
+                     <h3 class="mb-3 fw-bold text-center">{{__('auth.get_start')}}</h3>
                      <!-- Session Status -->
                      <x-auth-session-status class="mb-4" :status="session('status')" />
 
                      <!-- Validation Errors -->
                      <x-auth-validation-errors class="mb-4" :errors="$errors" />
-                     <form method="POST" action="{{ route('register') }}" data-toggle="validator">
+                     <form method="POST" action="{{ route('register') }}" data-bs-toggle="validator">
                         {{csrf_field()}}
                         <div class="row">
                            <div class="col-lg-12">
@@ -59,39 +59,72 @@
                                  <label for="password_confirmation" class="text-secondary">{{__('auth.confirm_password')}} <span class="text-danger">*</span></label>
                                  <input class="form-control" onkeyup="checkPasswordMatch()" type="password" id="password_confirmation" name="password_confirmation" required autocomplete="new-password" placeholder="{{ __('auth.enter_name',[ 'name' => __('auth.confirm_password') ]) }}">
                                  <small class="help-block with-errors text-danger" id="confirm_passsword"></small>
-                                 
+
                               </div>
                            </div>
+                           <!-- User Type Selection -->
                            <div class="col-lg-12">
                               <div class="form-group">
-                                 <label for="user_type" class="text-secondary">{{__('messages.user_type')}} <span class="text-danger">*</span></label>
-                                 <select name="usertype" class="form-control select2 mb-5" id="status" style="width:100%">
-                                    <option value="provider">{{__('messages.provider')}}</option>
-                                    <option value="handyman">{{__('messages.handyman')}}</option>
+                                 <label for="user_type" class="text-secondary">{{ __('messages.user_type') }} <span class="text-danger">*</span></label>
+                                 <select name="usertype" class="form-control select2 mb-5" id="user_type" style="width:100%">
+                                    <option value="provider">{{ __('messages.provider') }}</option>
+                                    <option value="handyman">{{ __('messages.handyman') }}</option>
                                  </select>
                               </div>
                            </div>
+
+                           <!-- Provider Section -->
+                           <div class="col-lg-12" id="provider_section" style="display: none;">
+                              <div class="form-group">
+                                 <label for="providerdata" class="text-secondary">{{ __('messages.provider') }}</label>
+                                 <select name="provider_id" class="form-control select2 mb-5" id="providerdata" style="width:100%">
+                                    <option value="">{{ __('messages.select_provider') }}</option>
+                                 </select>
+                              </div>
+                           </div>
+
+                           <!-- Commission Section -->
+                           <div class="col-lg-12">
+                              <div class="form-group">
+                                 <label for="user_commission" class="text-secondary">{{ __('messages.user_commission') }} <span class="text-danger">*</span></label>
+                                 <select name="providertype_id" class="form-control select2 mb-5" id="providertype" style="width:100%">
+                                    <option value="">{{ __('messages.select_provider_type') }}</option>
+                                 </select>
+                                 <select name="handymantype_id" class="form-control select2 mb-5 d-none" id="handymantype" style="width:100%">
+                                    <option value="">{{ __('messages.select_handyman_type') }}</option>
+                                 </select>
+                              </div>
+                           </div>
+
                            <div class="col-lg-12">
                               <div class="form-group">
                                  <label for="designation" class="text-secondary">{{__('messages.designation')}}</label>
                                  <input type="text" id="designation" name="designation" class="form-control" placeholder="{{__('placeholder.designation')}}" aria-label="designation"
-                                 aria-describedby="basic-addon6">
+                                    aria-describedby="basic-addon6">
                               </div>
                            </div>
                            <div class="col-lg-12 mt-2">
                               <div class="form-check mb-3 d-flex align-items-center">
                                  <input type="checkbox" class="form-check-input mt-0" id="customCheck1" required>
-                                 <label class="form-check-label pl-2" for="customCheck1">
-                                    {{__('auth.agree')}} <a href="{{ url('/') }}/#/term-conditions">{{__('auth.term_service')}}</a> &amp; <a href="{{ url('/') }}/#/privacy-policy">{{__('auth.privacy_policy')}}</a>
+                                 <label class="form-check-label ps-2" for="customCheck1">
+                                    {{-- {{__('auth.agree')}} <a class="btn-link p-0 text-capitalize" href="{{ url('/') }}/term-conditions">{{__('auth.term_service')}}</a> &amp; <a class="btn-link p-0 text-capitalize" href="{{ url('/') }}/privacy-policy">{{__('auth.privacy_policy')}}</a> --}}
+                                    {{ __('auth.agree') }}
+                                       <a class="btn-link p-0 text-capitalize" href="{{ url('term-conditions') }}">
+                                          {{ __('auth.term_service') }}
+                                       </a> &amp;
+                                       <a class="btn-link p-0 text-capitalize" href="{{ url('privacy-policy') }}">
+                                          {{ __('auth.privacy_policy') }}
+                                       </a>
+
                                     <small class="help-block with-errors text-danger"></small>
                                  </label>
                               </div>
                            </div>
 
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block mt-2" id="submit-btn">{{ __('auth.create_account') }}</button>
+                        <button type="submit" class="btn btn-primary btn-block mt-2 w-100" id="submit-btn">{{ __('auth.create_account') }}</button>
                         <div class="col-lg-12 mt-3">
-                           <p class="mb-0 text-center">{{__('auth.already_have_account')}} <a href="{{route('auth.login')}}">{{__('auth.sign_in')}}</a></p>
+                           <p class="mb-0 text-center">{{__('auth.already_have_account')}} <a class="btn-link p-0 text-capitalize" href="{{route('auth.login')}}">{{__('auth.sign_in')}}</a></p>
                         </div>
                      </form>
                   </div>
@@ -99,24 +132,99 @@
             </div>
          </div>
       </div>
-
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       <script>
-    function checkPasswordMatch() {
+         function checkPasswordMatch() {
+            const password = $("#password").val();
+            const confirmPassword = $("#password_confirmation").val();
+            const errorElement = $("#confirm_passsword");
+            const submitBtn = $("#submit-btn");
 
-        var password = document.getElementById("password").value;
-        var confirmPassword = document.getElementById("password_confirmation").value;
-        var errorElement = document.getElementById("confirm_passsword");
-        var submitBtn = document.getElementById("submit-btn");
+            if (password !== confirmPassword) {
+               errorElement.text("{{ __('auth.password_mismatch_error') }}");
+               submitBtn.prop("disabled", true);
+            } else {
+               errorElement.text("");
+               submitBtn.prop("disabled", false);
+            }
+         }
 
-        if (password !== confirmPassword) {
+         $(document).ready(function() {
+    function fetchTypes(userType, providerId = null) {
+        $.ajax({
+            url: '{{ route("ajax-list") }}',
+            type: 'GET',
+            data: {
+                type: userType === 'provider' ? 'providertype' : 'handymantype',
+                provider_id: providerId // Include provider_id if available
+            },
+            success: function(response) {
+                const providerDropdown = $('#providertype').toggleClass('d-none', userType !== 'provider');
+                const handymanDropdown = $('#handymantype').toggleClass('d-none', userType !== 'handyman');
 
-            errorElement.innerHTML = "{{ __('auth.password_mismatch_error') }}";
-            submitBtn.disabled = true;
-        } else {
-            errorElement.innerHTML = "";
-            submitBtn.disabled = false;
-        }
+                if (response.status === 'true') {
+                    const targetDropdown = userType === 'provider' ? providerDropdown : handymanDropdown;
+                    targetDropdown.empty().append($('<option>', { value: '', text: userType === 'provider' ? '{{ __('messages.select_provider_type') }}' : '{{ __('messages.select_handyman_type') }}' }));
+
+                    $.each(response.results, function(index, item) {
+                        targetDropdown.append($('<option>', { value: item.id, text: item.text }));
+                    });
+                }
+            },
+            error: function() {
+                console.error('Error fetching types');
+            }
+        });
     }
-</script>
+
+    function fetchProviders() {
+
+
+        var baseURL = "{{ url('/') }}";
+        $.ajax({
+            url:baseURL + '/api/user-list',
+            type: 'GET',
+            data: { user_type: 'provider', status: 1, per_page: 25, page: 1 },
+            success: function(response) {
+                const providerData = $('#providerdata').empty().append($('<option>', { value: '', text: '{{ __('messages.select_provider') }}' }));
+
+                if (response?.data?.length) {
+                    $.each(response.data, function(index, item) {
+                        providerData.append($('<option>', { value: item.id, text: item.first_name + ' ' + item.last_name }));
+                    });
+                } else {
+                    providerData.append($('<option>', { value: '', text: '{{ __('messages.no_providers_found') }}' }));
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching providers:', error);
+            }
+        });
+    }
+
+    $('#user_type').change(function() {
+        const selectedUserType = $(this).val();
+        fetchTypes(selectedUserType);
+        $('#provider_section').toggle(selectedUserType === 'handyman'); // Show only when handyman is selected
+        $('#providertype').val('');  // Clear provider type selection
+        $('#handymantype').val('');  // Clear handyman type selection
+
+        if (selectedUserType === 'handyman') {
+            fetchProviders(); // Fetch provider list when handyman is selected
+        }
+    }).trigger('change');
+
+    $('#providerdata').change(function() {
+        if ($('#user_type').val() === 'handyman') {
+            const providerId = $(this).val();
+
+            fetchTypes('handyman', providerId); // Fetch handyman types based on selected provider
+        }
+    });
+});
+
+      </script>
+
+
    </section>
 </x-guest-layout>

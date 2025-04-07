@@ -15,10 +15,11 @@ export const confirmSwal = async ({title}) => {
       })
 }
 
-export const confirmcancleSwal = async ({title,subtitle}) => {
+export const confirmcancleSwal = async ({title,subtitle,text}) => {
     return await Swal.fire({
         title: title,
         html: subtitle, 
+        html: text,
         icon: 'success',
         showCancelButton: true,
         confirmButtonColor: '#5F60B9',

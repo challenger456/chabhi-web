@@ -2,11 +2,11 @@
 <?php
     $auth_user= authSession();
 ?>
-{{ Form::open(['route' => ['subcategory.destroy', $data->id], 'method' => 'delete','data--submit'=>'subcategory'.$data->id]) }}
-<div class="d-flex justify-content-end align-items-center">
+    {{ html()->form('DELETE', route('subcategory.destroy', $data->id))->attribute('data--submit', 'subcategory'.$data->id)->open() }}
+    <div class="d-flex justify-content-end align-items-center">
     @if(!$data->trashed())
         @if($auth_user->can('subcategory delete'))
-        <a class="mr-3" href="{{ route('subcategory.destroy', $data->id) }}" data--submit="subcategory{{$data->id}}" 
+        <a class="me-3" href="{{ route('subcategory.destroy', $data->id) }}" data--submit="subcategory{{$data->id}}" 
             data--confirmation='true' 
             data--ajax="true"
             data-datatable="reload"
@@ -26,7 +26,7 @@
             data-title="{{ __('messages.restore_form_title',['form'=>  __('messages.subcategory') ]) }}"
             data-message='{{ __("messages.restore_msg") }}'
             data-datatable="reload"
-            class="mr-2">
+            class="me-2">
             <i class="fas fa-redo text-secondary"></i>
         </a>
         <a href="{{ route('subcategory.action',['id' => $data->id, 'type' => 'forcedelete']) }}"
@@ -37,9 +37,9 @@
             data-title="{{ __('messages.forcedelete_form_title',['form'=>  __('messages.subcategory') ]) }}"
             data-message='{{ __("messages.forcedelete_msg") }}'
             data-datatable="reload"
-            class="mr-2">
+            class="me-2">
             <i class="far fa-trash-alt text-danger"></i>
         </a>
     @endif
 </div>
-{{ Form::close() }}
+{{ html()->form()->close()}}

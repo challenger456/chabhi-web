@@ -2,10 +2,10 @@
 <?php
     $auth_user= authSession();
 ?>
-{{ Form::open(['route' => ['booking-rating.destroy', $bookingrating->id], 'method' => 'delete','data--submit'=>'bookingrating'.$bookingrating->id]) }}
+{{ html()->form('DELETE', route('booking-rating.destroy', $bookingrating->id))->attribute('data--submit', 'bookingrating' . $bookingrating->id)->open() }}
 @if(auth()->user()->hasAnyRole(['admin']))
 <div class="d-flex justify-content-end align-items-center">
-        <a class="mr-2" href="{{ route('booking-rating.destroy', $bookingrating->id) }}" data--submit="bookingrating{{$bookingrating->id}}" 
+        <a class="me-2" href="{{ route('booking-rating.destroy', $bookingrating->id) }}" data--submit="bookingrating{{$bookingrating->id}}" 
             data--confirmation='true' 
             data--ajax="true"
             data-datatable="reload"
@@ -16,4 +16,4 @@
         </a>
 </div>
 @endif
-{{ Form::close() }}
+{{ html()->form()->close() }}

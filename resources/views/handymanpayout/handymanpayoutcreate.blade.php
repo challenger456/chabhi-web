@@ -5,8 +5,8 @@
             <div class="card card-block card-stretch">
                 <div class="card-body p-0">
                     <div class="d-flex justify-content-between align-items-center p-3">
-                        <h5 class="font-weight-bold">{{ $pageTitle ?? trans('messages.list') }}</h5>
-                        <a href="{{ route('handyman.index') }}" class="float-right btn btn-sm btn-primary"><i
+                        <h5 class="fw-bold">{{ $pageTitle ?? trans('messages.list') }}</h5>
+                        <a href="{{ route('handyman.index') }}" class=" float-end btn btn-sm btn-primary"><i
                                     class="fa fa-angle-double-left"></i> {{ __('messages.back') }}</a>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                                 {{ Form::number('amount',old('amount'),['placeholder' => __('messages.amount'),'class' =>'form-control', 'required', 'step' => 'any', 'min' => 0, 'max' => $payoutdata->amount ?? 0]) }}
                             </div>
                         </div>
-                    {{ Form::submit( trans('messages.save'), ['class'=>'btn btn-md btn-primary float-right']) }}
+                    {{ Form::submit( trans('messages.save'), ['class'=>'btn btn-md btn-primary float-end']) }}
                 {{ Form::close() }}
                 </div>
             </div>

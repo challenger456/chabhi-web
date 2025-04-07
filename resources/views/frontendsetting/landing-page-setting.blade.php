@@ -46,15 +46,18 @@
 <script>
     $(document).ready(function(event)
     {
-        var $this = $('.payment-link').find('a.active');
-        loadurl = '{{route('landing_layout_page')}}?tabpage={{$tabpage}}';
+        // Get the tabpage from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const tabpage = urlParams.get('tabpage') || 'section_1'; // Default to section_1 if not set
 
-        targ = $this.attr('data-target');
+        // Set the active tab based on the tabpage
+        $('.payment-link a[data-href*="tabpage=' + tabpage + '"]').addClass('active');
         
-        id = this.id || '';
+        // Load the content for the active tab
+        loadurl = '{{ route('landing_layout_page') }}?tabpage=' + tabpage;
 
-        $.post(loadurl,{ '_token': $('meta[name=csrf-token]').attr('content') } ,function(data) {
-            $(targ).html(data);
+        $.post(loadurl, { '_token': $('meta[name=csrf-token]').attr('content') }, function(data) {
+            $('.payment_paste_here').html(data);
         });
 
         $this.tab('show');

@@ -3,12 +3,11 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-
-require('./bootstrap');
-require('select2');
-require('flatpickr');
-window.moment = require('moment');
-window.Snackbar = require('node-snackbar');
+require('./bootstrap')
+require('select2')
+require('flatpickr')
+window.moment = require('moment')
+window.Snackbar = require('node-snackbar')
 // window.Vue = require('vue').default;
 
 /**

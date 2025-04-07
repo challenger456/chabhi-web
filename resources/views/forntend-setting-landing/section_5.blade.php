@@ -1,99 +1,99 @@
 
-{{ Form::model($landing_page, ['method' => 'POST','route' => ['landing_page_settings_updates'],'enctype'=>'multipart/form-data','data-toggle'=>'validator','id'=>'frontend_setting']) }}
+{{ html()->form('POST', route('landing_page_settings_updates'))->attribute('enctype', 'multipart/form-data')->attribute('data-toggle', 'validator')->id('frontend_setting')->open() }}
+{{ html()->hidden('id',$landing_page->id)->class('form-control')->placeholder('id') }}
+{{ html()->hidden('type', $tabpage)->class('form-control')->placeholder('id') }}
 
-{{ Form::hidden('id', null, array('placeholder' => 'id','class' => 'form-control')) }}
-{{ Form::hidden('type', $tabpage, array('placeholder' => 'id','class' => 'form-control')) }}
-        <div class="row">
-            <div class="form-group col-md-12 d-flex justify-content-between">
-                <label for="enable_section_5">{{__('messages.enable_section_5')}}</label>
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input section_5" name="status" id="section_5" data-type="section_5"  {{!empty($landing_page) && $landing_page->status == 1 ? 'checked' : ''}}>
-                    <label class="custom-control-label" for="section_5"></label>
-                </div>
-            </div>
+<div class="form-group">
+    <div class="form-control d-flex align-items-center justify-content-between">
+                    <label for="enable_section_5" class="mb-0">{{__('messages.enable_section_5')}}</label>
+        <div class="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline">
+                        <input type="checkbox" class="custom-control-input section_5" name="status" id="section_5" data-type="section_5"  {{!empty($landing_page) && $landing_page->status == 1 ? 'checked' : ''}}>
+            <label class="custom-control-label" for="section_5"></label>
         </div>
-        <div class="row" id='enable_section_5'>
-            <div class="form-group col-md-6">
-                {{ Form::label('title',trans('messages.title').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-                {{ Form::text('title',old('title'),['id'=>'title','placeholder' => trans('messages.title'),'class' =>'form-control']) }}
-                <small class="help-block with-errors text-danger"></small>
-            </div>
-            <div class="form-group col-md-6">
-                {{ Form::label('email', __('messages.email').' ', ['class' => 'form-control-label'], false) }}
-                {{ Form::email('email', old('email'), ['placeholder' => __('messages.email'), 'class' => 'form-control',  'pattern' => '[^@]+@[^@]+\.[a-zA-Z]{2,}', 'title' => 'Please enter a valid email address']) }}
-                <small class="help-block with-errors text-danger"></small>
-            </div>
-            <div class="form-group col-md-6">
-                {{ Form::label('contact_number', __('messages.contact_number').' ', ['class' => 'form-control-label'], false) }}
-                {{ Form::text('contact_number', old('contact_number'), ['placeholder' => __('messages.contact_number'), 'class' => 'form-control contact_number']) }}
-                <small class="help-block with-errors text-danger " id="contact_number_err"></small>
-            </div>
-            <div class="form-group col-md-6">
+    </div>
+</div>
+<div class="row" id='enable_section_5'>
+    <div class="form-group col-md-6">
+        {{ html()->label(trans('messages.title') . ' <span class="text-danger">*</span>', 'title')->class('form-control-label') }}
+        {{ html()->text('title', old('title'))->id('title')->class('form-control')->placeholder(trans('messages.title')) }}
+        <small class="help-block with-errors text-danger"></small>
+    </div>
+    <div class="form-group col-md-6">
+        {{ html()->label(__('messages.email'), 'email')->class('form-control-label') }}
+        {{ html()->email('email', old('email'))->class('form-control')->placeholder(__('messages.email'))->attribute('pattern', '[^@]+@[^@]+\.[a-zA-Z]{2,}')->attribute('title', 'Please enter a valid email address') }}
+        <small class="help-block with-errors text-danger"></small>
+    </div>
+    <div class="form-group col-md-6">
+        {{ html()->label(__('messages.contact_number'), 'contact_number')->class('form-control-label') }}
+        {{ html()->text('contact_number', old('contact_number'))->class('form-control contact_number')->placeholder(__('messages.contact_number')) }}
+        <small class="help-block with-errors text-danger" id="contact_number_err"></small>
+    </div>
+    <div class="form-group col-md-6">
                 <label class="form-control-label" for="section5_attachment">{{ __('messages.image') }}</label>
-                <div class="custom-file">
-                    <input type="file" name="section5_attachment[]" class="custom-file-input" data-file-error="{{ __('messages.files_not_allowed') }}" multiple onchange="preview()">
-                    @if($landing_page && getMediaFileExit($landing_page, 'section5_attachment'))
-                        <label class="custom-file-label upload-label">{{ $landing_page->getFirstMedia('section5_attachment')->file_name }}</label>
-                    @else
+        <div class="custom-file">
+            <input type="file" name="section5_attachment[]" class="custom-file-input" data-file-error="{{ __('messages.files_not_allowed') }}" multiple onchange="preview()">
+            @if($landing_page && getMediaFileExit($landing_page, 'section5_attachment'))
+                <label class="custom-file-label upload-label">{{ $landing_page->getFirstMedia('section5_attachment')->file_name }}</label>
+            @else
                         <label class="custom-file-label upload-label">{{ __('messages.choose_file',['file' =>  __('messages.attachments') ]) }}</label>
-                    @endif
-                </div>
-                <img id="frontend_image_preview" src="" width="150px" />
-            </div>
-            <div class="row section5_attachment_div">
-            <div class="col-md-12">
-                @if($landing_page && getMediaFileExit($landing_page, 'section5_attachment'))
-                    @php
+            @endif
+        </div>
+        <img id="frontend_image_preview" src="" width="150px" />
+    </div>
+    <div class="row section5_attachment_div">
+        <div class="col-md-12">
+            @if($landing_page && getMediaFileExit($landing_page, 'section5_attachment'))
+                @php
                         $attchments = $landing_page->getMedia('section5_attachment');
                         $file_extention = config('constant.IMAGE_EXTENTIONS');
-                    @endphp
-                    <div class="border-left-2">
-                        <p class="ml-2"><b>{{ __('messages.attached_files') }}</b></p>
-                        <div class="ml-2 my-3">
-                            <div class="row">
+                @endphp
+                <div class="border-start">
+                    <p class="ms-2"><b>{{ __('messages.attached_files') }}</b></p>
+                    <div class="ms-2 my-3">
+                        <div class="row">
                             @foreach($attchments as $attchment )
                                 <?php
                                     $extention = in_array(strtolower(imageExtention($attchment->getFullUrl())), $file_extention);
                                 ?>
-                                <div class="col-md-2 pr-10 text-center galary file-gallary-{{$landing_page->id}}"
+                                <div class="col-md-2 pe-10 text-center galary file-gallary-{{$landing_page->id}} position-relative"
                                     data-gallery=".file-gallary-{{$landing_page->id}}"
                                     id="section5_attachment_preview_{{$attchment->id}}">
                                     @if($extention)
                                         <a id="attachment_files" href="{{ $attchment->getFullUrl() }}" class="list-group-item-action attachment-list" target="_blank">
                                             <img src="{{ $attchment->getFullUrl() }}" class="attachment-image" alt="">
-                                        </a>
-                                    @else
+                                    </a>
+                                @else
                                         <a id="attachment_files" class="video list-group-item-action attachment-list" href="{{ $attchment->getFullUrl() }}">
-                                            <img src="{{ asset('images/file.png') }}" class="attachment-file">
-                                        </a>
-                                    @endif
-                                    <a class="text-danger remove-file" href="{{ route('remove.file', ['id' => $attchment->id, 'type' => 'section5_attachment']) }}"
-                                        data--submit="confirm_form" data--confirmation='true'
-                                        data--ajax="true" data-toggle="tooltip"
+                                        <img src="{{ asset('images/file.png') }}" class="attachment-file">
+                                    </a>
+                                @endif
+                                <a class="text-danger remove-file" href="{{ route('remove.file', ['id' => $attchment->id, 'type' => 'section5_attachment']) }}"
+                                    data--submit="confirm_form" data--confirmation="true"
+                                    data--ajax="true" data-toggle="tooltip"
                                         title='{{ __("messages.remove_file_title" , ["name" =>  __("messages.attachments") ] ) }}'
                                         data-title='{{ __("messages.remove_file_title" , ["name" =>  __("messages.attachments") ] ) }}'
                                         data-message='{{ __("messages.remove_file_msg") }}'>
-                                        <i class="ri-close-circle-line"></i>
-                                    </a>
-                                </div>
-                            @endforeach
+                                    <i class="ri-close-circle-line"></i>
+                                </a>
                             </div>
+                        @endforeach
                         </div>
                     </div>
-                @endif
-            </div>
-        </div> 
-            <div class="form-group col-md-12">
-                {{ Form::label('description',__('messages.description'), ['class' => 'form-control-label']) }}
-                {{ Form::textarea('description', null, ['class'=>"form-control textarea" , 'rows'=>2  , 'placeholder'=> __('messages.description') ]) }}
-            </div>
+                </div>
+            @endif
         </div>
-                     
+    </div>
+    <div class="form-group col-md-12">
+        {{ html()->label(__('messages.description'), 'description')->class('form-control-label') }}
+        {{ html()->textarea('description',null)->class('form-control textarea')->rows(2)->placeholder(__('messages.description')) }}
+    </div>
+</div>
 
-        
-       
-    {{ Form::submit(__('messages.save'), ['class'=>"btn btn-md btn-primary float-md-right submit_section1"]) }}
-    {{ Form::close() }}
+
+
+
+{{ html()->submit(__('messages.save'))->class('btn btn-md btn-primary float-md-end submit_section1') }}
+{{ html()->form()->close() }}
 
 <script>
     var enable_section_5 = $("input[name='status']").prop('checked');

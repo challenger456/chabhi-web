@@ -10,7 +10,7 @@
            
         </ul>
         <div class="card payment-content-wrapper">
-            <div class="card-body">
+            <div class="card-body p-0">
                 <div class="tab-content" id="pills-tabContent-1">
                     <div class="tab-pane active p-1" >
                         <div class="rezorpay_paste_here">

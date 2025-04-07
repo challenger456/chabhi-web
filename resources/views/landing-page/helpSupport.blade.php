@@ -3,9 +3,9 @@
 
 @section('content')
 <div class="my-5">
-   <h4 class="text-center text-capitalize font-weight-bold my-5">{{__('landingpage.help_support')}}</h4>
+   <h4 class="text-center text-capitalize fw-bold my-5">{{__('landingpage.help_support')}}</h4>
    <div class="container">
-      {!! $help_support->value ?? null !!}
+      {!! $help_content !!}
    </div>
  </div>
 

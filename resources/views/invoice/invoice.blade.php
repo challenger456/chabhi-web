@@ -5,12 +5,12 @@
             <div class="col-lg-12">
                 <div class="d-flex flex-wrap align-items-center justify-content-between my-schedule mb-4">
                     <div class="d-flex align-items-center justify-content-between">
-                        <h4 class="font-weight-bold">All Invoice</h4>
+                        <h4 class="fw-bold">All Invoice</h4>
                     </div>
                     <div class="create-workform">
                         <div class="d-flex flex-wrap align-items-center justify-content-between">
                             <div class="modal-product-search d-flex">
-                                <form class="mr-3 position-relative">
+                                <form class="me-3 position-relative">
                                     <div class="form-group mb-0">
                                         <input type="text" class="form-control" id="exampleInputText" aria-describedby="textHelp" placeholder="Search Invoice">
                                         <a class="search-link" href="#">
@@ -21,7 +21,7 @@
                                     </div>
                                 </form>
                                 <a href="../backend/invoice-view.html" class="btn btn-primary position-relative d-flex align-items-center justify-content-between">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="mr-2" width="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="me-2" width="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                     </svg>
                                     Add Invoice
@@ -36,9 +36,9 @@
                         <div class="card card-block card-stretch">
                             <div class="card-body p-0">
                                 <div class="d-flex justify-content-between align-items-center p-3">
-                                    <h5 class="font-weight-bold">Invoices List</h5>
+                                    <h5 class="fw-bold">Invoices List</h5>
                                     <button class="btn btn-secondary btn-sm">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-1" width="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="me-1" width="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                         </svg>
                                         Export
@@ -48,7 +48,7 @@
                                     <table class="table data-table mb-0">
                                         <thead class="table-color-heading">
                                         <tr class="text-light">
-                                            <th scope="col" class="pr-0 w-01">
+                                            <th scope="col" class="pe-0 w-01">
                                                 <div class="d-flex justify-content-start align-items-end mb-1">
                                                     <div class="custom-control custom-checkbox custom-control-inline">
                                                         <input type="checkbox" class="custom-control-input m-0" id="customCheck">
@@ -78,7 +78,7 @@
                                         </thead>
                                         <tbody>
                                         <tr class="white-space-no-wrap">
-                                            <td class="pr-0">
+                                            <td class="pe-0">
                                                 <div class="custom-control custom-checkbox custom-control-inline">
                                                     <input type="checkbox" class="custom-control-input m-0" id="customCheck1">
                                                     <label class="custom-control-label" for="customCheck1"></label>
@@ -91,7 +91,7 @@
                                                     </div>
                                                     <div class="data-content">
                                                         <div>
-                                                            <span class="font-weight-bold">Christian Bale</span>
+                                                            <span class="fw-bold">Christian Bale</span>
                                                         </div>
                                                         <p class="m-0 text-secondary small">
                                                             christian.Bale@blueberrye.com
@@ -107,8 +107,8 @@
                                                 $104.98
                                             </td>
                                             <td>
-                                                <p class="mb-0 text-success font-weight-bold d-flex justify-content-start align-items-center">
-                                                    <small><i class="fas fa-circle mr-2"></i></small>Paid
+                                                <p class="mb-0 text-success fw-bold d-flex justify-content-start align-items-center">
+                                                    <small><i class="fas fa-circle me-2"></i></small>Paid
                                                 </p>
                                             </td>
                                             <td>
@@ -128,7 +128,7 @@
                                             </td>
                                         </tr>
                                         <tr class="white-space-no-wrap">
-                                            <td class="pr-0">
+                                            <td class="pe-0">
                                                 <div class="custom-control custom-checkbox custom-control-inline">
                                                     <input type="checkbox" class="custom-control-input m-0" id="customCheck2">
                                                     <label class="custom-control-label" for="customCheck2"></label>
@@ -141,7 +141,7 @@
                                                     </div>
                                                     <div class="data-content">
                                                         <div>
-                                                            <span class="font-weight-bold">Matt Damon</span>
+                                                            <span class="fw-bold">Matt Damon</span>
                                                         </div>
                                                         <p class="m-0 text-secondary small">
                                                             mattdamon@blueberry.com
@@ -157,8 +157,8 @@
                                                 $99.00
                                             </td>
                                             <td>
-                                                <p class="mb-0 text-success font-weight-bold d-flex justify-content-start align-items-center">
-                                                    <small><i class="fas fa-circle mr-2"></i></small>Paid
+                                                <p class="mb-0 text-success fw-bold d-flex justify-content-start align-items-center">
+                                                    <small><i class="fas fa-circle me-2"></i></small>Paid
                                                 </p>
                                             </td>
                                             <td>
@@ -178,7 +178,7 @@
                                             </td>
                                         </tr>
                                         <tr class="white-space-no-wrap">
-                                            <td class="pr-0">
+                                            <td class="pe-0">
                                                 <div class="custom-control custom-checkbox custom-control-inline">
                                                     <input type="checkbox" class="custom-control-input m-0" id="customCheck3">
                                                     <label class="custom-control-label" for="customCheck3"></label>
@@ -191,7 +191,7 @@
                                                     </div>
                                                     <div class="data-content">
                                                         <div>
-                                                            <span class="font-weight-bold">Caitriona Balfe</span>
+                                                            <span class="fw-bold">Caitriona Balfe</span>
                                                         </div>
                                                         <p class="m-0 text-secondary small">
                                                             caitrionabalfe204@blueberry.com
@@ -207,8 +207,8 @@
                                                 $249.49
                                             </td>
                                             <td>
-                                                <p class="mb-0 text-warning font-weight-bold d-flex justify-content-start align-items-center">
-                                                    <small><i class="fas fa-circle mr-2"></i></small>Pending
+                                                <p class="mb-0 text-warning fw-bold d-flex justify-content-start align-items-center">
+                                                    <small><i class="fas fa-circle me-2"></i></small>Pending
                                                 </p>
                                             </td>
                                             <td>
@@ -228,7 +228,7 @@
                                             </td>
                                         </tr>
                                         <tr class="white-space-no-wrap">
-                                            <td class="pr-0">
+                                            <td class="pe-0">
                                                 <div class="custom-control custom-checkbox custom-control-inline">
                                                     <input type="checkbox" class="custom-control-input m-0" id="customCheck4">
                                                     <label class="custom-control-label" for="customCheck4"></label>
@@ -241,7 +241,7 @@
                                                     </div>
                                                     <div class="data-content">
                                                         <div>
-                                                            <span class="font-weight-bold">Josh Lucas</span>
+                                                            <span class="fw-bold">Josh Lucas</span>
                                                         </div>
                                                         <p class="m-0 text-secondary small">
                                                             joshlucas007@blueberry.com
@@ -257,8 +257,8 @@
                                                 $9.99
                                             </td>
                                             <td>
-                                                <p class="mb-0 text-success font-weight-bold d-flex justify-content-start align-items-center">
-                                                    <small><i class="fas fa-circle mr-2"></i></small>Paid
+                                                <p class="mb-0 text-success fw-bold d-flex justify-content-start align-items-center">
+                                                    <small><i class="fas fa-circle me-2"></i></small>Paid
                                                 </p>
                                             </td>
                                             <td>
@@ -278,7 +278,7 @@
                                             </td>
                                         </tr>
                                         <tr class="white-space-no-wrap">
-                                            <td class="pr-0">
+                                            <td class="pe-0">
                                                 <div class="custom-control custom-checkbox custom-control-inline">
                                                     <input type="checkbox" class="custom-control-input m-0" id="customCheck5">
                                                     <label class="custom-control-label" for="customCheck5"></label>
@@ -291,7 +291,7 @@
                                                     </div>
                                                     <div class="data-content">
                                                         <div>
-                                                            <span class="font-weight-bold">Jon Bernthal</span>
+                                                            <span class="fw-bold">Jon Bernthal</span>
                                                         </div>
                                                         <p class="m-0 text-secondary small">
                                                             jon.Bernthal@blueberry.com
@@ -307,8 +307,8 @@
                                                 $90.49
                                             </td>
                                             <td>
-                                                <p class="mb-0 text-danger font-weight-bold d-flex justify-content-start align-items-center">
-                                                    <small><i class="fas fa-circle mr-2"></i></small>Cancelled
+                                                <p class="mb-0 text-danger fw-bold d-flex justify-content-start align-items-center">
+                                                    <small><i class="fas fa-circle me-2"></i></small>Cancelled
                                                 </p>
                                             </td>
                                             <td>
@@ -328,7 +328,7 @@
                                             </td>
                                         </tr>
                                         <tr class="white-space-no-wrap">
-                                            <td class="pr-0">
+                                            <td class="pe-0">
                                                 <div class="custom-control custom-checkbox custom-control-inline">
                                                     <input type="checkbox" class="custom-control-input m-0" id="customCheck6">
                                                     <label class="custom-control-label" for="customCheck6"></label>
@@ -341,7 +341,7 @@
                                                     </div>
                                                     <div class="data-content">
                                                         <div>
-                                                            <span class="font-weight-bold">Noah Jupe</span>
+                                                            <span class="fw-bold">Noah Jupe</span>
                                                         </div>
                                                         <p class="m-0 text-secondary small">
                                                             nnoahjupe@blueberry.com
@@ -357,8 +357,8 @@
                                                 $39.99
                                             </td>
                                             <td>
-                                                <p class="mb-0 text-success font-weight-bold d-flex justify-content-start align-items-center">
-                                                    <small><i class="fas fa-circle mr-2"></i></small>Paid
+                                                <p class="mb-0 text-success fw-bold d-flex justify-content-start align-items-center">
+                                                    <small><i class="fas fa-circle me-2"></i></small>Paid
                                                 </p>
                                             </td>
                                             <td>
@@ -378,7 +378,7 @@
                                             </td>
                                         </tr>
                                         <tr class="white-space-no-wrap">
-                                            <td class="pr-0">
+                                            <td class="pe-0">
                                                 <div class="custom-control custom-checkbox custom-control-inline">
                                                     <input type="checkbox" class="custom-control-input m-0" id="customCheck7">
                                                     <label class="custom-control-label" for="customCheck7"></label>
@@ -391,7 +391,7 @@
                                                     </div>
                                                     <div class="data-content">
                                                         <div>
-                                                            <span class="font-weight-bold">Tracy Letts</span>
+                                                            <span class="fw-bold">Tracy Letts</span>
                                                         </div>
                                                         <p class="m-0 text-secondary small">
                                                             tracyetts@blueberry.com
@@ -407,8 +407,8 @@
                                                 $19.22
                                             </td>
                                             <td>
-                                                <p class="mb-0 text-warning font-weight-bold d-flex justify-content-start align-items-center">
-                                                    <small><i class="fas fa-circle mr-2"></i></small>Pending
+                                                <p class="mb-0 text-warning fw-bold d-flex justify-content-start align-items-center">
+                                                    <small><i class="fas fa-circle me-2"></i></small>Pending
                                                 </p>
                                             </td>
                                             <td>
@@ -428,7 +428,7 @@
                                             </td>
                                         </tr>
                                         <tr class="white-space-no-wrap">
-                                            <td class="pr-0">
+                                            <td class="pe-0">
                                                 <div class="custom-control custom-checkbox custom-control-inline">
                                                     <input type="checkbox" class="custom-control-input m-0" id="customCheck8">
                                                     <label class="custom-control-label" for="customCheck8"></label>
@@ -441,7 +441,7 @@
                                                     </div>
                                                     <div class="data-content">
                                                         <div>
-                                                            <span class="font-weight-bold">Ray McKinnon</span>
+                                                            <span class="fw-bold">Ray McKinnon</span>
                                                         </div>
                                                         <p class="m-0 text-secondary small">
                                                             raymcKinnon@blueberry.com
@@ -457,8 +457,8 @@
                                                 $102.9
                                             </td>
                                             <td>
-                                                <p class="mb-0 text-danger font-weight-bold d-flex justify-content-start align-items-center">
-                                                    <small><i class="fas fa-circle mr-2"></i></small>Cancelled
+                                                <p class="mb-0 text-danger fw-bold d-flex justify-content-start align-items-center">
+                                                    <small><i class="fas fa-circle me-2"></i></small>Cancelled
                                                 </p>
                                             </td>
                                             <td>
@@ -478,7 +478,7 @@
                                             </td>
                                         </tr>
                                         <tr class="white-space-no-wrap">
-                                            <td class="pr-0">
+                                            <td class="pe-0">
                                                 <div class="custom-control custom-checkbox custom-control-inline">
                                                     <input type="checkbox" class="custom-control-input m-0" id="customCheck9">
                                                     <label class="custom-control-label" for="customCheck9"></label>
@@ -491,7 +491,7 @@
                                                     </div>
                                                     <div class="data-content">
                                                         <div>
-                                                            <span class="font-weight-bold">Remo Girone</span>
+                                                            <span class="fw-bold">Remo Girone</span>
                                                         </div>
                                                         <p class="m-0 text-secondary small">
                                                             remo.girone420@blueberry.com
@@ -507,8 +507,8 @@
                                                 $13.99
                                             </td>
                                             <td>
-                                                <p class="mb-0 text-success font-weight-bold d-flex justify-content-start align-items-center">
-                                                    <small><i class="fas fa-circle mr-2"></i></small>Paid
+                                                <p class="mb-0 text-success fw-bold d-flex justify-content-start align-items-center">
+                                                    <small><i class="fas fa-circle me-2"></i></small>Paid
                                                 </p>
                                             </td>
                                             <td>
@@ -528,7 +528,7 @@
                                             </td>
                                         </tr>
                                         <tr class="white-space-no-wrap">
-                                            <td class="pr-0">
+                                            <td class="pe-0">
                                                 <div class="custom-control custom-checkbox custom-control-inline">
                                                     <input type="checkbox" class="custom-control-input m-0" id="customCheck10">
                                                     <label class="custom-control-label" for="customCheck10"></label>
@@ -541,7 +541,7 @@
                                                     </div>
                                                     <div class="data-content">
                                                         <div>
-                                                            <span class="font-weight-bold">Jack McMullen</span>
+                                                            <span class="fw-bold">Jack McMullen</span>
                                                         </div>
                                                         <p class="m-0 text-secondary small">
                                                             jackmullen@blueberry.com
@@ -557,8 +557,8 @@
                                                 $25.99
                                             </td>
                                             <td>
-                                                <p class="mb-0 text-success font-weight-bold d-flex justify-content-start align-items-center">
-                                                    <small><i class="fas fa-circle mr-2"></i></small>Paid
+                                                <p class="mb-0 text-success fw-bold d-flex justify-content-start align-items-center">
+                                                    <small><i class="fas fa-circle me-2"></i></small>Paid
                                                 </p>
                                             </td>
                                             <td>

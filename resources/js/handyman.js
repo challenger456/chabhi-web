@@ -58,21 +58,26 @@ darken_screen(false);
     }
   }
 
-  document.querySelectorAll('[data-trigger]').forEach(function (everyelement) {
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('[data-trigger]').forEach(function (everyelement) {
       let offcanvas_id = everyelement.getAttribute('data-trigger');
       everyelement.addEventListener('click', function (e) {
         e.preventDefault();
         show_offcanvas(offcanvas_id);
-
       });
     });
+
     if (document.querySelectorAll('.btn-close')) {
-      document.querySelectorAll('.btn-close').forEach(function (everybutton) {
-        everybutton.addEventListener('click', function () {
-          close_offcanvas();
+        document.querySelectorAll('.btn-close').forEach(function (everybutton) {
+          everybutton.addEventListener('click', function () {
+            close_offcanvas();
+          });
         });
-      });
-    }
+      }
+
+
+  });
+
 
     if (document.querySelector('.screen-darken')) {
       document.querySelector('.screen-darken').addEventListener('click', function () {
@@ -86,26 +91,7 @@ darken_screen(false);
     })
   }
 
-function readMoreBtn() {
-  let readMoreBtns = document.querySelectorAll(".readmore-btn");
-  let readMoreTexts = document.querySelectorAll(".readmore-text");
 
-  readMoreBtns.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-          let container = btn.previousElementSibling; // Assuming the <p> is the previous sibling
-          if (container.classList.contains('active')) {
-              container.classList.remove('active');
-              btn.innerHTML = "Read More";
-          } else {
-              container.classList.add("active");
-              btn.innerHTML = "Read less";
-          }
-      });
-  });
-
-}
-  
-  readMoreBtn();
 
 /*----------Sticky-Header-----------*/
 $(window).scroll(function () {

@@ -6,11 +6,11 @@
                 <category-card :category_id="category.id" :title="category.name" :description="category.description" :image="category.category_image"/>
             </div>
         </div>
-        <div class="row row-cols-xl-4 row-cols-md-3 row-cols-sm-2 row-cols-1 justify-content-center mt-5 " >
+        <div class="row row-cols-xl-4 row-cols-md-3 row-cols-sm-2 row-cols-1 justify-content-center mt-5 " v-if="categoryDetails.length ==0">
 
-           <span v-if="categoryDetails.length ==0 && isLoading==0"> Data Not Available </span>
+           <span v-if="isLoading==0"> Data Not Available </span>
 
-            <!-- <CategoryShimmer  v-for="item in 8" :key="item"></CategoryShimmer> -->
+            <CategoryShimmer v-if="isLoading==1" v-for="item in 8" :key="item"></CategoryShimmer>
           
         </div>
     </section>

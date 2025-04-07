@@ -9,13 +9,37 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <link rel="shortcut icon" class="site_favicon_preview" href="{{ getSingleMedia(imageSession('get'),'favicon',null) }}" />
-        
+
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/backend.css') }}">
         <link rel="stylesheet" href="{{ asset('css/fronted-custom.css') }}">
+
+        <script>
+            // Set primary color immediately on page load
+            const savedPrimaryColor = localStorage.getItem('primaryColor');
+            if (savedPrimaryColor) {
+                const root = document.documentElement;
+
+                // Convert HEX to RGB for primary-rgb
+                const hex = savedPrimaryColor.replace('#', '');
+                const r = parseInt(hex.substring(0, 2), 16);
+                const g = parseInt(hex.substring(2, 4), 16);
+                const b = parseInt(hex.substring(4, 6), 16);
+
+                // Set CSS variables for primary color
+                root.style.setProperty('--bs-primary', savedPrimaryColor);
+                root.style.setProperty('--bs-primary-rgb', `${r}, ${g}, ${b}`);
+                root.style.setProperty('--bs-primary-bg-subtle', `rgba(${r}, ${g}, ${b}, 0.09)`);
+                root.style.setProperty('--bs-primary-border-subtle', `rgba(${r}, ${g}, ${b}, 0.09)`);
+                root.style.setProperty('--bs-primary-hover-bg', `rgba(${r}, ${g}, ${b}, 0.75)`);
+                root.style.setProperty('--bs-primary-hover-border', `rgba(${r}, ${g}, ${b}, 0.75)`);
+                root.style.setProperty('--bs-primary-active-bg', `rgba(${r}, ${g}, ${b}, 0.75)`);
+                root.style.setProperty('--bs-primary-active-border', `rgba(${r}, ${g}, ${b}, 0.75)`);
+            }
+        </script>
 
 
 

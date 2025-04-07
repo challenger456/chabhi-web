@@ -14,14 +14,12 @@
                     </div>
 
                     <div class="card-body p-30">
-                      
-
                         <div class="row justify-content-center">
                             <div class="col-sm-6 col-md-8 col-lg-6 col-xl-5">
                                 <div class="card bank-info-card bg-bottom bg-contain bg-img" style="background-image: url('/img/bank-info-card-bg.png');">
                                     <div class="border-bottom p-3">
                                         <h4 class="fw-semibold">
-                                             {{ __('messages.holder') }}: <strong>{{($providerdata->providerbank[0])->providers->display_name ?? '-'}}</strong> 
+                                            {{ __('messages.holder') }}: <strong>{{($providerdata->providerbank[0])->providers->display_name ?? '-'}}</strong>
 
                                         </h4>
                                     </div>
@@ -43,17 +41,17 @@
                                         </ul>
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </div>
-                      
+
                     </div>
-                    
+
 
                 </div>
             </div>
         </div>
     </main>
     {{ Form::close() }}
-   
+
 </x-master-layout>

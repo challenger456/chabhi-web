@@ -91,7 +91,7 @@
                                 
                                
                             </div>
-                            {{ Form::submit( trans('messages.save'), ['class'=>'btn btn-md btn-primary float-right']) }}
+                            {{ Form::submit( trans('messages.save'), ['class'=>'btn btn-md btn-primary float-end']) }}
                         {{ Form::close() }}
                     </div>
                 </div>

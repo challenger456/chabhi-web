@@ -1,6 +1,6 @@
 @if(isset($query->id))
     @if($query->user_type === 'user')
-        <a href="{{ route('user.show', ['user' => $query->id]) }}">
+        <a href="{{ route('booking.index', ['customer_id' => $query->id]) }}">
             <div class="d-flex gap-3 align-items-center">
                 <img src="{{ getSingleMedia($query, 'profile_image', null) }}" alt="avatar" class="avatar avatar-40 rounded-pill">
                 <div class="text-start">
@@ -10,7 +10,7 @@
             </div>
         </a>
     @elseif($query->user_type === 'provider')
-        <a href="{{ route('provider.show', ['provider' => $query->id]) }}">
+        <a href="{{ route('provider_info', $query->id) }}">
             <div class="d-flex gap-3 align-items-center">
                 <img src="{{ getSingleMedia($query, 'profile_image', null) }}" alt="avatar" class="avatar avatar-40 rounded-pill">
                 <div class="text-start">

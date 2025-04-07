@@ -12,11 +12,15 @@
                                     <thead class="table-color-heading">
                                         <tr class="text-secondary">
                                         <th scope="col">{{__('messages.handyman')}}</th>
-                                        <th scope="col">{{__('messages.commission')}}</th>
                                         <th scope="col">{{__('messages.booking')}}</th>
-                                        <th scope="col">{{__('messages.total_amount')}}</th>
+                                        <th scope="col">{{__('messages.handyman_due_earning')}}</th>
+                                        <th scope="col">{{__('messages.handyman_paid_earning')}}</th>
+                                        <th scope="col">{{__('messages.provider_total_earning')}}</th>
+                                        <th scope="col">{{__('messages.admin_earning')}}</th>
                                         <th scope="col">{{__('messages.total_earning')}}</th>
+                                        @if(auth()->user()->hasAnyRole(['provider']))
                                         <th scope="col">{{__('messages.action')}}</th>
+                                        @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -38,12 +42,20 @@ var table = $('.handydata-table').DataTable({
     ajax: "{{ route('handymanEarningData') }}",
     columns: [
         {data: 'handyman_name', name: 'handyman_name'},
-        {data: 'commission', name: 'commission'},
-        {data: 'total_bookings', name: 'total_bookings'},
-        {data: 'total', name: 'total'},
-        {data: 'total_earning', name: 'total_earning'},
+        {data: 'total_bookings', name: 'total_bookings', orderable: false},
+        {data: 'handyman_earning', name: 'handyman_earning', orderable: false},
+
+        {data: 'handyman_paid_earning', name: 'handyman_paid_earning', orderable: false},
+        {data: 'provider_earning', name: 'provider_earning', orderable: false},
+        {data: 'admin_earning', name: 'admin_earning', orderable: false},
+        {data: 'total_earning', name: 'total_earning', orderable: false},
+        @if(auth()->user()->hasAnyRole(['provider']))
         {data: 'action', name: 'action', orderable: false, searchable: false},
-    ]
+        @endif
+    ],
+    language: {
+          processing: "{{ __('messages.processing') }}" // Set your custom processing text
+        }
 });
 </script>
 @endsection

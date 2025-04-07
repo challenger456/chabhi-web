@@ -1,71 +1,69 @@
+{{ html()->form('POST', route('login_register_page_settings'))->attribute('enctype', 'multipart/form-data')->attribute('data-toggle', 'validator')->id('frontend_setting')->open() }}
 
-{{ Form::model($landing_page_data, ['method' => 'POST','route' => ['login_register_page_settings'],'enctype'=>'multipart/form-data','data-toggle'=>'validator','id'=>'frontend_setting']) }}
+{{ html()->hidden('id',$landing_page_data ?? null)->placeholder('id')->class('form-control') }}
+{{ html()->hidden('type', $tabpage)->placeholder('id')->class('form-control') }}
 
-{{ Form::hidden('id', null, array('placeholder' => 'id','class' => 'form-control')) }}
-{{ Form::hidden('type', $tabpage, array('placeholder' => 'id','class' => 'form-control')) }}
-        <div class="row">
-            <div class="form-group col-md-12 d-flex ">
-                <label for="enable_login_register">{{__('messages.enable_login_register')}}</label>
-                <div class="custom-control custom-switch">
+<div class="form-group">
+    <div class="d-flex align-items-center justify-content-between form-control">
+                <label class="mb-0" for="enable_login_register">{{__('messages.enable_login_register')}}</label>
+        <div class="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline">
                     <input type="checkbox" class="custom-control-input login_register" name="status" id="login_register" data-type="login_register"  {{!empty($landing_page_data) && $landing_page_data->status == 1 ? 'checked' : ''}}>
-                    <label class="custom-control-label" for="login_register"></label>
-                </div>
-            </div>
+            <label class="custom-control-label" for="login_register"></label>
         </div>
+    </div>
+</div>
         <div class="row" id='enable_login_register'>
-            <div class="form-group col-md-6">
-                {{ Form::label('title',trans('messages.title').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-                {{ Form::text('title',old('title'),['id'=>'title','placeholder' => trans('messages.title'),'class' =>'form-control']) }}
-                <small class="help-block with-errors text-danger"></small>
-            </div>
-           
-            <div class="form-group col-md-6">
+    <div class="form-group col-md-6">
+        {{ html()->label(trans('messages.title') . ' <span class="text-danger">*</span>', 'title')->class('form-control-label')->attribute('for', 'title') }}
+        {{ html()->text('title',$landing_page_data->title )->id('title')->placeholder(trans('messages.title'))->class('form-control') }}
+        <small class="help-block with-errors text-danger"></small>
+    </div>
+
+    <div class="form-group col-md-6">
                 <label for="avatar" class="col-sm-6 form-control-label">{{ __('messages.image') }}</label>
-                <div class="col-sm-12">
-                    <div class="row">
-                        <div class="col-sm-4">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-4">
                             <img src="{{ getSingleMedia($landing_page_data,'login_register_image') }}" width="100"  id="login_register_image_preview" alt="login_register_image" class="image login_register_image login_register_image_preview">
-                            @if($landing_page_data && getMediaFileExit($landing_page_data, 'login_register_image'))
-                                <a class="text-danger remove-file" href="{{ route('remove.file', ['id' => $landing_page_data->id, 'type' => 'login_register_image']) }}"
-                                    data--submit="confirm_form"
+                    @if($landing_page_data && getMediaFileExit($landing_page_data, 'login_register_image'))
+                        <a class="text-danger remove-file" href="{{ route('remove.file', ['id' => $landing_page_data->id, 'type' => 'login_register_image']) }}"
+                            data--submit="confirm_form"
                                     data--confirmation='true'
-                                    data--ajax="true"
+                            data--ajax="true"
                                     title='{{ __("messages.remove_file_title" , ["name" =>  __("messages.image") ]) }}'
                                     data-title='{{ __("messages.remove_file_title" , ["name" =>  __("messages.image") ]) }}'
                                     data-message='{{ __("messages.remove_file_msg") }}'>
-                                    <i class="ri-close-circle-line"></i>
-                                </a>
-                            @endif
-                        </div>
-                        <div class="col-sm-8 mt-sm-0 mt-2">
-                            <div class="custom-file col-md-12">
-                                {{ Form::file('login_register_image', ['class'=>"custom-file-input custom-file-input-sm detail" , 'id'=>"login_register_image" , 'lang'=>"en" , 'accept'=>"image/*", 'onchange'=>"preview()"]) }}
-                                @if($landing_page_data && getMediaFileExit($landing_page_data, 'login_register_image'))
-                                    <label class="custom-file-label upload-label">{{ $landing_page_data->getFirstMedia('login_register_image')->file_name }}</label>
-                                @else
+                            <i class="ri-close-circle-line"></i>
+                        </a>
+                    @endif
+                </div>
+                <div class="col-sm-8 mt-sm-0 mt-2">
+                    <div class="custom-file col-md-12">
+                        {{ html()->file('login_register_image')->class('custom-file-input custom-file-input-sm detail')->id('login_register_image')->attribute('lang', 'en')->attribute('accept', 'image/*')->attribute('onchange', 'preview()') }}
+                        @if($landing_page_data && getMediaFileExit($landing_page_data, 'login_register_image'))
+                            <label class="custom-file-label upload-label">{{ $landing_page_data->getFirstMedia('login_register_image')->file_name }}</label>
+                        @else
                                     <label class="custom-file-label upload-label">{{ __('messages.choose_file',['file' =>  __('messages.attachments') ]) }}</label>
-                                @endif
-                            </div>
-                            <img id="login_register_image" src="" width="150px" />
-                        </div>
+                        @endif
                     </div>
-
+                    <img id="login_register_image" src="" width="150px" />
                 </div>
             </div>
-            
-            <div class="form-group col-md-12">
-                {{ Form::label('description',__('messages.description'), ['class' => 'form-control-label']) }}
-                {{ Form::textarea('description', null, ['class'=>"form-control textarea" , 'rows'=>2  , 'placeholder'=> __('messages.description') ]) }}
-            </div>
+
+        </div>
+    </div>
+
+    <div class="form-group col-md-12">
+        {{ html()->label(__('messages.description'), 'description')->class('form-control-label') }}
+        {{ html()->textarea('description',$landing_page_data->description )->class('form-control textarea')->rows(2)->placeholder(__('messages.description')) }}
+    </div>
             
            
-        </div>
-                     
+</div>
 
-        
-       
-    {{ Form::submit(__('messages.save'), ['class'=>"btn btn-md btn-primary float-md-right submit_section1"]) }}
-    {{ Form::close() }}
+{{ html()->submit(__('messages.save'))->class('btn btn-md btn-primary float-md-end submit_section1') }}
+{{ html()->form()->close() }}
+
 
 <script>
     var enable_login_register = $("input[name='status']").prop('checked');

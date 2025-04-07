@@ -8742,7 +8742,7 @@ code {
       background-color: #222222; }
   .change-mode .custom-switch.custom-switch-icon label.custom-control-label {
     height: 30px; }
-    .change-mode .custom-switch.custom-switch-icon label.custom-control-label:after {
+    /* .change-mode .custom-switch.custom-switch-icon label.custom-control-label:after {
       top: 0;
       left: 0;
       width: 35px;
@@ -8754,7 +8754,7 @@ code {
       border-radius: 5px 0 0 5px;
       background-color: #0C2556;
       border-color: #0C2556;
-      z-index: 0; }
+      z-index: 0; } */
     .change-mode .custom-switch.custom-switch-icon label.custom-control-label:before {
       width: 70px;
       height: 30px;
@@ -8784,8 +8784,8 @@ code {
   border-color: #fff;
   background-color: #3378FF; }
 
-.hospi-wrapper .change-mode .custom-switch.custom-switch-icon label.custom-control-label:after {
-  background-color: #fff; }
+/* .hospi-wrapper .change-mode .custom-switch.custom-switch-icon label.custom-control-label:after {
+  background-color: #fff; } */
 
 .hospi-wrapper .change-mode .custom-switch.custom-switch-icon label .switch-icon-left {
   color: #3378FF; }

@@ -1,5 +1,12 @@
 @if(isset($query->providers))
-<a href="{{ route('provider.show', ['provider' => $query->providers->id]) }}">
+
+@if($query->providers->user_type=='provider')
+<a href="{{ route('provider_info', $query->providers->id) }}">
+  @else
+
+  <a href="{{ route('booking.index', ['customer_id' => $query->providers->id]) }}">
+
+  @endif
   <div class="d-flex gap-3 align-items-center">
     <img src="{{ getSingleMedia(optional($query->providers),'profile_image', null) }}" alt="avatar" class="avatar avatar-40 rounded-pill">
     <div class="text-start">

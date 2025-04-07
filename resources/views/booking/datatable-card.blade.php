@@ -4,22 +4,29 @@
          @if(!isset($data->bookingPackage))
             <img src="{{ $serviceimage }}" alt="booking" class="img-fluid rounded-3 object-cover w-100 booking-img">
          @else
-            <img src="{{ $data->bookingPackage->package->getFirstMedia('package_attachment')->getUrl() }}" alt="booking" class="img-fluid rounded-3 object-cover w-100 booking-img">
+         @php
+         
+            $media = optional(optional($data->bookingPackage)->package)->getFirstMedia('package_attachment');
+            
+            $url = $media ? $media->getUrl() : asset('images/default.png');
+            
+         @endphp
+            <img src="{{ $url }}" alt="booking" class="img-fluid rounded-3 object-cover w-100 booking-img">
          @endif
       </div>
       <div class="col-lg-8 mt-5 mt-lg-0">
          <h5 class="booking-title text-capitalize line-count-1">
             @if(!isset($data->bookingPackage))
-               <a href="{{ route('booking.detail', $data->id) }}">#{{$data->id}} {{($data->service)->name}}</a>
+               <a href="{{ route('booking.detail', $data->id) }}">#{{$data->id}} {{$servicename ?? '-'}}</a>
             @else
-               <a href="{{ route('booking.detail', $data->id) }}">#{{$data->id}} {{($data->bookingPackage)->name}}</a>
+               <a href="{{ route('booking.detail', $data->id) }}">#{{$data->id}} {{$servicepackagename ?? '-'}}</a>
             @endif
          </h5>
          <div class="d-flex align-items-center gap-1 mt-3">
             <div class="ratting d-flex gap-1 align-items-center">
                @php $rating = round($total_rating, 1); @endphp
-      
-               @foreach(range(1,5) as $i)                                               
+
+               @foreach(range(1,5) as $i)
                   <span class="fa-stack" style="width:1em">
                         <i class="far fa-star fa-stack-1x"></i>
                         @if($rating >0)
@@ -30,7 +37,7 @@
                         @endif
                         @endif
                         @php $rating--; @endphp
-                  </span>                                                
+                  </span>
                @endforeach
                <!-- <rating-component :readonly="true" :showrating="false" :ratingvalue="{{$total_rating}}" /> -->
             </div>
@@ -80,7 +87,7 @@
             $sitesetup = App\Models\Setting::where('type','site-setup')->where('key', 'site-setup')->first();
             $datetime = $sitesetup ? json_decode($sitesetup->value) : null;
             @endphp
-            <span class="text-capitalize font-size-14 fw-500">{{date("$datetime->date_format / $datetime->time_format", strtotime($data->date))}}</span>
+            <span class="text-capitalize font-size-14 fw-500">{{date("$datetime->date_format $datetime->time_format", strtotime($data->date))}}</span>
          </div>
          <div class="row mt-5">
             <div class="col-lg-6 col-md-5">
@@ -123,22 +130,37 @@
                   <li class="mb-2">
                      <span class="d-flex gap-3">
                         <span class="d-inline-block w-25 fw-bold">{{__('messages.method')}}:</span>
-                        <span class="d-inline-block w-75 text-capitalize">{{ optional($data->payment)->payment_type ?? '-' }}</span>
+                        <span class="d-inline-block w-75 text-capitalize">{{ $payment->payment_type ?? '-' }}</span>
                      </span>
                   </li>
                   <li>
                      <span class="d-flex gap-3">
-                        <span class="d-inline-block w-25 fw-bold">{{__('messages.status')}}:</span>
-                        @if(!empty($data->payment))
-                           <span class="d-inline-block w-75 status-text text-success text-capitalize">{{ str_replace("_"," ",optional($data->payment)->payment_status) ?? '-' }}</span>
-                        @else
-                           <span class="d-inline-block w-75 status-text text-success text-capitalize">Pending</span>
-                        @endif
+                         <span class="d-inline-block w-25 fw-bold">{{ __('messages.status') }}:</span>
+                         @if(!empty($payment))
+                             @if($payment->payment_type === 'cash' && $payment->payment_status === 'pending')
+                                 <span class="d-inline-block w-75 status-text text-success text-capitalize">{{ __('landingpage.pending_approval') }}</span>
+                             @else
+                                 <span class="d-inline-block w-75 status-text text-success text-capitalize">{{ str_replace("_", " ", $payment->payment_status) ?? '-' }}</span>
+                             @endif
+                         @else
+                             <span class="d-inline-block w-75 status-text text-success text-capitalize">{{ __('landingpage.pending') }}</span>
+                         @endif
                      </span>
-                  </li>
+                 </li>
                </ul>
             </div>
             @endif
+         </div>
+         <div class="row mt-5">
+            @if($data->status == 'cancelled' && $refund_amount > 0 )
+            <div class="btn btn-sm btn-outline-success text-capitalize">
+               <div class="col-12">
+               
+                  <span class="text-start">{{ __('messages.refund_successfully') }}:</span>
+                  <span class="text-end">{{ getPriceFormat($refund_amount) }}</span>
+               </div>
+            </div>
+            @endif            
          </div>
       </div>
    </div>

@@ -6,7 +6,13 @@
                 <div class="float-end">
                     <div class="search-form input-group flex-nowrap align-items-center">
                         <input type="search" class="form-control rounded-3" name="search" v-model="search" placeholder="Search...">
-                        <span class="input-group-text search-icon position-absolute text-body">
+                        <span v-if="search" class="input-group-text search-icon position-absolute text-body" @click="clearSearch" style="cursor: pointer;">
+                            <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <line x1="6" y1="18" x2="18" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></line>
+                                <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></line>
+                            </svg>
+                        </span>
+                        <span v-else class="input-group-text search-icon position-absolute text-body">
                             <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="11.7669" cy="11.7666" r="8.98856" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle><path d="M18.0186 18.4851L21.5426 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                             </svg>
                         </span>
@@ -52,53 +58,57 @@ useDataTable({
   }
 });
 
-const store = useSection();
-const category_data = ref([]);
-const currentPage = ref(1);
-const itemsPerPage = 8;
+// const store = useSection();
+// const category_data = ref([]);
+// const currentPage = ref(1);
+// const itemsPerPage = 8;
 
-const totalPages = computed(() => {
-  const totalItems = store.categories_list.pagination?.total_items;
-  return totalItems ? Math.ceil(totalItems / itemsPerPage) : 0;
-});
+// const totalPages = computed(() => {
+//   const totalItems = store.categories_list.pagination?.total_items;
+//   return totalItems ? Math.ceil(totalItems / itemsPerPage) : 0;
+// });
 
-const [categorySection] = useObserveSection(async () => {
-  await getCategoryData(itemsPerPage,currentPage.value);
-  category_data.value = store.categries_list_data.data;
-});
+// const [categorySection] = useObserveSection(async () => {
+//   await getCategoryData(itemsPerPage,currentPage.value);
+//   category_data.value = store.categries_list_data.data;
+// });
 
-const getCategoryData = (itemsPerPage,currentPage) => {
-    return store.get_categries_list({
-      per_page: itemsPerPage,
-      page: currentPage,
-    });
-};
+// const getCategoryData = (itemsPerPage,currentPage) => {
+//     return store.get_categries_list({
+//       per_page: itemsPerPage,
+//       page: currentPage,
+//     });
+// };
 
-const nextPage = async () => {
-  if (currentPage.value < totalPages.value) {
-    await getCategoryData(itemsPerPage,currentPage.value + 1);
-    currentPage.value += 1;
-    category_data.value = store.categries_list_data.data;
-  }
-};
+// const nextPage = async () => {
+//   if (currentPage.value < totalPages.value) {
+//     await getCategoryData(itemsPerPage,currentPage.value + 1);
+//     currentPage.value += 1;
+//     category_data.value = store.categries_list_data.data;
+//   }
+// };
 
-const prevPage = async () => {
-  if (currentPage.value > 1) {
-    await getCategoryData(itemsPerPage,currentPage.value - 1);
-    currentPage.value -= 1;
-    category_data.value = store.categries_list_data.data;
-  }
-};
-const gotoPage = async (page) => {
-  if (page >= 1 && page <= totalPages.value) {
-    await getCategoryData(itemsPerPage,page);
-    currentPage.value = page;
-    category_data.value = store.categries_list_data.data;
-  }
-};
-const isPageActive = (page) => {
-  return currentPage.value === page;
-};
+// const prevPage = async () => {
+//   if (currentPage.value > 1) {
+//     await getCategoryData(itemsPerPage,currentPage.value - 1);
+//     currentPage.value -= 1;
+//     category_data.value = store.categries_list_data.data;
+//   }
+// };
+// const gotoPage = async (page) => {
+//   if (page >= 1 && page <= totalPages.value) {
+//     await getCategoryData(itemsPerPage,page);
+//     currentPage.value = page;
+//     category_data.value = store.categries_list_data.data;
+//   }
+// };
+// const isPageActive = (page) => {
+//   return currentPage.value === page;
+// };
+
+const clearSearch = () =>{
+  search.value = '';
+}
 </script>
 
 <style>

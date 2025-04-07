@@ -3,9 +3,9 @@
 <div class="bg-body search-box-wrapper" v-for="setting in section1Data" :key="setting.id">
        <div class="d-flex flex-wrap align-items-center justify-content-between" v-if="setting.key === 'section_1' && getJsonValue(setting.value, 'current_location') == 'on' || getJsonValue(setting.value, 'enable_search') == 'on'">
            <div class="d-flex align-items-center flex-wrap">
-              <div class="p-3 d-inline-flex align-items-center gap-2 f-none" data-bs-toggle="modal"
+              <div v-if="setting.key === 'section_1' && getJsonValue(setting.value, 'current_location') == 'on'" class="p-3 d-inline-flex align-items-center gap-2 f-none" data-bs-toggle="modal"
                  data-bs-target="#modal-location">
-                 <svg v-if="setting.key === 'section_1' && getJsonValue(setting.value, 'current_location') == 'on'" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 12 14" fill="none">
+                 <svg  xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 12 14" fill="none">
                     <path fill-rule="evenodd" clip-rule="evenodd"
                        d="M7.66659 6.00026C7.66659 5.07941 6.92043 4.33325 6.00026 4.33325C5.07941 4.33325 4.33325 5.07941 4.33325 6.00026C4.33325 6.92043 5.07941 7.66659 6.00026 7.66659C6.92043 7.66659 7.66659 6.92043 7.66659 6.00026Z"
                        stroke="#BFBFBF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -77,9 +77,12 @@
               <button class="btn btn-primary" v-if="setting.key === 'section_1' && getJsonValue(setting.value, 'enable_search') == 1">Search</button>
            </div> -->
 
-           <div class="py-2 px-3" v-for="setting in landingPageSettings" :key="setting.id">
+
+           <div class="py-2 px-3" >
+            <div v-for="setting in landingPageSettings" :key="setting.id">
               <button class="btn btn-primary" v-if="setting.key === 'section_1' && getJsonValue(setting.value, 'enable_search') == 'on'">{{$t('landingpage.search')}}</button>
            </div>
+        </div>
        </div>
 
        <div class="modal fade" id="modal-location" aria-labelledby="modal-locationLabel" aria-hidden="true">
@@ -111,7 +114,7 @@
                                <div v-else class="col">
                                   <button type="button" class="btn btn-primary w-100" @click="getServices">{{ $t('messages.save')}}</button>
                                </div>
-                                 
+
                             </div>
                          </form>
                       </div>
@@ -134,10 +137,10 @@
                 </li>
              </ul>
          </div>
-          
+
           <div v-if="postjobservice === 1">
           <!-- <div v-if="setting.key === 'section_1' && getJsonValue(setting.value, 'enable_post_job') == 'on'"> -->
-            
+
         <!-- <div  class="d-inline-block text-capitalize font-size-14 cursor-pointer text-decoration-underline" data-bs-target="#modaladdservice" data-bs-toggle="modal" @show="onModalShow" v-if="setting.key === 'section_1' && getJsonValue(setting.value, 'enable_post_job') == 1"> -->
           <!-- <div class="d-inline-block text-capitalize font-size-14 cursor-pointer text-decoration-underline" @click="redirectToPostJob">
           <span>{{ $t('landingpage.post_job_service') }}</span>
@@ -169,7 +172,7 @@
                             <div class="row">
                                <div class="col-md-6">
                                   <label class="form-label text-capitalize">{{ $t('landingpage.Service_Category')}}</label>
-                                  
+
                                   <select class="form-select" v-model="selectedCategory">
                                      <option value="" disabled selected>{{ $t('landingpage.select_category')}}</option>
                                      <option v-for="category in allCategory" :key="category.id" :value="category.id">{{ category.name }}</option>
@@ -180,29 +183,29 @@
                                <div class="mb-4 col-md-6">
                                   <label class="form-label text-capitalize">{{ $t('landingpage.service_name') }}</label>
                                   <input v-model="serviceName" type="text" class="form-control" placeholder="Write Service Name" aria-label="servicename" aria-describedby="basic-addon1">
-                                  
+
                                </div>
                                <div class="mb-4 col-md-6">
                                   <label class="form-label text-capitalize">{{$t('landingpage.Type')}}</label>
-                                  
+
                                   <select class="form-select" v-model="selectType">
-                                    
+
                                      <option value="fixed" selected>{{ $t('messages.fixed')}}</option>
                                      <option value="hourly" >{{ $t('messages.hourly')}}</option>
                                      <option value="free" >{{ $t('messages.free')}}</option>
                                   </select>
-                                  
+
                                </div>
                                <div class="mb-4 col-md-6">
                                   <label class="form-label text-capitalize">{{ $t('messages.price')}}</label>
                                   <input v-model="price" type="number" class="form-control" placeholder="Price" aria-label="price" aria-describedby="basic-addon1" min="1">
-                                  
+
                                </div>
                                <div class="mb-4 col-md-6">
                                   <label class="form-label text-capitalize">{{ $t('messages.status')}}</label>
-                                  
+
                                   <select class="form-select" v-model="status">
-                                    
+
                                      <option value="active" selected>{{ $t('messages.active')}}</option>
                                      <option value="inactive" >{{ $t('messages.inactive')}}</option>
                                   </select>
@@ -223,12 +226,12 @@
              </div>
      </div>
 
-   
+
 </template>
 
 <script setup>
 import { ref,computed, onMounted,defineProps} from 'vue';
-import { CATEGORY_API,SERVICE_API, POST_SERVICE_API} from '../data/api'; 
+import { CATEGORY_API,SERVICE_API, POST_SERVICE_API} from '../data/api';
 import {useSection} from '../store/index'
 //import {useObserveSection} from '../hooks/Observer'
 const props = defineProps(['postjobservice','user_id']);
@@ -250,7 +253,7 @@ window.location.href = `${baseUrl}/login-page`;
 };
 
 const closeDropdown = () => {
-keyword.value = ''; 
+keyword.value = '';
 show.value = false;
 };
 const fetchTopCategories = async () => {
@@ -274,6 +277,9 @@ onMounted(() => {
 resetFormData();
 fetchTopCategories();
 });
+
+
+
 
 const shouldShowSearchBox= async () => {
 const settings = this.landingPageSettings.find(setting => setting.key === 'section_1');
@@ -340,21 +346,25 @@ const show = ref(true);
 const getServiceList = async () => {
 try {
  if (keyword.value.trim().length >= 2) {
-    const response = await fetch(SERVICE_API({ per_page: "all", status: 1 }));
+    const response = await fetch(SERVICE_API({ per_page: "all", status: 1, search:  keyword.value}));
     const data = await response.json();
-
+console.log(data)
     if (data && Array.isArray(data.data)) {
        show.value = false;
-       const filteredServices = data.data.filter(service =>
-          service.name.toLowerCase().includes(keyword.value.toLowerCase().split(' ')) 
-       );
+       const searchWords = keyword.value.toLowerCase().trim().split(/\s+/);
+
+      // Filter services based on whether all search words are included in the service name
+      const filteredServices = data.data.filter(service => {
+      const serviceName = service.name.toLowerCase();
+      return searchWords.every(word => serviceName.includes(word));
+      });
 
        if (filteredServices.length > 0) {
           show.value = false;
           serviceList.value = filteredServices;
        } else {
          serviceList.value = [];
-         show.value = true; 
+         show.value = true;
      }
     } else {
        serviceList.value = [];
@@ -381,7 +391,7 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 const isLoading = ref(false);
 const selectedCategory = ref('');
 const serviceName = ref('');
-const selectType = ref('fixed'); 
+const selectType = ref('fixed');
 const price = ref('');
 const status = ref('active');
 const serviceDescription = ref('');
@@ -432,7 +442,7 @@ try {
 await store.get_landing_page_setting_list({ per_page: 10, page: 1 });
 landingPageSettings.value = store.landing_page_setting_list_data.data;
 section1Data.value = landingPageSettings.value.filter(item => item.key === 'section_1');
-console.log(section1Data.value);
+
 } catch (error) {
 console.error('Error fetching landing page settings:', error);
 }

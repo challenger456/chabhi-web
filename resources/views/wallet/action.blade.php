@@ -2,11 +2,11 @@
 <?php
     $auth_user= authSession();
 ?>
-{{ Form::open(['route' => ['wallet.destroy', $wallet->id], 'method' => 'delete','data--submit'=>'wallet'.$wallet->id]) }}
+{{ html()->form('DELETE', route('wallet.destroy', $wallet->id))->attribute('data--submit', 'wallet' . $wallet->id)->open() }}
 @if(auth()->user()->hasAnyRole(['admin','demo_admin']))
 <div class="d-flex justify-content-end align-items-center">
-        <a class="mr-2" href="{{ route('wallet.create',['id' => $wallet->id]) }}" title="{{ __('messages.update_form_title',['form' => __('messages.wallet') ]) }}"><i class="fas fa-pen text-secondary"></i></a>
-        <a class="mr-2" href="{{ route('wallet.destroy', $wallet->id) }}" data--submit="wallet{{$wallet->id}}"
+        <a class="me-2" href="{{ route('wallet.create',['id' => $wallet->id]) }}" title="{{ __('messages.update_form_title',['form' => __('messages.wallet') ]) }}"><i class="fas fa-pen text-secondary"></i></a>
+        <a class="me-2" href="{{ route('wallet.destroy', $wallet->id) }}" data--submit="wallet{{$wallet->id}}"
             data--confirmation='true'
             data--ajax="true"
             data-datatable="reload"
@@ -17,4 +17,4 @@
         </a>
     </div>
 @endif
-{{ Form::close() }}
+{{ html()->form()->close() }}

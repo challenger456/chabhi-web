@@ -1,22 +1,31 @@
 <footer class="footer text-white">
-    @php
-    $settings = App\Models\Setting::whereIn('type', ['general-setting', 'social-media', 'site-setup'])
-        ->whereIn('key', ['general-setting', 'social-media', 'site-setup'])
-        ->get()
-        ->keyBy('type');
-    $generalsetting = $settings->has('general-setting') ? json_decode($settings['general-setting']->value) : null;
-    $socialmedia = $settings->has('social-media') ? json_decode($settings['social-media']->value) : null;
-    $appsetting = $settings->has('site-setup') ? json_decode($settings['site-setup']->value) : null;
-        $copyright_text = $appsetting ? $appsetting->site_copyright : null;
-        $position = strpos($copyright_text, 'by');
-        if ($position !== false) {
-            $first_part = substr($copyright_text, 0, $position + 2);
-            $second_part = substr($copyright_text, $position + 2);
-        } else {
-            $first_part = $copyright_text;
-            $second_part = '';
+@php
+        $footerSettings = getFooterSettings();
+        $generalsetting = $footerSettings['generalSetting'];
+        $socialmedia = $footerSettings['socialMedia'];
+        $appsetting = $footerSettings['appSetting'];
+        $copyright = $footerSettings['copyright'];
+        $sectionData = $footerSettings['sectionData'];
+        $categories = $footerSettings['categories'] ?? [];
+        $services = $footerSettings['services'] ?? [];
+         // Fetch the settings for each required type and key
+         $settings = App\Models\Setting::whereIn('type', ['terms_condition', 'privacy_policy','about_us', 'data_deletion_request', 'help_support', 'refund_cancellation_policy'])
+            ->whereIn('key', ['terms_condition', 'privacy_policy','about_us', 'data_deletion_request', 'help_support', 'refund_cancellation_policy'])
+            ->get()->keyBy('key');
+
+        // Helper function to check if the setting is active
+        function checkIfActive($setting) {
+            return $setting && isset(json_decode($setting->value, true)['status']) && json_decode($setting->value, true)['status'] === '1';
         }
-    @endphp
+
+        // Check the active status for each setting
+        $is_terms_condition_active = checkIfActive($settings->get('terms_condition'));
+        $is_privacy_policy_active = checkIfActive($settings->get('privacy_policy'));
+        $is_about_us_active = checkIfActive($settings->get('about_us'));
+        $is_data_deletion_request_active = checkIfActive($settings->get('data_deletion_request'));
+        $is_help_support_active = checkIfActive($settings->get('help_support'));
+        $is_refund_cancellation_policy_active = checkIfActive($settings->get('refund_cancellation_policy'));
+@endphp
     <div class="footer-top">
         <div class="container">
             <div class="row">
@@ -24,7 +33,7 @@
                     <div class="footer-inner-box">
                         @include('landing-page.components.widgets.logo')
                         <p class="mt-5 mb-0 readmore-text">
-                            {{ optional($generalsetting)->site_description }}
+                            {{ $generalsetting->site_description ?? '-'}}
                         </p>
                         <a href="javascript:void(0);" class="readmore-btn">{{__('landingpage.read_more')}}</a>
                         @if(optional($generalsetting)->inquriy_email  || optional($generalsetting)->helpline_number)
@@ -66,7 +75,7 @@
                                 <div class="text-white d-md-block d-none">
                                     <div class="vr"></div>
                                 </div>
-                                
+
                                 <div class="d-inline-flex align-items-xl-center align-item-start flex-xl-row flex-column gap-3">
                                     <div class="icon text-primary">
                                         <svg width="26" height="27" viewBox="0 0 26 27" fill="none"
@@ -101,30 +110,41 @@
                         @if($socialmedia !== null)
                         <div class="mt-5 pt-lg-5">
                             <ul class="iq-social-list-text d-flex align-items-center flex-wrap m-0 list-inline">
-                                <li class="me-3 pe-3">
-                                    <a href="{{ optional($socialmedia)->facebook_url }}" target="_blank">{{__('landingpage.facebook')}}</a>
-                                </li>
-                                <li class="me-3 pe-3">
-                                    <a href="{{ optional($socialmedia)->twitter_url }}" target="_blank">{{__('landingpage.twitter')}}</a>
-                                </li>
-                                <li class="me-3 pe-3">
-                                    <a href="{{ optional($socialmedia)->instagram_url }}" target="_blank">{{__('landingpage.instagram')}}</a>
-                                </li>
-                                <li class="me-3 pe-3">
-                                    <a href="{{ optional($socialmedia)->youtube_url }}" target="_blank">{{__('landingpage.youtube')}}</a>
-                                </li>
-                                <li>
-                                    <a href="{{ optional($socialmedia)->linkedin_url }}" target="_blank">{{__('landingpage.linked_in')}}</a>
-                                </li>
+                                @if(optional($socialmedia)->facebook_url)
+                                    <li class="me-3 pe-3">
+                                        <a href="{{ optional($socialmedia)->facebook_url }}" target="_blank">{{__('landingpage.facebook')}}</a>
+                                    </li>
+                                @endif
+
+                                @if(optional($socialmedia)->twitter_url)
+                                    <li class="me-3 pe-3">
+                                        <a href="{{ optional($socialmedia)->twitter_url }}" target="_blank">{{__('landingpage.twitter')}}</a>
+                                    </li>
+                                @endif
+
+                                @if(optional($socialmedia)->instagram_url)
+                                    <li class="me-3 pe-3">
+                                        <a href="{{ optional($socialmedia)->instagram_url }}" target="_blank">{{__('landingpage.instagram')}}</a>
+                                    </li>
+                                @endif
+
+                                @if(optional($socialmedia)->youtube_url)
+                                    <li class="me-3 pe-3">
+                                        <a href="{{ optional($socialmedia)->youtube_url }}" target="_blank">{{__('landingpage.youtube')}}</a>
+                                    </li>
+                                @endif
+
+                                @if(optional($socialmedia)->linkedin_url)
+                                    <li>
+                                        <a href="{{ optional($socialmedia)->linkedin_url }}" target="_blank">{{__('landingpage.linked_in')}}</a>
+                                    </li>
+                                @endif
                             </ul>
                         </div>
-                        @endif
+                    @endif
                     </div>
                 </div>
-                @php
-                $footerSection = App\Models\FrontendSetting::where('key', 'footer-setting')->first();
-                $sectionData = $footerSection ? json_decode($footerSection->value, true) : null;
-                @endphp
+               
                 @if ($sectionData && isset($sectionData['footer_setting']) && $sectionData['footer_setting'] == 1)
                 <div class="col-lg-7 custom-border-left mt-lg-0 mt-5 pt-lg-0 pt-3">
                     @if ($sectionData['footer_setting'] == 1 && isset($sectionData['enable_popular_category']) && $sectionData['enable_popular_category'] == 1)
@@ -132,53 +152,49 @@
                         <h5 class="text-white">{{__('landingpage.handyman_category')}}</h5>
                         <div class="mt-3">
                             <ul class="iq-footer-catogery-list d-flex align-items-center flex-wrap m-0 list-inline">
-                                @foreach ($sectionData['category_id'] as $categoryId)
-                                @php
-                                    $category = App\Models\Category::find($categoryId);
-                                  
-                                @endphp
-                                    @if($category)
-                                    @if($category->status==1)
+                                
+                            @if ($categories && count($categories) > 0)
+                                @foreach ($categories as $category)
                                     <li class="me-3 pe-3">
                                         <a href="{{ route('category.detail', $category->id) }}">
                                             {{ $category->name }}
                                         </a>
                                     </li>
-                                    @endif
-                                @endif
-
                                 @endforeach
+                            @else
+                                <li class="me-3 pe-3">
+                                    <span>No categories available</span>
+                                </li>
+                            @endif
 
                             </ul>
                         </div>
                         @endif
-                        @php
-                        $footerServiceSection = App\Models\FrontendSetting::where('key', 'footer-setting')->first();
-                        $sectionData = $footerServiceSection ? json_decode($footerServiceSection->value, true) : null;
-                        @endphp
+                       
                         @if ($sectionData && isset($sectionData['footer_setting']) && $sectionData['footer_setting'] == 1 && isset($sectionData['enable_popular_service']) && $sectionData['enable_popular_service'] == 1)
                         <div class="mt-5">
                             <h5 class="text-white">{{__('landingpage.popular_services')}}</h5>
                             <ul class="list-inline mt-3 mb-0 d-flex flex-wrap gap-5 popular-service-list">
-                                @foreach ($sectionData['service_id'] as $serviceId)
-                                @php
-                                    $service = App\Models\Service::find($serviceId);
-                                
-                                    $mediaServiceImages = $service ? $service->getMedia('service_attachment') : null;
-                                @endphp
-                                @if ($service && $mediaServiceImages->isNotEmpty())
-
-                                <li>
-                                    <div class="text-center">
-                                        <a href="{{ route('service.detail', $service->id) }}" class="text-body">
-                                            <img src="{{ url($mediaServiceImages->first()->getUrl()) }}" alt="service-image" style="width: 100px; height: auto;">
-                                            <span class="mt-2 line-count-2 popular-service-text">{{$service->name}}</span>
-                                        </a>
-                                    </div>
-                                </li>
-                                @endif
-
+                          
+                            @if ($services && count($services) > 0)
+                                @foreach ($services as $service)
+                                    @php 
+                                        // Get media for each service
+                                        $mediaServiceImages = $service->getMedia('service_attachment');
+                                    @endphp
+                                    <li>
+                                        <div class="text-center">
+                                            <a href="{{ route('service.detail', $service->id) }}" class="text-body">
+                                                @if($mediaServiceImages->isNotEmpty())
+                                                    <img src="{{ url($mediaServiceImages->first()->getUrl()) }}" alt="service-image" style="width: 100px; height: auto;">
+                                                @endif
+                                                <span class="mt-2 line-count-2 popular-service-text">{{ $service->name }}</span>
+                                            </a>
+                                        </div>
+                                    </li>
                                 @endforeach
+                            @endif
+
                             </ul>
                         </div>
                         @endif
@@ -220,21 +236,45 @@
     <div class="footer-bottom py-3 position-relative">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-md-5 text-md-start text-center">
+                <div class="col-md-6 text-md-start text-center">
                    {{-- <p class="mb-0 text-white">{{ $appsetting->site_copyright }}
                     </p> --}}
-                    <p class="mb-0 text-white">{{ $first_part }}
-                    <a target="_blank" href="https://chabhi.com/">{{ $second_part }} </a>
+                    <p class="mb-0 text-white">{{ $copyright['first_part'] ?? '© 2024 All Rights Reserved by'}}
+                    <a target="_blank" href="{{ optional($generalsetting)->website }}">{{ $copyright['second_part'] ?? 'IQONIC Design'}} </a>
                     </p>
                 </div>
-                <div class="col-md-7 text-md-end text-center">
+                {{-- <div class="col-md-6 text-md-end text-center">
+                    @if($is_active)  <!-- Only show the links if status is active -->
+                        <span class="d-inline-flex align-items-center gap-3 flex-wrap">
+                            <a target="_blank" href="{{ route('user.term_conditions') }}" class="text-body link-primary">{{__('landingpage.terms_conditions')}}</a>
+                            <a target="_blank" href="{{ route('user.privacy_policy') }}" class="text-body link-primary">{{__('landingpage.privacy_policy')}}</a>
+                            <a target="_blank" href="{{ route('user.help_support') }}" class="text-body link-primary">{{__('landingpage.help_support')}}</a>
+                            <a target="_blank" href="{{ route('user.refund_policy') }}" class="text-body link-primary">{{__('landingpage.refund_policy')}}</a>
+                            <a target="_blank" href="{{ route('user.data_deletion_request') }}" class="text-body link-primary">{{__('landingpage.data_deletion_request')}}</a>
+                        </span>
+                    @endif
+                </div> --}}
+                <div class="col-md-6 text-md-end text-center">
                     <span class="d-inline-flex align-items-center gap-3 flex-wrap">
+                    @if($is_terms_condition_active) 
                         <a target="_blank" href="{{ route('user.term_conditions') }}" class="text-body link-primary">{{__('landingpage.terms_conditions')}}</a>
+                    @endif
+                    @if($is_privacy_policy_active) 
                         <a target="_blank" href="{{ route('user.privacy_policy') }}" class="text-body link-primary">{{__('landingpage.privacy_policy')}}</a>
+                    @endif
+                    @if($is_help_support_active)
                         <a target="_blank" href="{{ route('user.help_support') }}" class="text-body link-primary">{{__('landingpage.help_support')}}</a>
+                    @endif
+                    @if($is_refund_cancellation_policy_active) 
                         <a target="_blank" href="{{ route('user.refund_policy') }}" class="text-body link-primary">{{__('landingpage.refund_policy')}}</a>
+                    @endif
+                    @if($is_data_deletion_request_active) 
                         <a target="_blank" href="{{ route('user.data_deletion_request') }}" class="text-body link-primary">{{__('landingpage.data_deletion_request')}}</a>
-                    </span>
+                    @endif
+                    @if($is_about_us_active) 
+                        <a target="_blank" href="{{ route('user.about_us') }}" class="text-body link-primary">{{__('landingpage.about_us')}}</a>
+                    @endif
+                </span>
                 </div>
             </div>
         </div>
@@ -305,14 +345,5 @@
         return emailRegex.test(email);
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
-        var description = document.querySelector('.readmore-text');
-        var readmoreBtn = document.querySelector('.readmore-btn');
-
-        if (description.offsetHeight < description.scrollHeight) {
-            readmoreBtn.style.display = 'block';
-        } else {
-            readmoreBtn.style.display = 'none';
-        }
-    });
+    
 </script>

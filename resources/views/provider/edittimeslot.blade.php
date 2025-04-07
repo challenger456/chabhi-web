@@ -6,8 +6,8 @@
                 <div class="card card-block card-stretch">
                     <div class="card-body p-0">
                         <div class="d-flex justify-content-between align-items-center p-3 flex-wrap gap-3">
-                            <h5 class="font-weight-bold">{{$providerdata->first_name .' '. $providerdata->last_name}} {{$pageTitle}}</h5>
-                            <a href="{{ route('provider.time-slot',['id' => $provider_id]) }}   " class="float-right btn btn-sm btn-primary"><i class="fa fa-angle-double-left"></i> {{ __('messages.back') }}</a>
+                            <h5 class="fw-bold">{{$providerdata->first_name .' '. $providerdata->last_name}} {{$pageTitle}}</h5>
+                            <a href="{{ route('provider.time-slot',['id' => $provider_id]) }}   " class=" float-end btn btn-sm btn-primary"><i class="fa fa-angle-double-left"></i> {{ __('messages.back') }}</a>
                             
                         </div>
                     </div>
@@ -16,54 +16,54 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                    {{ Form::model($slotsArray, ['method' => 'POST', 'route' => 'providerslot.store', 'data-toggle' => 'validator', 'id' => 'provider-form']) }}
-                        <div class="row">
-                            <div class="col-md-12">
-                            <input type="hidden" name="id" id="provider-id" value="{{ $provider_id }}">
-                                <div class="form-group has-feedback">
-                                            {{ Form::label('Day', __('messages.day').' <span class="text-danger">*</span>', ['class' => 'form-control-label col-md-12'], false) }}
-                                            <div class="col-md-12">
+                        {{ html()->form('POST', route('providerslot.store'))->attribute('data-toggle', 'validator')->id('provider-form')->open() }}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type="hidden" name="id" id="provider-id" value="{{ $provider_id }}">
+                                    <div class="form-group has-feedback">
+                                        {{ html()->label(__('messages.day').' <span class="text-danger">*</span>', 'Day')->class('form-control-label col-md-12') }}
+                                        <div class="col-md-12">
                                             
-                                                <ul class="nav nav-tabs nav-fill gap-3 tabslink" id="tab-text" role="tablist">
-                                                    @foreach ($slotsArray['days'] as $day)
-                                                        @if (isset($day))
-                                                            <li class="nav-item m-0">
-                                                                <a href="#{{ $day }}" name="days" class="nav-link day-link" data-day="{{ $day }}" data-bs-toggle="tab" rel="tooltip">{{ ucfirst($day) }}</a>
-                                                            </li>
-                                                        @endif
-                                                    @endforeach
-                                                </ul>
+                                            <ul class="nav nav-tabs pay-tabs nav-fill gap-3 tabslink" id="tab-text" role="tablist">
+                                                @foreach ($slotsArray['days'] as $day)
+                                                    @if (isset($day))
+                                                        <li class="nav-item m-0">
+                                                            <a href="#{{ $day }}" name="days" class="nav-link day-link" data-day="{{ $day }}" data-bs-toggle="tab" rel="tooltip">{{ ucfirst($day) }}</a>
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="form-group has-feedback">
+                                        <div class="col-md-12">
+                                            {{ html()->label(__('messages.time').' <span class="text-danger">*</span>', 'Time')->class('form-control-label col-md-12') }}
+                                            <div class="tab-content" id="pills-tabContent-1">
+                                                @foreach ($slotsArray['days'] as $day)
+                                                    @if (isset($day))
+                                                        <div class="tab-pane p-1 day-slot @if(strtolower($day) === strtolower($activeDay)) active @endif" id="{{ $day }}">
+                                                                {{-- <!-- <h3>{{ ucfirst($day) }}</h3> --> --}}
+                                                            <ul class="nav nav-tabs pay-tabs nav-fill tabslink gap-3 provider-slot">
+                                                                @for ($hour = 0; $hour < 24; $hour++)
+                                                                    <li class="nav-item m-0">
+                                                                        @php
+                                                                            $slotTime = sprintf('%02d:00', $hour);
+                                                                            $isActive = in_array($slotTime, $activeSlots[$day] ?? []);
+                                                                        @endphp
+                                                                        <a href="javascript:void(0)" name="start_at" class="nav-link time-link @if ($isActive) active @endif slot-link" data-day="{{ $day }}" data-slot="{{ $slotTime }}" data-bs-toggle="tab" rel="tooltip">{{ $slotTime }}</a>
+                                                                    </li>
+                                                                @endfor
+                                                            </ul>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
                                             </div>
                                         </div>
-                                        <div class="form-group has-feedback">
-                                            <div class="col-md-12">
-                                                {{ Form::label('Time', __('messages.time').' <span class="text-danger">*</span>', ['class' => 'form-control-label col-md-12'], false) }}
-                                                <div class="tab-content" id="pills-tabContent-1">
-                                                    @foreach ($slotsArray['days'] as $day)
-                                                        @if (isset($day))
-                                                            <div class="tab-pane p-1 day-slot @if(strtolower($day) === strtolower($activeDay)) active @endif" id="{{ $day }}">
-                                                                <!-- <h3>{{ ucfirst($day) }}</h3> -->
-                                                                <ul class="nav nav-tabs nav-fill tabslink gap-3 provider-slot">
-                                                                    @for ($hour = 0; $hour < 24; $hour++)
-                                                                        <li class="nav-item m-0">
-                                                                            @php
-                                                                                $slotTime = sprintf('%02d:00', $hour);
-                                                                                $isActive = in_array($slotTime, $activeSlots[$day] ?? []);
-                                                                            @endphp
-                                                                            <a href="javascript:void(0)" name="start_at" class="nav-link time-link @if ($isActive) active @endif slot-link" data-day="{{ $day }}" data-slot="{{ $slotTime }}" data-bs-toggle="tab" rel="tooltip">{{ $slotTime }}</a>
-                                                                        </li>
-                                                                    @endfor
-                                                                </ul>
-                                                            </div>
-                                                        @endif
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        </div>
-                                {{ Form::submit(__('messages.submit'), ['class' => 'btn btn-md btn-primary']) }}
+                                    </div>
+                                    {{ html()->submit(__('messages.submit'))->class('btn btn-md btn-primary') }}
                             </div>
                         </div>
-                    {{ Form::close() }}
+                        {{ html()->form()->close() }}
                     </div>
                 </div>
             </div>

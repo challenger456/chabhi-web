@@ -15,15 +15,16 @@
     <div class="row ">
         <div class="col-md-12">
             <div class="">
-            {{ Form::model($slotsArray, ['method' => 'POST', 'route' => 'providerslot.store', 'data-toggle' => 'validator', 'id' => 'provider-form']) }}
+                {{-- {{$slotsArray}} used for data  --}}
+                {{ html()->form('POST', route('providerslot.store'))->attributes(['data-toggle' => 'validator', 'id' => 'provider-form'])->open() }}
                         <div class="row">
                             <div class="col-md-12">
                             <input type="hidden" name="id" id="provider-id" value="{{ $provider_id }}">
                                 <div class="form-group has-feedback">
-                                            {{ Form::label('Day', __('messages.day').' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
+                                    {{ html()->label(__('messages.day') . ' <span class="text-danger">*</span>', 'Day')->class('form-control-label') }}
                                             <div class="col-md-12 p-0">
                                             
-                                                <ul class="nav nav-tabs nav-fill tabslink" id="tab-text" role="tablist">
+                                                <ul class="nav nav-tabs pay-tabs nav-fill tabslink" id="tab-text" role="tablist">
                                                     @foreach ($slotsArray['days'] as $day)
                                                         @if (isset($day))
                                                             <li class="nav-item">
@@ -36,13 +37,12 @@
                                         </div>
                                         <div class="form-group has-feedback">
                                             <div class="col-md-12 p-0">
-                                                {{ Form::label('Time', __('messages.time').' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
-                                                <div class="tab-content" id="pills-tabContent-1">
+                                                {{ html()->label(__('messages.time') . ' <span class="text-danger">*</span>', 'Time')->class('form-control-label') }}                                                <div class="tab-content" id="pills-tabContent-1">
                                                     @foreach ($slotsArray['days'] as $day)
                                                         @if (isset($day))
                                                             <div class="tab-pane day-slot @if(strtolower($day) === strtolower($activeDay)) active @endif" id="{{ $day }}">
-                                                                <!-- <h3>{{ ucfirst($day) }}</h3> -->
-                                                                <ul class="nav nav-tabs nav-fill tabslink gap-3 provider-slot">
+                                                                {{-- <!-- <h3>{{ ucfirst($day) }}</h3> --> --}}
+                                                                <ul class="nav nav-tabs pay-tabs nav-fill tabslink gap-3 provider-slot">
                                                                     @for ($hour = 0; $hour < 24; $hour++)
                                                                         <li class="nav-item m-0">
                                                                             @php
@@ -59,16 +59,16 @@
                                                 </div>
                                             </div>
                                         </div>
-                                {{ Form::submit(__('messages.submit'), ['class' => 'btn btn-md btn-primary']) }}
-                            </div>
+                                        {{ html()->submit(__('messages.save'))->class('btn btn-md btn-primary float-md-end mt-15')->id('submit') }}                           
+                                        </div>
                         </div>
-                    {{ Form::close() }}
-            </div>
+                        {{ html()->form()->close() }}
+                    </div>
         </div>
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 
 <script>
     $(document).ready(function () {

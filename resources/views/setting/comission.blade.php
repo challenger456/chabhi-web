@@ -1,5 +1,5 @@
 <x-master-layout>
-    {{ Form::open(['route' => ['provider.destroy', $providerdata->id], 'method' => 'delete','data--submit'=>'provider'.$providerdata->id]) }}
+    {{ html()->form('DELETE', route('provider.destroy', $providerdata->id))->attribute('data--submit', 'provider'. $providerdata->id)->open() }}
     <main class="main-area">
         <div class="main-content">
             <div class="container-fluid">
@@ -12,11 +12,11 @@
                                     <div class="row">
                                         
                                         <div class="form-group col-md-4">
-                                            {{ Form::label('type',trans('messages.type').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
+                                            {{ html()->label(__('messages.type') . ' <span class="text-danger">*</span>', 'type')->class('form-control-label') }}
                                             <input type="text" class="form-control" placeholder="{{optional(optional($providerdata)->providertype)['type'] }}" readonly>
                                         </div>
                                         <div class="form-group col-md-4">
-                                            {{ Form::label('commission',trans('messages.commission').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
+                                            {{ html()->label(__('messages.commission') . ' <span class="text-danger">*</span>', 'commission')->class('form-control-label') }}
                                             <input type="text" class="form-control" placeholder="{{optional(optional($providerdata)->providertype)['commission']}}" readonly>
                                         </div>
                                     </div>
@@ -27,6 +27,12 @@
                 </div>
             </div>
     </main>
-    {{ Form::close() }}
+    {{ html()->form()->close() }}
+
+    <style>
+        .form-control::placeholder {
+            color: var(--bs-body-color);
+        }
+    </style>
    
 </x-master-layout>

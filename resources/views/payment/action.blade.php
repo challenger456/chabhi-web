@@ -2,10 +2,10 @@
 $auth_user= authSession();
 ?>
 {{-- {{ $earningData->id}} --}}
-{{ Form::open(['route' => ['payment.destroy',$payment->id], 'method' => 'delete','data--submit'=>'payment'.$payment->id]) }}
+{{ html()->form('DELETE', route('payment.destroy', $payment->id))->attribute('data--submit', 'payment'.$payment->id)->open() }}
 <div class="d-flex justify-content-end align-items-center">
 @if(auth()->user()->hasAnyRole(['admin']))
-    <a class="mr-3" href="{{ route('payment.destroy', $payment->id) }}" data--submit="payment{{$payment->id}}" 
+    <a class="me-3" href="{{ route('payment.destroy', $payment->id) }}" data--submit="payment{{$payment->id}}" 
         data--confirmation='true' 
         data--ajax="true"
         data-datatable="reload"
@@ -16,4 +16,4 @@ $auth_user= authSession();
     </a>
 @endif
 </div>
-{{ Form::close() }}
+{{ html()->form()->close() }}

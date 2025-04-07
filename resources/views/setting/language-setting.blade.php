@@ -1,8 +1,8 @@
 
 <?php
-$language_option = sitesetupSession('get')->language_option ?? ["nl","fr","it","pt","es","en"];
+$language_option = sitesetupSession('get')->language_option ?? ["ar","nl","en","fr","de","hi","it"];
 $language_array = languagesArray($language_option);
-$files = ["auth", "messages", "pagination", "passwords","validation"];
+$files = ["auth", "messages", "pagination", "passwords","validation","landingpage"];
 ?>
 <div class="row">
     <div class="col-md-6">
@@ -42,30 +42,48 @@ $files = ["auth", "messages", "pagination", "passwords","validation"];
             type: 'post',
             url: url,
             data: {
-                'lang':lang,
-                'file':file
+                'lang': lang,
+                'file': file
             },
             success: function(res){
                 $('.lang-section').html(res);
             }
         });
     }
+
     function onloadLang(){
-        let selectedLang = $("#change_lang :selected").val();
-        let selectedFile = $('#selected_file :selected').val();
-        getLangFile(selectedLang,selectedFile)
+        // Retrieve stored language and file from local storage
+        let selectedLang = localStorage.getItem('selectedLang') || $("#change_lang :selected").val();
+        let selectedFile = localStorage.getItem('selectedFile') || $('#selected_file :selected').val();
+        
+        // Set the select values to the stored values
+        $("#change_lang").val(selectedLang);
+        $('#selected_file').val(selectedFile);
+        
+        // Load the language file
+        getLangFile(selectedLang, selectedFile);
     }
+
     $(document).ready(function (){
         onloadLang();   
+        
         $(document).on('change','#change_lang',function(){
             let selectedLang = $("#change_lang :selected").val();
             let selectedFile = $('#selected_file :selected').val();
-            getLangFile(selectedLang,selectedFile)
+            
+            // Store the selected language in local storage
+            localStorage.setItem('selectedLang', selectedLang);
+            getLangFile(selectedLang, selectedFile);
         });  
+
         $(document).on('change','#selected_file',function(){
             let selectedLang = $("#change_lang :selected").val();
             let selectedFile = $('#selected_file :selected').val();
-            getLangFile(selectedLang,selectedFile)
+            
+            // Store the selected file in local storage
+            localStorage.setItem('selectedFile', selectedFile);
+            getLangFile(selectedLang, selectedFile);
         });        
     });
 </script>
+

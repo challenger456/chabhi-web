@@ -21,7 +21,7 @@
             {{ $msg }}
         </span>
         <div class="dropdown">
-            <button class="btn btn-link " type="button" id="chat-dropdown-{{$id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-link " type="button" id="chat-dropdown-{{$id}}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="las la-caret-down"></i>
             </button>
             <div class="dropdown-menu" aria-labelledby="chat-dropdown-{{$id}}">

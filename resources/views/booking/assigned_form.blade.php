@@ -4,18 +4,19 @@
     <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">{{ $pageTitle }}</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
             </button>
         </div>
-       {{ Form::open(['route' => 'booking.assigned','method' => 'post','data-toggle'=>"validator"]) }}
-        <div class="modal-body">
 
-           {{ Form::hidden('id',$bookingdata->id) }}
+       {{ html()->form('POST', route('booking.assigned'))->attribute('data-toggle', 'validator')->open() }}
+        <div class="modal-body">
+        {{ html()->hidden('id',$bookingdata->id ?? null) }}
+
             <div class="row">
                 
                 <div class="col-md-12 form-group ">
-                    {{ Form::label('handyman_id', __('messages.select_name',[ 'select' => __('messages.handyman') ]).' <span class="text-danger">*</span>',['class'=>'form-control-label'],false) }}
+                {{ html()->label(__('messages.select_name', ['select' => __('messages.handyman')]) . ' <span class="text-danger">*</span>', 'handyman_id')->class('form-control-label')}}
+                    
                     <br />
                     @php
                         if($bookingdata->booking_address_id != null)
@@ -28,13 +29,14 @@
                             return [$item->handyman_id => optional($item->handyman)->display_name];
                         });
                     @endphp
-                    {{ Form::select('handyman_id[]', $assigned_handyman, $bookingdata->handymanAdded->pluck('handyman_id'), [
-                            'class' => 'select2js handyman',
-                            'id' => 'handyman_id',
-                            'required',
-                            'data-placeholder' => __('messages.select_name',[ 'select' => __('messages.handyman') ]),
-                            'data-ajax--url' => $route,
-                        ]) }}
+                    {{ html()->select('handyman_id[]', [$bookingdata->handymanAdded->pluck('handyman_id')], $assigned_handyman)
+                                        ->class('select2js form-group')
+                                        ->id('handyman_id')
+                                        ->required()
+                                        ->attribute('data-placeholder', __('messages.select_name', ['select' => __('messages.handyman')]))
+                                        ->attribute('data-ajax--url', $route)
+                                    }}
+                  
                 </div>
             </div>
         </div>
@@ -42,7 +44,8 @@
             <button type="button" class="btn btn-md btn-secondary" data-dismiss="modal">{{ trans('messages.close') }}</button>
             <button type="submit" class="btn btn-md btn-primary" id="btn_submit" data-form="ajax" >{{ trans('messages.save') }}</button>
         </div>
-        {{ Form::close() }}
+        {{ html()->form()->close() }}
+  
     </div>
 </div>
 <script>

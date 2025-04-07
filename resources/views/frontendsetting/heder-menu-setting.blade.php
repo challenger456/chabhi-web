@@ -1,16 +1,17 @@
-{{ Form::model($landing_page_data, ['method' => 'POST', 'route' => ['heading_page_settings'], 'enctype' => 'multipart/form-data', 'data-toggle' => 'validator', 'id' => 'myForm']) }}
+{{ html()->form('POST', route('heading_page_settings'))->attribute('enctype', 'multipart/form-data')->attribute('data-toggle', 'validator')->id('myForm')->open() }}
 
-{{ Form::hidden('id', null, ['placeholder' => 'id', 'class' => 'form-control']) }}
-{{ Form::hidden('type', $page, ['placeholder' => 'id', 'class' => 'form-control']) }}
-<div class="row">
-    <div class="form-group col-md-12 d-flex justify-content-between">
-        <label for="enable_header_setting">{{__('messages.enable_header_setting')}}</label>
-        <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input header_setting" name="status" id="header_setting" data-type="header_setting" {{ !empty($landing_page_data) && $landing_page_data->status ? 'checked' : '' }}>
-            <label class="custom-control-label" for="header_setting"></label>
+{{ html()->hidden('id',$landing_page_data)->placeholder('id')->class('form-control') }}
+{{ html()->hidden('type', $page)->placeholder('id')->class('form-control') }}
+
+    <div class="form-group">
+        <div class="form-control d-flex align-items-center justify-content-between">
+            <label for="enable_header_setting" class="mb-0">{{__('messages.enable_header_setting')}}</label>
+            <div class="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline">
+                <input type="checkbox" class="custom-control-input header_setting" name="status" id="header_setting" data-type="header_setting" {{ !empty($landing_page_data) && $landing_page_data->status ? 'checked' : '' }}>
+                <label class="custom-control-label" for="header_setting"></label>
+            </div>
         </div>
     </div>
-</div>
 
 <div class="row" id='enable_header_setting'>
     <div class="col-lg-12">
@@ -26,13 +27,15 @@
                                 @endphp
 
                                 @foreach($valueArray as $key => $value)
-                                    @if(in_array($key, ['home', 'service', 'provider', 'categories', 'bookings']))
+                                    @if(in_array($key, ['service', 'provider', 'categories', 'bookings']))
                                         <li class="nav-item list-item" data-section="{{ $key }}" draggable=true>
-                                            <div class="form-group d-flex justify-content-between mb-0">
-                                                <label for="{{ $key }}" class="mb-0">{{ __('messages.' . $key) }}</label>
-                                                <div class="custom-control custom-switch">
-                                                    <input type="checkbox" class="custom-control-input" name="{{ $key }}" id="{{ $key }}" {{ $value ? 'checked' : '' }}>
-                                                    <label class="custom-control-label" for="{{ $key }}"></label>
+                                            <div class="form-group mb-0">
+                                                <div class="form-control d-flex align-items-center justify-content-between">
+                                                    <label for="{{ $key }}" class="mb-0">{{ __('messages.' . $key) }}</label>
+                                                    <div class="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline">
+                                                        <input type="checkbox" class="custom-control-input" name="{{ $key }}" id="{{ $key }}" {{ $value ? 'checked' : '' }}>
+                                                        <label class="custom-control-label" for="{{ $key }}"></label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </li>
@@ -41,87 +44,74 @@
                             </ul>
                         @else
                         <ul class="nav flex-column nav-pills nav-fill tabslink list" id="tabs-text" role="tablist">
-                            <li class="nav-item list-item" data-section="home" draggable=true>
-                                <div class="form-group d-flex justify-content-between mb-0">
-                                    <label for="home" class="mb-0">{{ __('messages.home') }}</label>
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input" name="home" id="home" {{ !empty($landing_page_data->home) ? 'checked' : '' }}>
-                                        <label class="custom-control-label" for="home"></label>
-                                    </div>
-                                </div>
-                            </li>
 
                             <li class="nav-item list-item" data-section="service" draggable=true>
-                                <div class="form-group d-flex justify-content-between mb-0">
-                                    <label for="service" class="mb-0">{{ __('messages.services') }}</label>
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input" name="service" id="service" {{ !empty($landing_page_data->service) ? 'checked' : '' }}>
-                                        <label class="custom-control-label" for="service"></label>
+                                <div class="form-group mb-0">
+                                    <div class="form-control d-flex align-items-center justify-content-between">
+                                        <label for="service" class="mb-0">{{ __('messages.services') }}</label>
+                                        <div class="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline">
+                                            <input type="checkbox" class="custom-control-input" name="service" id="service" {{ !empty($landing_page_data->service) ? 'checked' : '' }}>
+                                            <label class="custom-control-label" for="service"></label>
+                                        </div>
                                     </div>
                                 </div>
                             </li>
 
                             <li class="nav-item list-item" data-section="provider" draggable=true>
-                                <div class="form-group d-flex justify-content-between mb-0">
-                                    <label for="provider" class="mb-0">{{ __('messages.providers') }}</label>
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input" name="provider" id="provider" {{ !empty($landing_page_data->provider) ? 'checked' : '' }}>
-                                        <label class="custom-control-label" for="provider"></label>
+                                <div class="form-group mb-0">
+                                    <div class="form-control d-flex align-items-center justify-content-between">
+                                        <label for="provider" class="mb-0">{{ __('messages.providers') }}</label>
+                                        <div class="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline">
+                                            <input type="checkbox" class="custom-control-input" name="provider" id="provider" {{ !empty($landing_page_data->provider) ? 'checked' : '' }}>
+                                            <label class="custom-control-label" for="provider"></label>
+                                        </div>
                                     </div>
                                 </div>
                             </li>
 
                             <li class="nav-item list-item" data-section="categories" draggable=true>
-                                <div class="form-group d-flex justify-content-between mb-0">
-                                    <label for="categories" class="mb-0">{{ __('messages.categories') }}</label>
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input" name="categories" id="categories" {{ !empty($landing_page_data->categories) ? 'checked' : '' }}>
-                                        <label class="custom-control-label" for="categories"></label>
+                                <div class="form-group mb-0">
+                                    <div class="form-control d-flex align-items-center justify-content-between">
+                                        <label for="categories" class="mb-0">{{ __('messages.categories') }}</label>
+                                        <div class="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline">
+                                            <input type="checkbox" class="custom-control-input" name="categories" id="categories" {{ !empty($landing_page_data->categories) ? 'checked' : '' }}>
+                                            <label class="custom-control-label" for="categories"></label>
+                                        </div>
                                     </div>
                                 </div>
                             </li>
-                            <li class="nav-item list-item" data-section="blogs" draggable=true>
-                                <div class="form-group d-flex justify-content-between mb-0">
-                                    <label for="blogs" class="mb-0">{{ __('messages.blogs') }}</label>
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input" name="blogs" id="blogs" {{ !empty($landing_page_data->blogs) ? 'checked' : '' }}>
-                                        <label class="custom-control-label" for="blogs"></label>
-                                    </div>
-                                </div>
-                            </li>
+                             
                             <li class="nav-item list-item" data-section="bookings" draggable=true>
-                                <div class="form-group d-flex justify-content-between mb-0">
-                                    <label for="blogs" class="mb-0">{{ __('messages.bookings') }}</label>
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input" name="bookings" id="bookings" {{ !empty($landing_page_data->bookings) ? 'checked' : '' }}>
-                                        <label class="custom-control-label" for="bookings"></label>
+                                <div class="form-group mb-0">
+                                    <div class="form-control d-flex align-items-center justify-content-between">
+                                        <label for="blogs" class="mb-0">{{ __('messages.bookings') }}</label>
+                                        <div class="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline">
+                                            <input type="checkbox" class="custom-control-input" name="bookings" id="bookings" {{ !empty($landing_page_data->bookings) ? 'checked' : '' }}>
+                                            <label class="custom-control-label" for="bookings"></label>
+                                        </div>
                                     </div>
                                 </div>
                             </li>
-                            <li class="nav-item list-item" data-section="post_job" draggable=true>
-                                <div class="form-group d-flex justify-content-between mb-0">
-                                    <label for="blogs" class="mb-0">{{ __('messages.post_job') }}</label>
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input" name="post_job" id="post_job" {{ !empty($landing_page_data->job_post) ? 'checked' : '' }}>
-                                        <label class="custom-control-label" for="post_job"></label>
-                                    </div>
-                                </div>
-                            </li>
+                            
                         </ul>
                         @endif
                         <div class="form-padding-box mt-3">
-                            <div class="form-group d-flex justify-content-between mb-1">
-                                <label for="enable_language">{{__('messages.enable_language')}}</label>
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" name="enable_language" id="enable_language" {{ !empty($landing_page_data->enable_language) ? 'checked' : '' }}>
-                                    <label class="custom-control-label" for="enable_language"></label>
+                            <div class="form-group">
+                                <div class="form-control d-flex align-items-center justify-content-between flex-wrap gap-1">
+                                    <label for="enable_language" class="mb-0">{{__('messages.enable_language')}}</label>
+                                    <div class="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline">
+                                        <input type="checkbox" class="custom-control-input" name="enable_language" id="enable_language" {{ !empty($landing_page_data->enable_language) ? 'checked' : '' }}>
+                                        <label class="custom-control-label" for="enable_language"></label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group mb-0 d-flex justify-content-between mb-1">
-                                <label for="enable_darknight_mode" class="mb-0">{{__('messages.enable_darknight_mode')}}</label>
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" name="enable_darknight_mode" id="enable_darknight_mode" {{ !empty($landing_page_data->enable_darknight_mode) ? 'checked' : '' }}>
-                                    <label class="custom-control-label" for="enable_darknight_mode"></label>
+                            <div class="form-group mb-0">
+                                <div class="form-control d-flex align-items-center justify-content-between flex-wrap gap-1">
+                                    <label for="enable_darknight_mode" class="mb-0">{{__('messages.enable_darknight_mode')}}</label>
+                                    <div class="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline">
+                                        <input type="checkbox" class="custom-control-input" name="enable_darknight_mode" id="enable_darknight_mode" {{ !empty($landing_page_data->enable_darknight_mode) ? 'checked' : '' }}>
+                                        <label class="custom-control-label" for="enable_darknight_mode"></label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -132,8 +122,8 @@
     </div>
 </div>
 
-{{ Form::submit(__('messages.save'), ['class' => "btn btn-md btn-primary float-md-right"]) }}
-{{ Form::close() }}
+{{ html()->submit(__('messages.save'))->class('btn btn-md btn-primary float-md-end') }}
+{{ html()->form()->close() }}
 
 <script>
         var enable_header_setting = $("input[name='status']").prop('checked');
@@ -204,4 +194,45 @@
             $(this).after('<input type="hidden" name="' + this.name + '" value="' + ($(this).is(':checked') ? 'on' : 'off') + '">');
         });
     });
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+    const draggables = document.querySelectorAll('.list-item');
+    const container = document.querySelector('.list');
+
+    draggables.forEach(draggable => {
+        draggable.addEventListener('dragstart', () => {
+            draggable.classList.add('dragging');
+        });
+
+        draggable.addEventListener('dragend', () => {
+            draggable.classList.remove('dragging');
+        });
+    });
+
+    container.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        const afterElement = getDragAfterElement(container, e.clientY);
+        const draggingElement = document.querySelector('.dragging');
+        if (afterElement == null) {
+            container.appendChild(draggingElement);
+        } else {
+            container.insertBefore(draggingElement, afterElement);
+        }
+    });
+});
+
+function getDragAfterElement(container, y) {
+    const draggableElements = [...container.querySelectorAll('.list-item:not(.dragging)')];
+
+    return draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if (offset < 0 && offset > closest.offset) {
+            return { offset: offset, element: child };
+        } else {
+            return closest;
+        }
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+}
+
 </script>

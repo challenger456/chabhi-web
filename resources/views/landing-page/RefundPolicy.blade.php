@@ -3,9 +3,9 @@
 
 @section('content')
 <div class="my-5">
-   <h4 class="text-center text-capitalize font-weight-bold my-5">{{__('landingpage.refund_policy')}}</h4>
+   <h4 class="text-center text-capitalize fw-bold my-5">{{__('landingpage.refund_policy')}}</h4>
    <div class="container">
-      {!! $refund_policy->value ?? null !!}
+      {!! $refund_content !!}
    </div>
  </div>
 

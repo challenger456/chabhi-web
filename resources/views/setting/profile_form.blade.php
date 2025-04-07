@@ -1,3 +1,8 @@
+<script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
+
+
 <div class="col-md-12">
     <div class="row ">
         <div class="col-md-3">
@@ -8,7 +13,7 @@
                             src="{{ getSingleMedia($user_data,'profile_image', null) }}" alt="profile-pic">
                     </div>
                     <div class="sideuser-info">
-                        <span class="mb-2">{{ $user_data->display_name }}</span>
+                        <span class="mb-2">{{ $user_data->first_name. ' ' .$user_data->last_name }}</span>
                         <!-- <a>{{ $user_data->email }}</a> -->
                     </div>
                 </div>
@@ -16,190 +21,256 @@
         </div>
         <div class="col-md-9">
             <div class="user-content">
-                {{ Form::model($user_data, ['route'=>'updateProfile','method' => 'POST','data-toggle'=>"validator" , 'enctype'=> 'multipart/form-data','id' => 'user-form']) }}
-                <input type="hidden" name="profile" value="profile">
-                {{ Form::hidden('username') }}
-                {{ Form::hidden('email') }}
-                {{ Form::hidden('id', null, array('placeholder' => 'id','class' => 'form-control')) }}
+                {{ html()->form('POST', route('updateProfile'))
+                ->attribute('data-toggle', 'validator')
+                ->attribute('enctype', 'multipart/form-data')
+                ->id('user-form')
+                ->open() }}
+            
+            <input type="hidden" name="profile" value="profile">
+            {{ html()->hidden('username') }}
+            {{ html()->hidden('email') }}
+            {{ html()->hidden('id', $user_data->id ?? null)
+                ->placeholder('id')
+                ->class('form-control') }}
                 <div class="row ">
 
                     <div class="form-group col-md-6">
-                        {{ Form::label('first_name',__('messages.first_name').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-                        {{ Form::text('first_name',old('first_name'),['placeholder' => __('messages.first_name'),'class' =>'form-control','required']) }}
+                        {{ html()->label(__('messages.first_name') . ' <span class="text-danger">*</span>')
+                            ->class('form-control-label')
+                            ->for('first_name')
+                             }}
+                        {{ html()->text('first_name',$user_data->first_name)
+                            ->placeholder(__('messages.first_name'))
+                            ->class('form-control')
+                            ->required() }}
                         <small class="help-block with-errors text-danger"></small>
                     </div>
-
+                    
                     <div class="form-group col-md-6">
-                        {{ Form::label('last_name',__('messages.last_name').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-                        {{ Form::text('last_name',old('last_name'),['placeholder' => __('messages.last_name'),'class' =>'form-control','required']) }}
+                        {{ html()->label(__('messages.last_name') . ' <span class="text-danger">*</span>')
+                            ->class('form-control-label')
+                            ->for('last_name')
+                             }}
+                        {{ html()->text('last_name', $user_data->last_name)
+                            ->placeholder(__('messages.last_name'))
+                            ->class('form-control')
+                            ->required() }}
                         <small class="help-block with-errors text-danger"></small>
                     </div>
-
+                    
                     <div class="form-group col-md-6">
-                        {{ Form::label('username',__('messages.username').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-                        {{ Form::text('username',old('username'),['placeholder' => __('messages.username'),'class' =>'form-control','required']) }}
+                        {{ html()->label(__('messages.username') . ' <span class="text-danger">*</span>')
+                            ->class('form-control-label')
+                            ->for('username')
+                             }}
+                        {{ html()->text('username',$user_data->username)
+                            ->placeholder(__('messages.username'))
+                            ->class('form-control')
+                            ->required() }}
                         <small class="help-block with-errors text-danger"></small>
                     </div>
                     @if(auth()->user()->hasRole('provider'))
-                    <div class="form-group col-md-6">
-                        {{ Form::label('designation',__('messages.designation').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-                        {{ Form::text('designation',old('designation'),['placeholder' => __('messages.designation'),'class' =>'form-control','required']) }}
-                        <small class="help-block with-errors text-danger"></small>
-                    </div>
+                        <div class="form-group col-md-6">
+                            {{ html()->label(__('messages.designation') . ' <span class="text-danger">*</span>')
+                                ->class('form-control-label')
+                                ->for('designation')
+                                 }}
+                            {{ html()->text('designation', $user_data->designation)
+                                ->placeholder(__('messages.designation'))
+                                ->class('form-control')
+                                ->required() }}
+                            <small class="help-block with-errors text-danger"></small>
+                        </div>
                     @endif
                     <div class="form-group col-md-6">
-                        {{ Form::label('country_id', __('messages.select_name',[ 'select' => __('messages.country') ]),['class'=>'form-control-label'],false) }}
+                        {{ html()->label(__('messages.select_name', ['select' => __('messages.country')]), 'country_id')->class('form-control-label') }}
                         <br />
-                        {{ Form::select('country_id', [optional($user_data->country)->id => optional($user_data->country)->name], optional($user_data->country)->id, [
-								'class' => 'select2js form-group country',
-								'data-placeholder' => __('messages.select_name',[ 'select' => __('messages.country') ]),
-								'data-ajax--url' => route('ajax-list', ['type' => 'country']),
-							]) }}
+                        {{ html()->select('country_id', [optional($user_data->country)->id => optional($user_data->country)->name], optional($user_data->country)->id)
+                            ->class('form-group select2js country')
+                            ->attribute('data-placeholder', __('messages.select_name', ['select' => __('messages.country')]))
+                            ->attribute('data-ajax--url', route('ajax-list', ['type' => 'country'])) }}
                     </div>
-
+                    
                     <div class="form-group col-md-6">
-                        {{ Form::label('state_id', __('messages.select_name',[ 'select' => __('messages.state') ]),['class'=>'form-control-label'],false) }}
+                        {{ html()->label(__('messages.select_name', ['select' => __('messages.state')]), 'state_id')->class('form-control-label') }}
                         <br />
-                        {{ Form::select('state_id', [], [
-								'class' => 'select2js form-group state_id',
-								'data-placeholder' => __('messages.select_name',[ 'select' => __('messages.state') ]),
-							]) }}
+                        {{ html()->select('state_id', [optional($user_data->state)->id => optional($user_data->state)->name], optional($user_data->state)->id)
+                            ->class('form-group select2js state_id')
+                            ->attribute('data-placeholder', __('messages.select_name', ['select' => __('messages.state')])) }}
                     </div>
-
+                    
                     <div class="form-group col-md-6">
-                        {{ Form::label('city_id', __('messages.select_name',[ 'select' => __('messages.city') ]),['class'=>'form-control-label'],false) }}
+                        {{ html()->label(__('messages.select_name', ['select' => __('messages.city')]), 'city_id')->class('form-control-label') }}
                         <br />
-                        {{ Form::select('city_id', [], old('city_id'), [
-								'class' => 'select2js form-group city_id',
-								'data-placeholder' => __('messages.select_name',[ 'select' => __('messages.city') ]),
-							]) }}
+                        {{ html()->select('city_id', [optional($user_data->city)->id => optional($user_data->city)->name], optional($user_data->city)->id)
+                            ->class('form-group select2js city_id')
+                            ->attribute('data-placeholder', __('messages.select_name', ['select' => __('messages.city')])) }}
                     </div>
-
+                    
                     <div class="form-group col-md-6">
-                        {{ Form::label('email', __('messages.email').' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
-                        {{ Form::email('email', old('email'), ['placeholder' => __('messages.email'), 'class' => 'form-control', 'required', 'pattern' => '[^@]+@[^@]+\.[a-zA-Z]{2,}', 'title' => 'Please enter a valid email address']) }}
+                        {{ html()->label(__('messages.email') . ' <span class="text-danger">*</span>', 'email')->class('form-control-label') }}
+                        {{ html()->email('email',$user_data->email)
+                            ->placeholder(__('messages.email'))
+                            ->class('form-control')
+                            ->required()
+                            ->attribute('pattern', '[^@]+@[^@]+\.[a-zA-Z]{2,}')
+                            ->attribute('title', 'Please enter a valid email address') }}
                         <small class="help-block with-errors text-danger"></small>
                     </div>
-
+                    
                     <div class="form-group col-md-6">
-                        {{ Form::label('contact_number', __('messages.contact_number').' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
-                        {{ Form::text('contact_number', old('contact_number'), ['placeholder' => __('messages.contact_number'), 'class' => 'form-control contact_number', 'required']) }}
-                        <small class="help-block with-errors text-danger " id="contact_number_err"></small>
-                    </div>
+                        <label for="mobile" class="form-control-label">{{ __('messages.contact_number') }} <span class="text-danger">*</span></label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text px-0"><i class="ph ph-phone"></i></span>
+                            {{ html()->text('contact_number', old('contact_number', $user_data->contact_number))
+                                ->id('contact_number')
+                                ->class('form-control')
+                                ->placeholder(__('messages.contact_number'))
+                                ->required()
+                                ->attribute('pattern', '[0-9]{10}')
+                                ->attribute('oninput', 'this.value = this.value.replace(/[^0-9]/g, \'\')') }}
+                            <div class="invalid-feedback" id="contact_number-error">Contact number field is required.</div>
+                        </div>
+                    </div>           
 
                     @if(auth()->user()->hasRole('handyman'))
 
                     <div class="form-group col-md-6">
-                        {{ Form::label('handymantype_id', __('messages.select_name',[ 'select' => __('messages.handymantype') ]).' <span class="text-danger">*</span>',['class'=>'form-control-label'],false) }}
+                        {{ html()->label(__('messages.select_name', ['select' => __('messages.handymantype')]) . ' <span class="text-danger">*</span>', 'handymantype_id')
+                            ->class('form-control-label') }}
                         <br />
-                        {{ Form::select('handymantype_id', [optional($user_data->handymantype)->id => optional($user_data->handymantype)->name], optional($user_data->handymantype)->id, [
-                                        'class' => 'select2js form-group handymantype',
-                                        'required',
-                                        'data-placeholder' => __('messages.select_name',[ 'select' => __('messages.handymantype') ]),
-                                        'data-ajax--url' => route('ajax-list', ['type' => 'handymantype']),
-                                    ]) }}
+                        {{ html()->select('handymantype_id', [optional($user_data->handymantype)->id => optional($user_data->handymantype)->name], optional($user_data->handymantype)->id)
+                            ->class('select2js form-group handymantype')
+                            ->required()
+                            ->attribute('data-placeholder', __('messages.select_name', ['select' => __('messages.handymantype')]))
+                            ->attribute('data-ajax--url', route('ajax-list', ['type' => 'handymantype'])) }}
                     </div>
-
+                
                     <div class="form-group col-md-6">
-                        {{ Form::label('name', __('messages.select_name',[ 'select' => __('messages.provider_address') ]),['class'=>'form-control-label'],false) }}
+                        {{ html()->label(__('messages.select_name', ['select' => __('messages.provider_address')]), 'name')
+                            ->class('form-control-label') }}
                         <br />
-                        {{ Form::select('service_address_id',[ optional($user_data->handymanAddressMapping)->id => optional($user_data->handymanAddressMapping)->address ],$user_data->service_address_id,[
-									'class' => 'select2js form-group service_address_id',
-									'id' =>'service_address_id',
-									'data-ajax--url' => route('ajax-list', ['type' => 'provider_address' , 'provider_id' => $user_data->provider_id ]),
-									'data-placeholder' => __('messages.select_name',[ 'select' => __('messages.provider_address') ]),
-								]) }}
+                        {{ html()->select('service_address_id', [optional($user_data->handymanAddressMapping)->id => optional($user_data->handymanAddressMapping)->address], $user_data->service_address_id)
+                            ->class('select2js form-group service_address_id')
+                            ->id('service_address_id')
+                            ->attribute('data-ajax--url', route('ajax-list', ['type' => 'provider_address', 'provider_id' => $user_data->provider_id]))
+                            ->attribute('data-placeholder', __('messages.select_name', ['select' => __('messages.provider_address')])) }}
                     </div>
-                    @endif
-
-                    <div class="form-group col-md-6">
-                        {{ Form::label('status',__('messages.status').' <span class="text-danger">*</span>',['class'=>'form-control-label'],false) }}
-                        {{ Form::select('status',['1' => __('messages.active') , '0' => __('messages.inactive') ],old('status'),[ 'class' =>'form-control select2js','required']) }}
+                @endif
+                
+                <div class="form-group col-md-6">
+                    {{ html()->label(__('messages.status') . ' <span class="text-danger">*</span>', 'status')
+                        ->class('form-control-label') }}
+                    {{ html()->select('status', ['1' => __('messages.active'), '0' => __('messages.inactive')],$user_data->status)
+                        ->class('form-control select2js')
+                        ->required() }}
+                </div>
+                
+                <div class="form-group col-md-6">
+                    {{ html()->label(__('messages.choose_profile_image'), 'profile_image')
+                        ->class('form-control-label') }}
+                    <div class="custom-file">
+                        {{ html()->file('profile_image')
+                            ->class('custom-file-input custom-file-input-sm detail')
+                            ->id('profile_image')
+                            ->attribute('accept','image/*') }}                        
+                        <label class="custom-file-label upload-label" id="imagelabel"
+                        for="profile_image">{{ __('messages.profile_image') }}</label>                    
                     </div>
-
-                    <div class="form-group col-md-6">
-                        {{ Form::label('profile_image',__('messages.choose_profile_image'),['class'=>'form-control-label '] ) }}
-                        <div class="custom-file">
-                            {{ Form::file('profile_image', ['class'=>"custom-file-input custom-file-input-sm detail" , 'id'=>"profile_image" , 'lang'=>"en" , 'accept'=>"image/*"]) }}
-                            <label class="custom-file-label upload-label" id="imagelabel"
-                                for="profile_image">{{ __('messages.profile_image') }}</label>
-                        </div>
-                    </div>
-
-                    <div class="form-group col-md-12">
-                        {{ Form::label('address',__('messages.address'), ['class' => 'form-control-label']) }}
-                        {{ Form::textarea('address', null, ['class'=>"form-control textarea" , 'rows'=>2  , 'placeholder'=> __('messages.address') ]) }}
-                    </div>
-
+                </div>
+                
+                <div class="form-group col-md-12">
+                    {{ html()->label(__('messages.address'), 'address')
+                        ->class('form-control-label') }}
+                    {{ html()->textarea('address',$user_data->address)
+                        ->class('form-control textarea')
+                        ->rows(2)
+                        ->placeholder(__('messages.address')) }}
+                </div>
+                
                   @if($user_data->user_type =='provider')   
 
-                     <div class="form-group col-md-12 mt-4">
-                     <h4>{{ __('messages.why_choose_me') }}</h4>
-                    </div>
-
-                    <div class="form-group col-md-12">
-                        {{ Form::label('title', __('messages.title').'', ['class' => 'form-control-label'], false) }}
-                        {{ Form::text('title', old('title'), ['placeholder' => __('messages.title'), 'class' => 'form-control' ]) }}
-                        <small class="help-block with-errors text-danger"></small>
-                    </div>
-
-                       <div class="form-group col-md-12">
-                        {{ Form::label('about_description',__('messages.description'), ['class' => 'form-control-label']) }}
-                        {{ Form::textarea('about_description', null, ['class'=>"form-control textarea" , 'rows'=>2  , 'placeholder'=> __('messages.description') ]) }}
-                    </div>
-
+                <div class="form-group col-md-12 mt-4">
+                    <h4>{{ __('messages.why_choose_me') }}</h4>
+                </div>
+            
+                <div class="form-group col-md-12">
+                    {{ html()->label(__('messages.title'))->class('form-control-label')->for('title') }}
+                    {{ html()->text('title', $user_data->title)
+                        ->class('form-control')
+                        ->placeholder(__('messages.title'))
+                    }}
+                    <small class="help-block with-errors text-danger"></small>
+                </div>
+            
+                <div class="form-group col-md-12">
+                    {{ html()->label(__('messages.description'))->class('form-control-label')->for('about_description') }}
+                    {{ html()->textarea('about_description',$user_data->about_description)
+                        ->class('form-control textarea')
+                        ->rows(2)
+                        ->placeholder(__('messages.description'))
+                    }}
+                </div>
+            
                 
 
-                  @if($user_data->reason != null)
+                @if($user_data->reason != null)
 
-                      @foreach($user_data->reason as $reason)
+                    @foreach($user_data->reason as $reason)
                      <div class="form-section1 form-group col-md-12 ">
-                          <div class="row">
-                            <div class="form-group col-md-12 d-flex">
-                              {{ Form::text('reason[]', $reason, ['placeholder' => __('messages.reason'), 'class' => 'form-control']) }}
-                              <small class="help-block with-errors text-danger"></small>
-                              <div class="form-group col-3 mb-0 align-self-center">
-                                  <button class="remove-section1 button-custom button-remove" data-title="remove" title="Remove">
-                                    <i class="far fa-trash-alt"></i>
-                                  </button>
-                              </div>
+                            <div class="row">
+                                <div class="form-group col-md-12 d-flex">
+                                    {{ html()->text('reason[]', $reason)
+                                        ->placeholder(__('messages.reason'))
+                                        ->class('form-control')
+                                    }}
+                                    <small class="help-block with-errors text-danger"></small>
+                                    <div class="form-group col-3 mb-0 align-self-center">
+                                        <button class="remove-section1 button-custom button-remove" data-title="remove" title="Remove">
+                                            <i class="far fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
-                      </div>
+                        </div>
     
-                     @endforeach
+                    @endforeach
 
-                    @endif 
-
-                   <div class="form-section form-group col-md-12 ">
-                      {{ Form::label('reason', __('messages.reason').'', ['class' => 'form-control-label'], false) }}
-                      <div class="row">
+                @endif
+            
+                <div class="form-section form-group col-md-12 ">
+                    {{ html()->label(__('messages.reason'))->class('form-control-label')->for('reason') }}
+                    <div class="row">
                         <div class="form-group col-md-12 d-flex">
-                            {{ Form::text('reason[]', '', ['placeholder' => __('messages.reason'), 'class' => 'form-control' ]) }}
+                            {{ html()->text('reason[]')
+                                ->placeholder(__('messages.reason'))
+                                ->class('form-control')
+                            }}
                             <small class="help-block with-errors text-danger"></small>
 
                             <div class="form-group mb-0 col-3 align-self-center">
-                               
+                                
                                 <button class="remove-section  button-custom button-remove"> <i class="far fa-trash-alt"></i></button>
                             </div>
                         </div>
-                      </div>
-                  </div>
-
-                   <div class="form-group col-md-12">
+                    </div>
+                </div>
+            
+                <div class="form-group col-md-12">
                     <div class="form-group row">
-                        <div class="col-md-9 text-md-right pr-1">
+                        <div class="col-md-9 text-md-right pe-1">
                             <button type="button" id="add-section" class="button-custom button-added">
-                                <i class="fas fa-plus mr-2"></i>Add More Reason
+                                <i class="fas fa-plus me-2"></i>Add More Reason
                             </button>
                         </div>
                         <div class="col-md-3"></div>
                     </div>
-                   </div>
-                  @endif
+                </div>
+                @endif
 
                     <div class="col-md-12">
-                        {{ Form::submit(__('messages.update'), ['class'=>"btn btn-md btn-primary float-md-right"]) }}
+                    {{ html()->submit(__('messages.update'))->class('btn btn-md btn-primary float-md-end') }}
                     </div>
                 </div>
             </div>
@@ -269,24 +340,27 @@ $(document).ready(function() {
         updateRemoveButtonVisibility();
     });
 
-    $(document).on('keyup', '.contact_number', function() {
-        var contactNumberInput = document.getElementById('contact_number');
-        var inputValue = contactNumberInput.value;
-        inputValue = inputValue.replace(/[^0-9+\- ]/g, '');
-        if (inputValue.length > 15) {
-            inputValue = inputValue.substring(0, 15);
-            $('#contact_number_err').text('Contact number should not exceed 15 characters');
-        } else {
-                $('#contact_number_err').text('');
-        }
-        contactNumberInput.value = inputValue;
-        if (inputValue.match(/^[0-9+\- ]+$/)) {
-            $('#contact_number_err').text('');
-        } else {
-            $('#contact_number_err').text('Please enter a valid mobile number');
-        }
-    });
-
+    // $(document).on('keyup', '#contact_number', function() {
+    //     var input = document.querySelector("#contact_number");
+    //     var iti = window.intlTelInput(input, {
+    //         initialCountry: "in", 
+    //         separateDialCode: true, 
+    //         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js" // To handle number formatting
+    //     });
+    //     var inputValue = input.value.replace(/[^0-9+\- ]/g, '');
+    //     if (inputValue.length > 15) {
+    //         inputValue = inputValue.substring(0, 15);
+    //         $('#contact_number_err').text('Contact number should not exceed 15 characters');
+    //     } else {
+    //         $('#contact_number_err').text('');
+    //     }
+    //     input.value = inputValue;
+    //     if (inputValue.match(/^[0-9+\- ]+$/)) {
+    //         $('#contact_number_err').text('');
+    //     } else {
+    //         $('#contact_number_err').text('Please enter a valid mobile number');
+    //     }
+    // });
 
 
     function stateName(country, state = "") {
@@ -387,6 +461,31 @@ $(document).ready(function() {
         }
         return false;
     }
+
+    // Initialize intl-tel-input for the contact number
+    var input = document.querySelector("#contact_number");
+    var iti = window.intlTelInput(input, {
+        initialCountry: "in", // Set the default country code
+        separateDialCode: true, // Show the dial code separately
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js" // To handle number formatting
+    });
+
+    // Update the contact number input on change
+    $(input).on('change', function() {
+        var number = iti.getNumber(); // Get the full number with country code
+        console.log("Entered number: ", number); // Log the number
+        $('#contact_number').val(number); // Update the input value
+    });
+
+    // Handle form submission
+    $('#user-form').on('submit', function(e) {
+        if (!iti.isValidNumber()) {
+            e.preventDefault(); // Prevent form submission if the number is invalid
+            $('#contact_number-error').text('Please enter a valid mobile number.').show(); // Show error message
+        } else {
+            $('#contact_number-error').hide(); // Hide error message if valid
+        }
+    });
 })
 // })(jQuery);
 </script>

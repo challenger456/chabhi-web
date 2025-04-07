@@ -1,5 +1,5 @@
 
-{{ Form::model($flatArray,['method' => 'POST','route'=>'saveLangContent', 'data-toggle'=>"validator" ,'id'=>'flatArray'] ) }}
+{{ html()->form('POST', route('saveLangContent'))->attribute('data-toggle', 'validator')->id('flatArray')->open() }}
 <input type="hidden" value="{{$filename}}" name="filename"/>
 <input type="hidden" value="{{$requestLang}}" name="requestLang"/>
 <div class="table-responsive mb-0">
@@ -20,5 +20,5 @@
         </tbody>
     </table>
 </div>
-{{ Form::submit( __('messages.save'), ['class'=>'btn btn-md btn-primary float-right']) }}
-{{ Form::close() }}
+{{ html()->submit(__('messages.save'))->class('btn btn-md btn-primary float-md-end submit_section1') }}
+{{ html()->form()->close() }}

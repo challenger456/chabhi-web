@@ -2,10 +2,10 @@
 <?php
     $auth_user= authSession();
 ?>
-{{ Form::open(['route' => ['handymanpayout.destroy', $handymanpayout->id], 'method' => 'delete','data--submit'=>'handymanpayout'.$handymanpayout->id]) }}
+{{ html()->form('DELETE', route('handymanpayout.destroy', $handymanpayout->id))->attribute('data--submit', 'handymanpayout'.$handymanpayout->id)->open() }}
 <div class="d-flex justify-content-end align-items-center">
 
-    <a class="mr-3" href="{{ route('handymanpayout.destroy', $handymanpayout->id) }}" data--submit="handymanpayout{{$handymanpayout->id}}" 
+    <a class="me-3" href="{{ route('handymanpayout.destroy', $handymanpayout->id) }}" data--submit="handymanpayout{{$handymanpayout->id}}" 
         data--confirmation='true' 
         data--ajax="true"
         data-datatable="reload"
@@ -15,4 +15,4 @@
         <i class="far fa-trash-alt text-danger"></i>
     </a>
 </div>
-{{ Form::close() }}
+{{ html()->form()->close() }}

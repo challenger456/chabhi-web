@@ -49,9 +49,12 @@
      <h5 class="service-title font-size-18 line-count-2">{{title }}</h5>
    </a>
    <ul class="list-inline p-0 mt-1 mb-0 price-content">
-     <li class="text-primary fw-500 d-inline-block position-relative font-size-18"><span v-if="price>0">{{ formatCurrencyVue(price) }}</span> <span v-else>Free</span></li>
-     <li class="d-inline-block fw-500 position-relative service-price">({{ formattedDuration(duration) }})</li>
-   </ul>
+    <li class="text-primary fw-500 d-inline-block position-relative font-size-18">
+        <span v-if="price>0">{{ formatCurrencyVue(price) }} <span v-if="discount && discount > 0"> ({{ discount }}% off)</span></span>
+        <span v-else>Free</span>
+    </li>
+    <li v-if="duration && duration !== '00:00'" class="d-inline-block fw-500 position-relative service-price">({{ formattedDuration(duration) }})</li>
+</ul>
   <div
      class="mt-3">
      <div class="d-flex align-items-center gap-2">
@@ -91,6 +94,7 @@ const props = defineProps({
     user_id : {type: Number, default: 0},
     favourite : {type: Boolean, default: ''},
     visit_type : {type: String, default: ''},
+    discount : {type: Number, default: 0},
 })
 
 const baseUrl = document.querySelector('meta[name="baseUrl"]').getAttribute('content');

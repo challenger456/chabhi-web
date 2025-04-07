@@ -3,9 +3,9 @@
 
 @section('content')
 <div class="my-5">
-   <h4 class="text-center text-capitalize font-weight-bold my-5">{{__('landingpage.data_deletion_request')}}</h4>
+   <h4 class="text-center text-capitalize fw-bold my-5">{{__('landingpage.data_deletion_request')}}</h4>
    <div class="container">
-      {!! $data_deletion_request->value ?? null !!}
+      {!! $deletion_content!!}
    </div>
  </div>
 

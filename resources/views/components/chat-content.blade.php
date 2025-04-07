@@ -45,7 +45,7 @@
         </div>
         <div class="card-header chat-content-header">
         <div class="d-flex align-items-center">
-            <button class="btn text-primary bg-primary-light btn-sm d-block d-lg-none mr-2" data-toggel-extra="side-nav" data-expand-extra=".chat-left-wrapper">
+            <button class="btn text-primary bg-primary-light btn-sm d-block d-lg-none me-2" data-toggel-extra="side-nav" data-expand-extra=".chat-left-wrapper">
                 <i class="las la-arrow-right"></i>
             </button>
             <div class="avatar-50 avatar-borderd avatar-rounded" data-toggel-extra="right-sidenav" data-target="#first-sidenav">
@@ -63,7 +63,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                     </svg>
                 </button>
-                <button class="btn text-primary bg-primary-light btn-sm ml-2" id="user-{{$id}}-call-tab">
+                <button class="btn text-primary bg-primary-light btn-sm ms-2" id="user-{{$id}}-call-tab">
                     <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
@@ -171,7 +171,7 @@
             <div class="input-group input-group-sm">
                 <input type="text" class="form-control" id="chat-input" placeholder="Enter here..." aria-label="Recipient's username" aria-describedby="basic-addon2">
                 <div class="input-group-append">
-                    <button type="button" class="input-group-text chat-icon" id="basic-addon1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button" class="input-group-text chat-icon" id="basic-addon1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="las la-smile"></i>
                     </button>
                     <div class="dropdown-menu p-0 border-0" aria-labelledby="basic-addon1">

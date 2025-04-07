@@ -1,39 +1,43 @@
 
-{{ Form::model($landing_page, ['method' => 'POST','route' => ['landing_page_settings_updates'],'enctype'=>'multipart/form-data','data-toggle'=>'validator']) }}
 
-{{ Form::hidden('id', null, array('placeholder' => 'id','class' => 'form-control')) }}
-{{ Form::hidden('type', $tabpage, array('placeholder' => 'id','class' => 'form-control')) }}
+{{ html()->form('POST', route('landing_page_settings_updates'))->attribute('enctype', 'multipart/form-data')->attribute('data-toggle', 'validator')->open() }}
+{{ html()->hidden('id',$landing_page->id)->class('form-control')->placeholder('id') }}
+{{ html()->hidden('type', $tabpage)->class('form-control')->placeholder('id') }}
         <div class="row">
-            <div class="form-group col-md-12 d-flex justify-content-between">
-                <label for="enable_section_9">{{__('messages.enable_section_9')}}</label>
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input section_9" name="status" id="section_9" data-type="section_9"  {{!empty($landing_page) && $landing_page->status == 1 ? 'checked' : ''}}>
-                    <label class="custom-control-label" for="section_9"></label>
+            <div class="form-group col-md-12">
+                <div class="form-control d-flex align-items-center justify-content-between">
+                    <label for="enable_section_9" class="mb-0">{{__('messages.enable_section_9')}}</label>
+                    <div class="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline">
+                        <input type="checkbox" class="custom-control-input section_9" name="status" id="section_9" data-type="section_9"  {{!empty($landing_page) && $landing_page->status == 1 ? 'checked' : ''}}>
+                        <label class="custom-control-label" for="section_9"></label>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="row" id='enable_section_9'>
             <div class="form-group col-md-12">
-                {{ Form::label('title',trans('messages.title').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-                {{ Form::text('title',old('title'),['id'=>'title','placeholder' => trans('messages.title'),'class' =>'form-control']) }}
+                {{ html()->label(trans('messages.title') . ' <span class="text-danger">*</span>', 'title')->class('form-control-label') }}
+                {{ html()->text('title', old('title'))->id('title')->placeholder(trans('messages.title'))->class('form-control')}}
                 <small class="help-block with-errors text-danger"></small>
             </div>
             <div class="form-group col-md-12 d-flex justify-content-between">
-            <label for="enable_overall_rating">{{__('messages.enable_overall_rating')}}</label>
-            <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" name="overall_rating" id="overall_rating">
-                <label class="custom-control-label" for="overall_rating"></label>
-            </div>
+                <div class="form-control d-flex align-items-center justify-content-between">
+                    <label for="enable_overall_rating">{{__('messages.enable_overall_rating')}}</label>
+                    <div class="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline">
+                        <input type="checkbox" class="custom-control-input" name="overall_rating" id="overall_rating">
+                        <label class="custom-control-label" for="overall_rating"></label>
+                    </div>
+                </div>
             </div>
             <div class="form-group col-md-12">
-                {{ Form::label('description',trans('messages.description'),['class'=>'form-control-label'], false ) }}
-                {{ Form::textarea('description',null,['id'=>'description','placeholder' => trans('messages.description'),'class' =>'form-control textarea',  'rows'=>2]) }}
+                {{ html()->label(trans('messages.description'), 'description')->class('form-control-label') }}
+                {{ html()->textarea('description',null)->id('description')->placeholder(trans('messages.description'))->class('form-control textarea')->rows(2)}}
                 <small class="help-block with-errors text-danger"></small>
             </div>
             
         </div>
-    {{ Form::submit(__('messages.save'), ['class'=>"btn btn-md btn-primary float-md-right submit_section1"]) }}
-    {{ Form::close() }}
+        {{ html()->submit(__('messages.save'))->class('btn btn-md btn-primary float-md-end submit_section1') }}
+        {{ html()->form()->close() }}
 
 <script>
     var enable_section_9 = $("input[name='status']").prop('checked');

@@ -141,23 +141,24 @@ const fetchService = async () => {
   const defaultEarningType = async () => {
     try {
         const response = await fetch(`${baseUrl}/api/configurations`, {
-            method: 'POST', 
+            method: 'POST',
             headers: {
-                'Content-Type': 'application/json' 
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             },
-            body: JSON.stringify({}) 
+            body: JSON.stringify({})
         });
-        
+
         const data = await response.json();
 
-        console.log( data );
         const earningType = data && data.earning_type ? data.earning_type : 'commission';
         return earningType;
     } catch (error) {
         console.error('Error fetching or processing AppSetting:', error);
-        return 'commission'; 
+        return 'commission';
     }
 };
+
 
    const getCategoryDetails = async () => {
   try {

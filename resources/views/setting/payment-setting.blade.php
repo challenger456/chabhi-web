@@ -44,8 +44,8 @@ $onlinepayment = $othersetting->online_payment;
             </li>
             @endif
         </ul>
-        <div class="card payment-content-wrapper">
-            <div class="card-body">
+        <div class="card payment-content-wrapper mt-5">
+            <div class="card-body p-0">
                 <div class="tab-content" id="pills-tabContent-1">
                     <div class="tab-pane active p-1" >
                         <div class="payment_paste_here"></div>

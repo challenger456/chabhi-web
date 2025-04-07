@@ -1,51 +1,53 @@
+{{ html()->form('POST', route('landing_page_settings_updates'))->attribute('enctype', 'multipart/form-data')->attribute('data-toggle', 'validator')->id('frontend_setting')->open() }}
 
-{{ Form::model($landing_page, ['method' => 'POST','route' => ['landing_page_settings_updates'],'enctype'=>'multipart/form-data','data-toggle'=>'validator','id'=>'frontend_setting']) }}
+{{ html()->hidden('id',$landing_page->id)->class('form-control')->placeholder('id') }}
+{{ html()->hidden('type', $tabpage)->class('form-control')->placeholder('id') }}
 
-{{ Form::hidden('id', null, array('placeholder' => 'id','class' => 'form-control')) }}
-{{ Form::hidden('type', $tabpage, array('placeholder' => 'id','class' => 'form-control')) }}
-        <div class="row">
-            <div class="form-group col-md-12 d-flex justify-content-between">
-                <label for="enable_section_7">{{__('messages.enable_section_7')}}</label>
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input section_7" name="status" id="section_7" data-type="section_7"  {{!empty($landing_page) && $landing_page->status == 1 ? 'checked' : ''}}>
-                    <label class="custom-control-label" for="section_7"></label>
-                </div>
+<div class="row">
+    <div class="form-group col-md-12">
+        <div class="form-control d-flex align-items-center justify-content-between">
+                    <label for="enable_section_7" class="mb-0">{{__('messages.enable_section_7')}}</label>
+            <div class="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline">
+                        <input type="checkbox" class="custom-control-input section_7" name="status" id="section_7" data-type="section_7"  {{!empty($landing_page) && $landing_page->status == 1 ? 'checked' : ''}}>
+                <label class="custom-control-label" for="section_7"></label>
             </div>
         </div>
-        <div class="row" id='enable_section_7'>
-            <div class="form-group col-md-6">
-                {{ Form::label('title',trans('messages.title').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-                {{ Form::text('title',old('title'),['id'=>'title','placeholder' => trans('messages.title'),'class' =>'form-control']) }}
-                <small class="help-block with-errors text-danger"></small>
-            </div>
-            <div class="form-group col-md-6">
-                {{ Form::label('url',trans('messages.url').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}
-                {{ Form::text('url',old('url'),['id'=>'url','placeholder' => trans('messages.url'),'class' =>'form-control']) }}
-                <small class="help-block with-errors text-danger"></small>
-            </div>
+    </div>
+</div>
+<div class="row" id='enable_section_7'>
+    <div class="form-group col-md-6">
+        {{ html()->label(trans('messages.title') . ' <span class="text-danger">*</span>', 'title')->class('form-control-label') }}
+        {{ html()->text('title',old('title'))->id('title')->class('form-control')->placeholder(trans('messages.title')) }}
+        <small class="help-block with-errors text-danger"></small>
+    </div>
+    <div class="form-group col-md-6">
+        {{ html()->label(trans('messages.url') . ' <span class="text-danger">*</span>', 'url')->class('form-control-label') }}
+        {{ html()->text('url',old('url'))->id('url')->class('form-control')->placeholder(trans('messages.url')) }}
+        <small class="help-block with-errors text-danger"></small>
+    </div>
             
-            
-            <div class="form-group col-md-6">
+
+    <div class="form-group col-md-6">
                 <label for="avatar" class="col-sm-6 form-control-label">{{ __('messages.image') }}</label>
-                <div class="col-sm-12">
-                    <div class="row">
-                        <div class="col-sm-4">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-4">
                             <img src="{{ getSingleMedia($landing_page,'vimage') }}" width="100"  id="vimage_preview" alt="vimage" class="image vimage vimage_preview">
-                            @if($landing_page && getMediaFileExit($landing_page, 'vimage'))
-                                <a class="text-danger remove-file" href="{{ route('remove.file', ['id' => $landing_page->id, 'type' => 'vimage']) }}"
+                    @if($landing_page && getMediaFileExit($landing_page, 'vimage'))
+                        <a class="text-danger remove-file" href="{{ route('remove.file', ['id' => $landing_page->id, 'type' => 'vimage']) }}"
                                     data--submit="confirm_form"
                                     data--confirmation='true'
                                     data--ajax="true"
                                     title='{{ __("messages.remove_file_title" , ["name" =>  __("messages.image") ]) }}'
                                     data-title='{{ __("messages.remove_file_title" , ["name" =>  __("messages.image") ]) }}'
                                     data-message='{{ __("messages.remove_file_msg") }}'>
-                                    <i class="ri-close-circle-line"></i>
-                                </a>
-                            @endif
-                        </div>
-                        <div class="col-sm-8 mt-sm-0 mt-2">
-                            <div class="custom-file col-md-12">
-                                {{ Form::file('vimage', ['class'=>"custom-file-input custom-file-input-sm detail" , 'id'=>"vimage" , 'lang'=>"en" , 'accept'=>"image/*", 'onchange'=>"preview()"]) }}
+                            <i class="ri-close-circle-line"></i>
+                        </a>
+                    @endif
+                </div>
+                <div class="col-sm-8 mt-sm-0 mt-2">
+                    <div class="custom-file col-md-12">
+                                {{ html()->file('vimage')->class("custom-file-input custom-file-input-sm detail")->id("vimage")->attribute('lang', 'en')->attribute('accept', 'image/*')->attribute('onchange', 'preview()') }}
                                 @if($landing_page && getMediaFileExit($landing_page, 'vimage'))
                                 <label class="custom-file-label upload-label">{{ $landing_page->getFirstMedia('vimage')->file_name }}</label>
                                 @else
@@ -56,79 +58,66 @@
                         </div>
                     </div>
 
-                </div>
-            </div>
-            
-            <div class="form-group col-md-12">
-                {{ Form::label('description',__('messages.description'), ['class' => 'form-control-label']) }}
-                {{ Form::textarea('description', null, ['class'=>"form-control textarea" , 'rows'=>2  , 'placeholder'=> __('messages.description') ]) }}
-            </div>
-            
-            @if($landing_page && $landing_page->value != null)
-                @php
-                    $landingPageValue = json_decode($landing_page->value, true);
-                @endphp
+        </div>
+    </div>
 
-                @foreach($landingPageValue['subtitle'] as $index => $subtitle)
+    <div class="form-group col-md-12">
+        {{ html()->label(__('messages.description'), 'description')->class('form-control-label') }}
+        {{ html()->textarea('description',null)->class("form-control textarea")->rows(2)->placeholder(__('messages.description')) }}
+    </div>
+
+    @if($landing_page && $landing_page->value != null)
+        @php
+            $landingPageValue = json_decode($landing_page->value, true);
+        @endphp
+
+        @foreach($landingPageValue['subtitle'] as $index => $subtitle)
                     <div class="form-section1 form-group col-md-12 ">
-                    @if(isset($landingPageValue['subtitle'][$index]) || ($landingPageValue['subdescription'][$index]))
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                {{ Form::label('subtitle',__('messages.subtitle'), ['class' => 'form-control-label']) }}
-                                {{ Form::text("subtitle[$index]", is_array($subtitle) ? $subtitle[0] : $subtitle, ['id' => 'subtitle_'.$index, 'placeholder' => trans('messages.subtitle'), 'class' => 'form-control']) }}
-                            </div>
-                            <div class="form-group col-md-12">  
-                                {{ Form::label('subdescription',__('messages.subdescription'), ['class' => 'form-control-label']) }}
-                                {{ Form::textarea("subdescription[$index]", is_array($landingPageValue['subdescription'][$index]) ? $landingPageValue['subdescription'][$index][0] : $landingPageValue['subdescription'][$index], ['id' => 'subdescription_'.$index, 'placeholder' => trans('messages.subdescription'), 'class' => 'form-control textarea', 'rows'=>2]) }}
-                            </div>
-                            <small class="help-block with-errors text-danger"></small>
-                            <div class="form-group col-3 mb-0 align-self-center">
+                @if(isset($landingPageValue['subtitle'][$index]) || ($landingPageValue['subdescription'][$index]))
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            {{ html()->label(__('messages.subtitle'), 'subtitle')->class('form-control-label') }}
+                            {{ html()->text("subtitle[$index]", is_array($subtitle) ? $subtitle[0] : $subtitle)->id("subtitle_$index")->class('form-control')->placeholder(trans('messages.subtitle'))->required() }}
+                        </div>
+                        <div class="form-group col-md-12">
+                            {{ html()->label(__('messages.subdescription'), 'subdescription')->class('form-control-label') }}
+                            {{ html()->textarea("subdescription[$index]", is_array($landingPageValue['subdescription'][$index]) ? $landingPageValue['subdescription'][$index][0] : $landingPageValue['subdescription'][$index])->id('subdescription_'.$index)->class('form-control textarea')->rows(2)->placeholder(trans('messages.subdescription'))->required() }}
+                        </div>
+                        <small class="help-block with-errors text-danger"></small>
+                        <div class="form-group col-3 mb-0 align-self-center">
                                 <button class="remove-section1 button-custom button-remove"  title="Remove" data--confirmation1='true'>
                                 <i class="far fa-trash-alt"></i>
-                                </button>
-                            </div>
+                            </button>
                         </div>
-                    @endif
                     </div>
-
-                @endforeach
-
-            @endif 
-            
-                <div class="form-section form-group col-md-12 ">
-                    <div class="form-group col-md-12">
-                        {{ Form::label('subtitle',__('messages.subtitle'), ['class' => 'form-control-label']) }}
-                        {{ Form::text('subtitle[]', '', ['class'=>"form-control" , 'placeholder'=> __('messages.subtitle') ]) }}
-                    </div>
-                    <div class="form-group col-md-12">
-                        {{ Form::label('subdescription',__('messages.subdescription'), ['class' => 'form-control-label']) }}
-                        {{ Form::textarea('subdescription[]', '', ['class'=>"form-control textarea" , 'rows'=>2  , 'placeholder'=> __('messages.subdescription') ]) }}
-                    </div>
-                    <div class="col-md-6 text-md-left pr-1">
-                        <button class="remove-section  button-custom button-remove" title="Remove" data--confirmation1='true'>
-                            <i class="far fa-trash-alt"></i>
-                        </button>
-                    </div>
-                </div>
-            
-            <div class="form-group col-md-12">
-                <div class="form-group row">
-                    <div class="col-md-9 text-md-right pr-1">
-                        <button type="button" id="add-section" class="button-custom button-added">
-                            <i class="fas fa-plus mr-2"></i>Add More 
-                        </button>
-                    </div>
-                    <div class="col-md-3"></div>
-                </div>
+                @endif
             </div>
 
+        @endforeach
+
+    @endif
+
+                <div class="form-section form-group col-md-12 d-none">
+                </div>
+
+    <div class="form-group col-md-12">
+        <div class="form-group row">
+            <div class="col-md-9 text-md-right pe-1">
+                <button type="button" id="add-section" class="button-custom button-added">
+                    <i class="fas fa-plus me-2"></i>Add More
+                </button>
+            </div>
+            <div class="col-md-3"></div>
         </div>
+    </div>
+
+</div>
                      
 
         
-       
-    {{ Form::submit(__('messages.save'), ['class'=>"btn btn-md btn-primary float-md-right submit_section1"]) }}
-    {{ Form::close() }}
+
+{{ html()->submit(__('messages.save'))->class("btn btn-md btn-primary float-md-end submit_section1") }}
+{{ html()->form()->close() }}
 
 <script>
     var enable_section_7 = $("input[name='status']").prop('checked');
@@ -153,7 +142,7 @@
     }
 
     $(document).ready(function () {
-        var maxSections = 5; 
+        var maxSections = 6; 
 
          //hide form section
         function hideFormSection(){
@@ -163,17 +152,43 @@
                 $('.form-section').show();
             }
         }
+        function addSectionBtn(){
+            var totalSections = $(".form-section").length + $(".form-section1").length; 
+            if( totalSections >= maxSections){
+                $('#add-section').hide();
+            }else{
+                $('#add-section').show();
+            }
+        }
         hideFormSection();
 
         // Add Section
         $("#add-section").click(function () {
-            var totalSections = $(".form-section").length + $(".form-section1").length;
+            var totalSections = $(".form-section").length + $(".form-section1").length; 
             if (totalSections < maxSections) {
-                var newSection = $(".form-section:first").clone();
-                newSection.find('input,textarea').val(''); // Clear input values
-                $(".form-section:last").after(newSection);
+                var newSection = `
+                    <div class="form-section form-group col-md-12">
+                    <div class="form-group col-md-12">
+                        {{ html()->label(__('messages.subtitle'), 'subtitle')->class('form-control-label') }}
+                        {{ html()->text('subtitle[]', '')->class('form-control')->placeholder(__('messages.subtitle'))->required() }}
+                    </div>
+                    <div class="form-group col-md-12">
+                        {{ html()->label(__('messages.subdescription'), 'subdescription')->class('form-control-label') }}
+                        {{ html()->textarea('subdescription[]', '')->class('form-control textarea')->rows(2)->placeholder(__('messages.subdescription'))->required() }}
+                    </div>
+                    <div class="col-md-6 text-md-left pe-1">
+                        <button class="remove-section button-custom button-remove" title="Remove" data--confirmation1="true">
+                            <i class="far fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>`; 
+            $(".form-section:last").after(newSection);
                 updateRemoveButtonVisibility();
             }
+            else{
+                $('#add-section').hide();
+            }
+            addSectionBtn();
             hideFormSection();
         });
 
@@ -194,6 +209,7 @@
                             $(_this).closest('.form-section').remove();
                             updateRemoveButtonVisibility();
                             hideFormSection();
+                            addSectionBtn()
                             }
                             
                             var form = $(this).attr('data--submit');

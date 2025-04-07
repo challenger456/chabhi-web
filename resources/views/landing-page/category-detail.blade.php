@@ -8,8 +8,8 @@
         <div class="category-tab-list">
             <div class="row">
                 <div class="col-lg-4">
-                    <h4 class="mb-2 text-capitalize">{{ $category->name }}</h4>
-                    <p class="readmore-text m-0">{{ $category->description }}</p>
+                    <h4 class="mb-2 text-capitalize">{{ $category->name ?? '-'}}</h4>
+                    <p class="readmore-text m-0">{{ $category->description ?? '-' }}</p>
                     <a href="javascript:void(0);" class="readmore-btn">{{__('landingpage.read_more')}}</a>
                     <ul class="nav nav-tabs align-items-start gap-5 bg-transparent pb-0 mt-5 mb-0">
                         <li class="nav-item">
@@ -59,10 +59,12 @@
  
                             $serviceData = array_slice($service, 0, 6); 
                         @endphp
-        
+
+                       @if( $serviceData )
                         <div class="tab-pane active show" id="all">
                                 <service-list-section :user_id="{{json_encode($auth_user_id)}}" :service="{{ json_encode($serviceData) }}" :favourite="{{json_encode($favourite)}}" ></service-list-section>
                         </div>
+                        @endif
                         @foreach($sub_category as $subCategory)
                             @php
                                 $filteredServices = array_filter($service, function ($item) use ($subCategory) {
@@ -76,7 +78,7 @@
                         @endforeach
         
                     </div>
-                    @if(count($service)>6)
+                    @if(count($service)>6  )
                     <div class="text-center mt-5">
                         <a href="{{route('service.list', ['category_id' => $category->id])}}" class="btn btn-primary text-capitalize">{{__('messages.view_all')}}</a>
                     </div>

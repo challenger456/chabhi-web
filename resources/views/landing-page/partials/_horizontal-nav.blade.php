@@ -20,17 +20,17 @@
         @endphp
          @if ($sectionData && isset($sectionData['header_setting']) && $sectionData['header_setting'] == 1)
         <ul class="navbar-nav iq-nav-menu list-unstyled" id="header-menu">
-            @if(isset($sectionData['home']) && $sectionData['home'] == 1)
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('frontend.index') ? 'active' : '' }}" href="{{ route('frontend.index') }}">{{__('landingpage.home')}}</a>
             </li>
-            @endif
-            @if(isset($sectionData['categories']) && $sectionData['categories'] == 1)
+            @if( isset($sectionData['categories']) && $sectionData['categories'] == 1)
+            {{-- @if(isset($sectionData['categories']) && $sectionData['categories'] == 1) --}}
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('category.*') ? 'active' : '' }}" href="{{ route('category.list') }}">{{__('landingpage.categories')}}</a>
             </li>
             @endif
-            @if(isset($sectionData['service']) && $sectionData['service'] == 1)
+            @if(  isset($sectionData['service']) && $sectionData['service'] == 1)
+            {{-- @if(isset($sectionData['service']) && $sectionData['service'] == 1)p --}}
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('service.*') ? 'active' : '' }}" href="{{ route('service.list') }}">{{__('landingpage.services')}}</a>
             </li>
@@ -40,12 +40,13 @@
                 <a class="nav-link {{ request()->routeIs('blog.*') ? 'active' : '' }}" href="{{ route('blog.list') }}">{{__('landingpage.blogs')}}</a>
             </li>
             @endif
-            @if(isset($sectionData['provider']) && $sectionData['provider'] == 1)
+            @if($sectionData['provider'] == 1)
+            {{-- @if(isset($sectionData['provider']) && $sectionData['provider'] == 1) --}}
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('frontend.provider.*') ? 'active' : '' }}" href="{{ route('frontend.provider') }}">{{__('landingpage.providers')}}</a>
             </li>
             @endif
-            @if(auth()->check() && auth()->user()->user_type == 'user' && isset($sectionData['bookings']) && $sectionData['bookings'] == 1)
+            @if(auth()->check() && auth()->user()->user_type == 'user' && $sectionData['bookings'] == 1)
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('booking.*') ? 'active' : '' }}" href="{{ route('booking.list') }}">{{__('landingpage.bookings')}}</a>
                 </li>

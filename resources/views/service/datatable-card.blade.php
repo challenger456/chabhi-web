@@ -55,30 +55,35 @@
 
    </div>
    <a href="{{ route('service.detail', $data->id) }}" class="service-heading mt-4 d-block p-0">
-      <h5 class="service-heading service-title font-size-18 line-count-2">{{ $data->name }}</h5>
+      <h5 class="service-heading service-title font-size-18 line-count-2">{{$data->name ?? '-' }}</h5>
    </a>
    <ul class="list-inline p-0 mt-0 mb-0 price-content">
-   @if($data->price==0)
-      <li class="text-primary fw-500 d-inline-block position-relative font-size-18">Free</li>
+      @if($data->price==0)
+         <li class="text-primary fw-500 d-inline-block position-relative font-size-18">Free</li>
       @else
- <li class="text-primary fw-500 d-inline-block position-relative font-size-18">{{ getPriceFormat($data->price) }}</li>
+         <li class="text-primary fw-500 d-inline-block position-relative font-size-18">
+            {{ getPriceFormat($data->price) }}
+            @if(isset($data->discount) && $data->discount > 0)
+               <span class="text-primary"> ({{ $data->discount }}% off)</span>
+            @endif
+         </li>
       @endif
       @if(!empty($data->duration))
-      @php
-         $durationParts = explode(':', $data->duration);
-         $hours = intval($durationParts[0]);
-         $minutes = intval($durationParts[1]);
-      @endphp
-      <li class="d-inline-block fw-500 position-relative service-price">
-         <!-- ({{ $data->duration }} min) -->
-         @if($hours > 0)
-            ({{ $hours }} hrs @if($minutes > 0) {{ $minutes }} min @endif)
-         @else
-            ({{ $minutes }} min)
-         @endif
-      </li>
+         @php
+            $durationParts = explode(':', $data->duration);
+            $hours = intval($durationParts[0]);
+            $minutes = intval($durationParts[1]);
+         @endphp
+         <li class="d-inline-block fw-500 position-relative service-price">
+             <!-- ({{ $data->duration }} min) -->
+            @if($hours > 0)
+               ({{ $hours }} hrs @if($minutes > 0) {{ $minutes }} min @endif)
+            @else
+               ({{ $minutes }} min)
+            @endif
+         </li>
       @endif
-   </ul>
+   </ul> 
    <div
       class="mt-3">
       <div class="d-flex align-items-center gap-2">

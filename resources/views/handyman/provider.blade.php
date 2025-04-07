@@ -1,5 +1,5 @@
 @if(isset($query->providers))
-<a href="{{ route('provider.show', ['provider' => optional($query->providers)->id]) }}">
+<a href="{{ route('provider_info', optional($query->providers)->id) }}">
   <div class="d-flex gap-3 align-items-center">
     <img src="{{ getSingleMedia(optional($query->providers),'profile_image', null) }}" alt="avatar" class="avatar avatar-40 rounded-pill">
     <div class="text-start">

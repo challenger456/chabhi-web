@@ -7,7 +7,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-6 ">
-                    <span class="mr-1">
+                    <span class="me-1">
                 {!! optional($app)->site_copyright !!}
                     </span>
                 </div>
