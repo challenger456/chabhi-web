@@ -2071,6 +2071,50 @@ function onesingle($fields){
     curl_close($ch);
 }
 
+function getFooterSettings() {
+    $settings = [];
+
+    // Fetch General Settings
+    $generalSetting = \App\Models\FrontendSetting::where('type', 'general_settings')->where('key', 'general_settings')->first();
+    $settings['generalSetting'] = $generalSetting ? json_decode($generalSetting->value) : null;
+
+    // Fetch Social Media Settings
+    $socialMedia = \App\Models\FrontendSetting::where('type', 'social_media')->where('key', 'social_media')->first();
+    $settings['socialMedia'] = $socialMedia ? json_decode($socialMedia->value) : null;
+
+    // Fetch App Settings
+    $appSetting = \App\Models\FrontendSetting::where('type', 'app_download')->where('key', 'app_download')->first();
+    $settings['appSetting'] = $appSetting ? json_decode($appSetting->value) : null;
+
+    // Fetch Copyright Settings
+    $copyrightSetting = \App\Models\FrontendSetting::where('type', 'copyright_settings')->where('key', 'copyright_settings')->first();
+    $copyrightData = $copyrightSetting ? json_decode($copyrightSetting->value, true) : [];
+    $settings['copyright'] = [
+        'first_part' => $copyrightData['copyright_text'] ?? '© ' . date('Y') . ' All Rights Reserved by',
+        'second_part' => $copyrightData['developed_by_text'] ?? 'IQONIC Design',
+    ];
+
+    // Fetch Section Data (assuming this relates to footer sections visibility)
+    $sectionDataSetting = \App\Models\FrontendSetting::where('type', 'section_settings')->where('key', 'section_settings')->first();
+    $settings['sectionData'] = $sectionDataSetting ? json_decode($sectionDataSetting->value, true) : [];
+
+    // Fetch Categories if enabled
+    if (isset($settings['sectionData']['enable_popular_category']) && $settings['sectionData']['enable_popular_category'] == 1) {
+        $settings['categories'] = \App\Models\Category::where('status', 1)->where('is_featured', 1)->orderBy('name', 'asc')->limit(10)->get(); // Adjust limit as needed
+    } else {
+        $settings['categories'] = [];
+    }
+
+    // Fetch Services if enabled
+    if (isset($settings['sectionData']['enable_popular_service']) && $settings['sectionData']['enable_popular_service'] == 1) {
+        $settings['services'] = \App\Models\Service::where('status', 1)->where('is_featured', 1)->orderBy('name', 'asc')->limit(5)->get(); // Adjust limit as needed
+    } else {
+        $settings['services'] = [];
+    }
+
+    return $settings;
+}
+
 function addWalletAmount($data){
 
     $baseURL = env('APP_URL');

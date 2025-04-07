@@ -44,6 +44,7 @@ Route::get('/term-conditions', [FrontendController::class, 'termConditions'])->n
 Route::get('/refund-policy', [FrontendController::class, 'refundPolicy'])->name('user.refund_policy');
 Route::get('/help-support', [FrontendController::class, 'helpSupport'])->name('user.help_support');
 Route::get('/data-deletion-request', [FrontendController::class, 'DataDeletion'])->name('user.data_deletion_request');
+Route::get('/about-us', [FrontendController::class, 'aboutUs'])->name('user.about_us');
 
 
 Route::get('/book-service', [FrontendController::class, 'bookServiceView'])->name('book.service');
@@ -79,14 +80,3 @@ Route::get('/post-job-datatable', [FrontendController::class, 'postJobDatatable'
 Route::get('/favouriteservice-datatable', [FrontendController::class, 'favouriteServiceDatatable'])->name('favouriteservice.data');
 Route::get('/rating-datatable', [FrontendController::class, 'ratingDatatable'])->name('rating.data');
 Route::post('/user-subscribe', [FrontendController::class, 'userSubscribe'])->name('user.subscribe');
-
-
-
-
-
-
-
-
-
-
-

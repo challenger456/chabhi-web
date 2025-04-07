@@ -286,6 +286,11 @@ class FrontendController extends Controller
         return view('landing-page.dataDeletion',compact('data_deletion_request'));
     }
 
+    public function aboutUs(Request $request){
+        $about_us = Setting::where('type', 'about_us')->where('key', 'about_us')->first();
+        return view('landing-page.AboutUs',compact('about_us'));
+    }
+
     public function bookServiceView(Request $request){
 
         $service_id=$request->id;
